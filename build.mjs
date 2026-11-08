@@ -584,7 +584,7 @@ ${quoteSection}`
 const redirectStub = async (from, to) => {
   const file = path.join(dist, from, 'index.html');
   await mkdir(path.dirname(file), { recursive: true });
-  await writeFile(file, withBase(`<!doctype html><html lang="fr-FR"><head><meta charset="utf-8"><title>Redirection</title><meta name="robots" content="noindex, follow"><link rel="canonical" href="${abs(to)}"><meta http-equiv="refresh" content="0; url=${to}"><script>location.replace('${BASE}${to}')</script></head><body><p><a href="${to}">Continuer vers la page</a></p></body></html>`));
+  await writeFile(file, withBase(`<!doctype html><html lang="fr-FR"><head><meta charset="utf-8"><title>Redirection</title><meta name="robots" content="noindex, follow"><link rel="canonical" href="${abs(to)}"><meta http-equiv="refresh" content="0; url=${BASE}${to}"><script>location.replace('${BASE}${to}')</script></head><body><p><a href="${to}">Continuer vers la page</a></p></body></html>`));
 };
 for (const [from, to] of [['mentions-légales', '/mentions-legales/'], ['politique-de-confidentialité', '/politique-de-confidentialite/'], ['politique-de-cookies', '/politique-de-confidentialite/']]) await redirectStub(from, to);
 
