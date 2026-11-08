@@ -190,8 +190,8 @@ const faqCats = [['prix', 'Devis et prix'], ['organisation', 'Préparation'], ['
 const faqHtml = (faq) => `<div class="faq">${faq.map((f) => `<details><summary>${f.q}</summary><div>${f.a}</div></details>`).join('')}</div>`;
 
 const quoteForm = (id = 'devis') => `
-<form class="form" name="devis" method="POST" action="${site.formAction}" data-netlify="true" netlify-honeypot="bot-field" id="${id}">
-  <input type="hidden" name="form-name" value="devis"><input type="hidden" name="langue" value="Français">
+<form class="form" name="devis" method="POST" action="${site.formAction}" data-netlify="true" netlify-honeypot="bot-field" data-next="${BASE}/merci/" id="${id}">
+  <input type="hidden" name="form-name" value="devis"><input type="hidden" name="langue" value="Français"><input type="hidden" name="_subject" value="Nouvelle demande de devis – site Aaction Dem"><input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <p class="hp"><label>Ne pas remplir <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
   <div class="fgrid3">
     <div class="field"><label for="f-dep">Adresse de départ *</label><input id="f-dep" name="adresse_depart" required autocomplete="street-address" placeholder="Ville ou adresse de départ"></div>
@@ -209,8 +209,8 @@ const quoteForm = (id = 'devis') => `
 
 // Formulaire compact (page Contact) : mêmes champs que quoteForm pour Netlify, présentation empilée avec icônes
 const quoteFormCompact = () => `
-<form class="form cfm" name="devis" method="POST" action="${site.formAction}" data-netlify="true" netlify-honeypot="bot-field" id="devis">
-  <input type="hidden" name="form-name" value="devis"><input type="hidden" name="langue" value="Français">
+<form class="form cfm" name="devis" method="POST" action="${site.formAction}" data-netlify="true" netlify-honeypot="bot-field" data-next="${BASE}/merci/" id="devis">
+  <input type="hidden" name="form-name" value="devis"><input type="hidden" name="langue" value="Français"><input type="hidden" name="_subject" value="Nouvelle demande de devis – site Aaction Dem"><input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <p class="hp"><label>Ne pas remplir <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
   <div class="field"><label for="c-dep">Adresse de départ *</label><div class="ifield"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><input id="c-dep" name="adresse_depart" required autocomplete="street-address" placeholder="Ville ou adresse de départ"></div></div>
   <div class="field"><label for="c-arr">Adresse d’arrivée *</label><div class="ifield"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><input id="c-arr" name="adresse_arrivee" required placeholder="Ville ou adresse d’arrivée"></div></div>
@@ -472,8 +472,8 @@ ${quoteSection}`
     { q: 'Can you move us from Luxembourg to another country?', a: '<p>Yes. As a member of Les Gentlemen du Déménagement network, we organise moves from Luxembourg to the rest of Europe and further afield, with a single point of contact.</p>' }
   ];
   const formEn = `
-<form class="form" name="devis" method="POST" action="${site.formAction}" data-netlify="true" netlify-honeypot="bot-field" id="devis">
-  <input type="hidden" name="form-name" value="devis"><input type="hidden" name="langue" value="English">
+<form class="form" name="devis" method="POST" action="${site.formAction}" data-netlify="true" netlify-honeypot="bot-field" data-next="${BASE}/merci/" id="devis">
+  <input type="hidden" name="form-name" value="devis"><input type="hidden" name="langue" value="English"><input type="hidden" name="_subject" value="New quote request (English) – Aaction Dem website"><input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <p class="hp"><label>Do not fill <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
   <div class="fgrid3">
     <div class="field"><label for="e-dep">Moving from *</label><input id="e-dep" name="adresse_depart" required placeholder="Town or address"></div>

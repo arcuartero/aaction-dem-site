@@ -152,7 +152,7 @@ document.querySelectorAll('[data-faqcat]').forEach((a) => a.addEventListener('cl
       const digits = input.value.replace(/\D/g, '');
       if (digits.length < 9 || digits.length > 15) { note.textContent = T.cbBad; note.className = 'closed-dlg__cbn is-err'; input.focus(); return; }
       const src = document.querySelector('form[name="rappel"]');
-      const data = new URLSearchParams({ 'form-name': 'rappel', telephone: input.value.trim(), page: location.pathname, reouverture: when ? `${when} ${hhmm(st.at)}` : '', 'bot-field': '' });
+      const data = new URLSearchParams({ 'form-name': 'rappel', _subject: 'Demande de rappel – site Aaction Dem', telephone: input.value.trim(), page: location.pathname, reouverture: when ? `${when} ${hhmm(st.at)}` : '', 'bot-field': '' });
       const action = src && /^https?:/.test(src.getAttribute('action')) ? src.getAttribute('action') : '/';
       btn.disabled = true;
       try {
@@ -172,3 +172,26 @@ document.querySelectorAll('[data-faqcat]').forEach((a) => a.addEventListener('cl
     show(st, a.getAttribute('href'));
   }));
 })();
+
+// Formulaires de devis : si l'action est un service externe (Formspree…), envoi en arrière-plan puis page « merci » du site.
+document.querySelectorAll('form.form[data-next]').forEach((f) => {
+  if (!/^https?:/.test(f.getAttribute('action') || '')) return;   // Netlify Forms : envoi classique
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!f.reportValidity()) return;
+    const btn = f.querySelector('button[type="submit"]');
+    let msg = f.querySelector('.form__err');
+    if (!msg) { msg = document.createElement('p'); msg.className = 'form__err'; msg.setAttribute('role', 'alert'); btn.after(msg); }
+    msg.textContent = ''; btn.disabled = true;
+    try {
+      const r = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } });
+      if (!r.ok) throw new Error(r.status);
+      location.href = f.dataset.next;
+    } catch {
+      btn.disabled = false;
+      msg.textContent = document.documentElement.lang.startsWith('en')
+        ? 'Sending failed. Please try again or call us on +33 3 82 85 49 43.'
+        : 'L’envoi a échoué. Réessayez ou appelez-nous au 03 82 85 49 43.';
+    }
+  });
+});

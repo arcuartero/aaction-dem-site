@@ -592,3 +592,4 @@ button,.btn,[type=submit]{border-radius:0}
 .closed-dlg__ok{display:flex;align-items:center;gap:.6rem;background:#eaf4ee;color:var(--green)!important;font-weight:700;padding:.9rem 1rem;margin:0!important}
 .closed-dlg__ok svg{flex:none}
 @media (max-width:420px){.closed-dlg__cbrow{flex-direction:column}.closed-dlg__cbrow .btn{justify-content:center}}
+.form__err{color:#fff;background:var(--cta-d);font-weight:600;font-size:.85rem;padding:.6rem .8rem;margin:.8rem 0 0}.form__err:empty{display:none}.cfm .form__err{color:#fff}
