@@ -1,0 +1,14 @@
+{
+  "name": "aaction-dem-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "reviews": "node --env-file-if-exists=.env scripts/fetch-reviews.mjs",
+    "reviews:list": "node --env-file-if-exists=.env scripts/fetch-reviews.mjs --list",
+    "reviews:auth": "node --env-file-if-exists=.env scripts/gbp-auth.mjs",
+    "build:full": "npm run reviews && npm run build",
+    "preview": "python3 -m http.server 4321 -d dist"
+  },
+  "engines": { "node": ">=22" }
+}

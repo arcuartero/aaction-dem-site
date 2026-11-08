@@ -1,0 +1,60 @@
+# Construit le site et le publie sur GitHub Pages.
+# - à chaque push sur main (toute modification est en ligne en 1 à 2 minutes)
+# - chaque jour à 04:15 UTC (mise à jour des avis Google si l'API est configurée)
+# - à la demande (onglet Actions > « Publier le site » > Run workflow)
+#
+# Indexation : le site reste en « noindex » tant que la variable de dépôt SITE_INDEXABLE ne vaut pas 1
+# (Settings > Secrets and variables > Actions > Variables).
+name: Publier le site
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "15 4 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: pages
+        uses: actions/configure-pages@v5
+      - name: Avis Google (facultatif, n'échoue jamais)
+        env:
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_LOCATIONS: ${{ secrets.GBP_LOCATIONS }}
+        run: node scripts/fetch-reviews.mjs || true
+      - name: Build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}
+          FORM_ACTION: ${{ vars.FORM_ACTION }}
+        run: node build.mjs
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

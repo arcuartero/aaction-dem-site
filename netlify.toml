@@ -1,0 +1,7 @@
+[build]
+  command = "node scripts/fetch-reviews.mjs && node build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+# Les variables GBP_* se définissent dans Netlify : Site configuration > Environment variables.

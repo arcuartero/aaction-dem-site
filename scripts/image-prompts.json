@@ -1,0 +1,211 @@
+{
+  "style": "Photorealistic editorial photography, natural daylight, warm and friendly mood, shallow depth of field, shot on a 35mm lens, high detail, realistic skin and materials. Movers wear plain black t-shirts and black caps. Absolutely no text, no letters, no logos, no watermarks anywhere in the image.",
+  "images": [
+    {
+      "name": "hero-demenageur",
+      "format": "webp",
+      "size": "1024x1024",
+      "background": "transparent",
+      "alt": "Déménageur Aaction Dem portant un carton devant une camionnette Aaction Dem « Déménageurs de vies » – 30 ans d’expérience",
+      "prompt": "Waist-up portrait of a smiling, confident professional mover in his early thirties with a short beard, wearing a black cap and a plain black t-shirt, carrying a large brown cardboard moving box in both arms, slightly turned three-quarter toward the camera, isolated subject with a fully transparent background, studio lighting.",
+      "source": "site"
+    },
+    {
+      "name": "particulier",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Cartons de déménagement et plantes dans un salon prêt pour le déménagement",
+      "prompt": "Bright cosy living room of a French family house during a move: neatly stacked sealed cardboard boxes, a sofa wrapped in protective blanket, a wooden shelf with plants, two movers carefully carrying a wrapped armchair in the background.",
+      "source": "site"
+    },
+    {
+      "name": "entreprise",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Plateau de bureaux d’entreprise avant un transfert",
+      "prompt": "Modern open-space office being relocated: rows of desks, computer screens wrapped in bubble wrap, rolling crates on dollies, movers pushing a trolley of archive boxes, clean professional atmosphere.",
+      "source": "site"
+    },
+    {
+      "name": "garde-meuble",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Garde-meubles Aaction Dem : box de stockage en bois fermés dans un entrepôt sécurisé",
+      "prompt": "Clean, secure, well-lit furniture storage warehouse with tall rows of closed wooden storage containers on concrete floor, a mover with a pallet jack in the aisle, orderly and reassuring.",
+      "source": "site"
+    },
+    {
+      "name": "monte-meuble",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Monte-meuble Aaction Dem installé contre la façade d’un immeuble en Moselle",
+      "prompt": "Exterior of a typical Lorraine apartment building in yellow Jaumont stone, a truck-mounted furniture lift ladder extended up to a third-floor window, a sofa on the lift platform, a mover guiding it from the street, sunny day.",
+      "source": "site"
+    },
+    {
+      "name": "equipe-demenageurs",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "L’équipe de déménageurs Aaction Dem devant ses camions",
+      "prompt": "Group of four friendly professional movers standing confidently in front of two white moving trucks in a company yard, arms crossed or hands on hips, smiling, early morning light.",
+      "source": "site"
+    },
+    {
+      "name": "emballage-protection",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Déménageur emballant de la vaisselle fragile dans du papier de protection",
+      "prompt": "Close-up of a mover's hands carefully wrapping fine porcelain plates in packing paper and placing them into a sturdy double-wall cardboard box marked with a simple drawn arrow symbol, kitchen table setting."
+    },
+    {
+      "name": "demenagement-metz",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Camions de déménagement Les Gentlemen du Déménagement sur une place de Metz",
+      "prompt": "White moving truck parked on a cobbled street in the historic center of Metz, France, with the Gothic Saint-Etienne cathedral in yellow stone visible in the background, movers unloading boxes, golden hour.",
+      "source": "site"
+    },
+    {
+      "name": "demenagement-thionville",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Déménageur Aaction Dem portant des cartons « Déménageurs de vies » dans une rue commerçante",
+      "prompt": "Suburban street of a town in northern Moselle, France, typical Lorraine houses, a white moving truck with open back door, two movers carrying a wardrobe, green trees, soft daylight.",
+      "source": "site"
+    },
+    {
+      "name": "demenagement-luxembourg",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Déménageurs à Luxembourg-Ville devant un immeuble résidentiel",
+      "prompt": "Elegant residential street in Luxembourg City with modern apartments and the Grund valley visible behind, a white moving truck and movers carrying boxes into the building, bright day."
+    },
+    {
+      "name": "og-image",
+      "format": "jpeg",
+      "size": "1536x1024",
+      "alt": "L’équipe Aaction Dem, déménageurs en Moselle et au Luxembourg",
+      "prompt": "Wide shot of a smiling team of three movers loading a white moving truck in front of a house in Lorraine, cardboard boxes in hands, plain coral-orange sky tones, plenty of empty space on the left side.",
+      "source": "site"
+    },
+    {
+      "name": "visite-technique",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Visite technique d’un logement avec un conseiller déménagement",
+      "prompt": ""
+    },
+    {
+      "name": "bureaux-entreprise",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Responsables d’entreprise préparant le transfert de leurs bureaux",
+      "prompt": ""
+    },
+    {
+      "name": "demenagement-longwy",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "L’équipe Aaction Dem devant son camion Les Gentlemen du Déménagement, à Longwy",
+      "prompt": ""
+    },
+    {
+      "name": "demenagement-piano",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Quatre déménageurs Aaction Dem soulevant un piano droit blanc protégé",
+      "prompt": ""
+    },
+    {
+      "name": "vente-materiel",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Cartons de déménagement et matériel d’emballage en vente chez Aaction Dem",
+      "prompt": ""
+    },
+    {
+      "name": "protection-mobilier",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Meuble protégé par une couverture de déménagement",
+      "prompt": ""
+    },
+    {
+      "name": "equipe-gentlemen",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "L’équipe Aaction Dem devant un camion Les Gentlemen du Déménagement",
+      "prompt": ""
+    },
+    {
+      "name": "famille-demenagement",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Famille heureuse, bras levés, entourée de cartons Les Gentlemen du Déménagement dans son nouveau logement",
+      "prompt": ""
+    },
+    {
+      "name": "monte-meuble-rue",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Monte-meuble Aaction Dem déployé contre la façade d’un immeuble en centre-ville",
+      "prompt": ""
+    },
+    {
+      "name": "longwy-ville-haute",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Camion de déménagement dans la ville haute fortifiée de Longwy",
+      "prompt": ""
+    },
+    {
+      "name": "dechargement-camion",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Déménageur déchargeant des meubles protégés d’un camion Les Gentlemen du Déménagement",
+      "prompt": ""
+    },
+    {
+      "name": "camion-centre-ville",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Camion de déménagement et monte-meuble dans une rue du centre-ville",
+      "prompt": ""
+    },
+    {
+      "name": "cartons-gentlemen",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Déménageurs portant des cartons Les Gentlemen du Déménagement",
+      "prompt": ""
+    },
+    {
+      "name": "avis-clients",
+      "format": "webp",
+      "size": "1536x1024",
+      "alt": "Cliente souriante écrivant un avis sur son téléphone dans son nouveau logement après son déménagement",
+      "prompt": "Photorealistic landscape 3:2: a happy woman around 35 sitting on the sofa of her bright new apartment just after moving, writing a review on her smartphone, a few open moving boxes, a green plant, beige throw, warm late-afternoon window light, editorial photography, 35mm, shallow depth of field, subject on the right half, no text, no logos, phone screen not visible."
+    },
+    {
+      "name": "demenagement-knutange",
+      "format": "webp",
+      "size": "1448x1086",
+      "source": "site",
+      "alt": "Déménageur Aaction Dem chargeant un meuble protégé dans un camion « Déménageurs de vies »",
+      "prompt": ""
+    }
+  ]
+}
