@@ -23,7 +23,8 @@ PHOTOS = {
     'entreprise':  ('nsplsh_f7bd0931e7a74f48a73cd07e891ee0ca~mv2.jpg', 3/2, .5, 1536),
     'garde-meuble':             ('cd448d_1f46ea2f73d4454e812721b249f00b49~mv2.jpg', 3/2, .5, 1536),
     'monte-meuble':              ('cd448d_c790ac8d0cdf45b1bdf95ba7251c8b5a~mv2.jpeg', 3/2, .45, 1204),
-    'equipe-demenageurs':        ('cd448d_1832e4cebf454d71ad25afaaa22f31d1~mv2.jpg', 3/2, .55, 1536),
+    # Équipe devant les camions : photo fournie 2026 (t-shirts verts Aaction Dem)
+    'equipe-demenageurs':        ('equipe-camions-2026.webp', 3/2, .55, 1536),
     'visite-technique':          ('cd448d_879b48ecb40949a7b1bce39b5bee32f2~mv2.png', 3/2, .5, 1536),
     'demenagement-longwy':       ('cd448d_20144f75000a47d8b74a1f4858123e85~mv2.jpg', 3/2, .5, 1536),
     # Hero Piano : photo fournie (équipe Aaction Dem déplaçant un piano droit)
@@ -48,7 +49,7 @@ PHOTOS = {
     'bureaux-entreprise':        ('cd448d_2ace563da06e4334b3d2e603152a0c29~mv2.jpg', 3/2, .45, 1536),
 }
 # OG image (1200x630 JPEG) from the real team photo
-OG = ('cd448d_1832e4cebf454d71ad25afaaa22f31d1~mv2.jpg', .55)
+OG = ('equipe-camions-2026.webp', .55)
 
 LOGO_FILES = {
     'aaction-dem':       'cd448d_1d4944bd09014526a528e48553a6b894~mv2.png',
