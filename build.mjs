@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { site, nav, services, formules, reviews, partners, faqGeneral, pages, formulesPage } from './src/content.mjs';
+import { posts } from './src/posts.mjs';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dist = path.join(root, 'dist');
@@ -164,7 +165,7 @@ const footer = `
     <div><h2>Liens utiles</h2><ul>
       <li><a href="/particulier/">Particulier</a></li><li><a href="/services-demenagement/">Services</a></li>
       <li><a href="/formules-demenagement/">Formules</a></li><li><a href="/avis/">Avis</a></li>
-      <li><a href="/faq/">FAQ</a></li><li><a href="/contact/">Contact</a></li></ul></div>
+      <li><a href="/faq/">FAQ</a></li><li><a href="/blog/">Conseils</a></li><li><a href="/contact/">Contact</a></li></ul></div>
     <div><h2>Nos villes</h2><ul>
       <li><a href="/demenagement-metz/">Déménageur Metz</a></li><li><a href="/demenagement-thionville/">Déménageur Thionville</a></li>
       <li><a href="/demenagement-knutange/">Déménageur Knutange</a></li><li><a href="/demenagement-longwy/">Déménagement Longwy</a></li><li><a href="/demenagement-luxembourg/">Déménagement Luxembourg</a></li></ul></div>
@@ -455,7 +456,7 @@ for (const [pi, pg] of pages.entries()) {
   <div class="phero__img">${img(pg.img, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
 </div></section>
 ${stats}
-<section class="sec"><div class="wrap layout"><article class="prose">${pg.body({ figure, img })}</article>${aside(pg.slug)}</div></section>
+<section class="sec"><div class="wrap layout"><article class="prose">${pg.body({ figure, img })}${(() => { const rel = posts.filter((po) => po.related.includes(pg.slug)); return rel.length ? `<div class="readmore"><p class="readmore__t">Nos conseils</p><ul>${rel.map((po) => `<li><a href="/post/${po.slug}/">${po.h1}</a></li>`).join('')}</ul></div>` : ''; })()}</article>${aside(pg.slug)}</div></section>
 <section class="sec sec--pink" aria-labelledby="avis-p"><div class="wrap"><div class="sec__head"><h2 id="avis-p">Ils nous ont confié leur déménagement</h2><p>Avis Google de nos clients</p></div>
 <div class="rgrid rgrid--3">${pageReviews(pg, pi).map(reviewCard).join('')}</div>
 <p class="center"><a class="btn btn--outline-red" href="/avis/">Voir tous les avis</a></p></div></section>
@@ -542,6 +543,50 @@ ${quoteSection}`
 </div></section>`
   }), { priority: '0.7' });
 }
+
+// ---------------------------------------------------------------- Blog (articles repris de l'ancien site, mêmes URL /post/<slug>)
+const frLongDate = (d) => new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(d));
+const postCard = (po) => `<a class="pcard" href="/post/${po.slug}/">${img(po.img, { sizes: '(max-width: 860px) 100vw, 420px' })}<span class="pcard__cat">${po.cat}</span><h3>${po.h1}</h3><p>${po.excerpt}</p><span class="more">Lire l’article ${ic.arrow}</span></a>`;
+{
+  const p = '/blog/';
+  const trail = [{ name: 'Accueil', href: '/' }, { name: 'Conseils', href: p }];
+  await emit(p, layout({
+    path: p, title: 'Conseils déménagement : prix, Metz, Luxembourg | Aaction Dem',
+    description: 'Les conseils de nos déménageurs : prix d’un déménagement, déménagement de piano, déménager à Metz ou au Luxembourg.',
+    ld: [crumbsLd(trail), { '@type': 'Blog', '@id': abs(p + '#blog'), url: abs(p), name: 'Conseils déménagement Aaction Dem', publisher: { '@id': orgId }, blogPost: posts.map((po) => ({ '@type': 'BlogPosting', headline: po.h1, url: abs(`/post/${po.slug}/`), datePublished: po.date })) }],
+    body: `
+<section class="phero phero--green"><div class="wrap" style="padding:3.5rem 0">${crumbsHtml(trail)}<h1>Nos conseils déménagement</h1><p style="max-width:44rem">Prix, organisation, déménagement de piano, Metz ou Luxembourg : les réponses de nos équipes pour préparer votre projet.</p></div></section>
+<section class="sec sec--cream"><div class="wrap"><div class="pgrid">${posts.map(postCard).join('')}</div></div></section>
+${quoteSection}`
+  }), { priority: '0.6' });
+}
+for (const po of posts) {
+  const p = `/post/${po.slug}/`;
+  const trail = [{ name: 'Accueil', href: '/' }, { name: 'Conseils', href: '/blog/' }, { name: po.h1, href: p }];
+  const others = posts.filter((x) => x.slug !== po.slug);
+  await emit(p, layout({
+    path: p, title: po.title, description: po.description, preload: po.img, ogImage: po.img,
+    ld: [crumbsLd(trail), { '@type': 'BlogPosting', '@id': abs(p + '#article'), headline: po.h1, description: po.description, datePublished: po.date, dateModified: po.date, image: abs(imgMeta[po.img].src), author: { '@id': orgId }, publisher: { '@id': orgId }, mainEntityOfPage: abs(p), inLanguage: 'fr-FR' }],
+    body: `
+<section class="phero"><div class="wrap phero__in">
+  <div>${crumbsHtml(trail)}<p class="hero__kicker">${po.cat} · Mis à jour le ${frLongDate(po.date)}</p><h1>${po.h1}</h1><p>${po.excerpt}</p>
+  <a class="btn btn--white" href="#devis">Devis gratuit ${ic.arrow}</a></div>
+  <div class="phero__img">${img(po.img, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
+</div></section>
+<section class="sec"><div class="wrap layout"><article class="prose">${po.body}</article>${aside('')}</div></section>
+<section class="sec sec--cream" aria-labelledby="a-lire"><div class="wrap"><div class="sec__head"><h2 id="a-lire">À lire aussi</h2></div><div class="pgrid">${others.map(postCard).join('')}</div></div></section>
+<section class="sec" aria-labelledby="voir-aussi"><div class="wrap"><div class="sec__head"><h2 id="voir-aussi">Nos services liés</h2></div>${relatedHtml(po.related)}</div></section>
+${quoteSection}`
+  }), { priority: '0.6' });
+}
+
+// Anciennes URL de l'ancien site sans équivalent direct : pages de redirection (meta refresh + canonical, équivalent 301 pour Google)
+const redirectStub = async (from, to) => {
+  const file = path.join(dist, from, 'index.html');
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, withBase(`<!doctype html><html lang="fr-FR"><head><meta charset="utf-8"><title>Redirection</title><meta name="robots" content="noindex, follow"><link rel="canonical" href="${abs(to)}"><meta http-equiv="refresh" content="0; url=${to}"><script>location.replace('${BASE}${to}')</script></head><body><p><a href="${to}">Continuer vers la page</a></p></body></html>`));
+};
+for (const [from, to] of [['mentions-légales', '/mentions-legales/'], ['politique-de-confidentialité', '/politique-de-confidentialite/'], ['politique-de-cookies', '/politique-de-confidentialite/']]) await redirectStub(from, to);
 
 // ---------------------------------------------------------------- Services (hub)
 {
