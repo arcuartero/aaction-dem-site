@@ -397,7 +397,7 @@ ${stats}
 </div></section>
 ${networkHtml}
 <section class="sec sec--pink" aria-labelledby="avis"><div class="wrap">
-  <div class="sec__head"><h2 id="avis">Vos premiers mots après les cartons</h2><p>Nos clients nous recommandent sans hésiter</p>${gBadge}</div>
+  <div class="sec__head sec__head--split"><div><h2 id="avis">Vos premiers mots après les cartons</h2><p>Nos clients nous recommandent sans hésiter</p></div>${gBadge}</div>
   ${reviewsHtml}
   <p class="center"><a class="btn btn--red" href="/avis/">Voir tous les avis</a></p>
 </div></section>
