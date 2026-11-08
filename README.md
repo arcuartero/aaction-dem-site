@@ -27,10 +27,13 @@ También puedes crearlas en ChatGPT a mano con los prompts del JSON y guardarlas
 python3 -m http.server 4321 -d dist
 ```
 
-## Publicar
-Sube `dist/` a Netlify, Cloudflare Pages u otro hosting estático. En Netlify el formulario funciona tal cual (Netlify Forms).
-En otro hosting: `FORM_ACTION=https://formspree.io/f/XXXX node build.mjs`.
-Si el dominio cambia: `SITE_URL=https://www.otro-dominio.fr node build.mjs`.
+## Publicar (automático)
+- Repositorio: https://github.com/arcuartero/aaction-dem-site
+- Web pública: https://www.admastr.com/aaction-dem-site/
+- Cada `git push` a `main` lanza `.github/workflows/deploy-pages.yml`, que construye la web y la publica en GitHub Pages en 1-2 minutos. También se reconstruye cada día a las 04:15 UTC (avis Google).
+- **Indexación:** todas las páginas están en `noindex, nofollow`. Para la puesta en línea definitiva, crea la variable de repositorio `SITE_INDEXABLE = 1` (*Settings › Secrets and variables › Actions › Variables*).
+- **Formularios:** GitHub Pages no procesa formularios. Para recibir las solicitudes de presupuesto y de «rappel», crea un formulario en Formspree (u otro servicio) y pon su URL en la variable de repositorio `FORM_ACTION`. En Netlify funcionan tal cual (Netlify Forms).
+- Las cabeceras de seguridad de `dist/_headers` solo se aplican en Netlify / Cloudflare Pages.
 
 ## Reseñas de Google (automáticas y gratuitas)
 La web muestra todas las reseñas de **4 y 5 estrellas** de las fichas de Knutange y Metz, a través de la **API de Google Business Profile** (gratuita). Mientras no esté configurada, se muestran las reseñas de `src/content.mjs`.
@@ -43,8 +46,7 @@ La web muestra todas las reseñas de **4 y 5 estrellas** de las fichas de Knutan
 5. `npm run reviews:list` → copia los identificados de las dos fichas en `GBP_LOCATIONS` (formato `accounts/…/locations/…=knutange,accounts/…/locations/…=metz`).
 6. `npm run build:full` → descarga las reseñas a `src/data/reviews.json` y reconstruye la web.
 
-**En producción (Netlify):** añade las 4 variables `GBP_*` en *Site configuration › Environment variables*. `netlify.toml` ya descarga las reseñas en cada build.
-**Actualización diaria:** crea un *Build hook* en Netlify y guárdalo como secreto `NETLIFY_BUILD_HOOK` en GitHub. El workflow `.github/workflows/daily-rebuild.yml` relanza el build cada día a las 04:15 UTC.
+**En producción (GitHub Pages):** añade las 4 claves `GBP_*` como *secrets* del repositorio (*Settings › Secrets and variables › Actions*). El workflow las usa en cada build y en la reconstrucción diaria.
 
 Si la API falla, el build no se rompe: se conservan las últimas reseñas descargadas.
 
