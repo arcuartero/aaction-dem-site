@@ -330,6 +330,12 @@ const ratingBand = `<section class="gband" aria-label="Note Google et chiffres c
     <li>${bIc('<path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>')}<p><strong>Knutange,</strong>Metz et environs</p></li>
   </ul>
 </div></section>`;
+// Badge « note Google » de la section avis de l'accueil (même données que le bandeau de la page Avis)
+const gBadge = `<a class="gbadge" href="/avis/" aria-label="Note Google : ${gNote} sur 5, ${gCount} – voir tous les avis">
+  <span class="gbadge__g">${gLogo}<span>Avis Google<br>vérifiés</span></span>
+  <span class="gbadge__sep" aria-hidden="true"></span>
+  <span class="gbadge__note"><strong>${gNote}<small>/5</small></strong><span><span class="gbadge__stars" aria-hidden="true">★★★★★</span><span>${gCount}</span></span></span>
+</a>`;
 const reviewsHtml = `<div class="reviews"><button class="rnav rnav--prev" aria-label="Avis précédents">‹</button><div class="rtrack" tabindex="0" aria-label="Avis clients">${reviewData.reviews.slice(0, 9).map(reviewCard).join('')}</div><button class="rnav rnav--next" aria-label="Avis suivants">›</button></div>`;
 
 const agenciesHtml = `<section class="agencies" aria-label="Nos agences">${site.agencies.map((a, i) => `
@@ -391,7 +397,7 @@ ${stats}
 </div></section>
 ${networkHtml}
 <section class="sec sec--pink" aria-labelledby="avis"><div class="wrap">
-  <div class="sec__head"><h2 id="avis">Vos premiers mots après les cartons</h2><p>Nos clients nous recommandent sans hésiter</p>${reviewData.total ? `<p class="gnote gnote--live"><strong>${String(reviewData.average).replace('.', ',')}/5</strong> <span aria-hidden="true">★★★★★</span> sur ${reviewData.total} avis Google</p>` : logoMeta['google-note'] ? `<p class="gnote">${logoImg('google-note', 'Note Google : 4,3 sur 5', 64)}</p>` : ''}</div>
+  <div class="sec__head"><h2 id="avis">Vos premiers mots après les cartons</h2><p>Nos clients nous recommandent sans hésiter</p>${gBadge}</div>
   ${reviewsHtml}
   <p class="center"><a class="btn btn--red" href="/avis/">Voir tous les avis</a></p>
 </div></section>
