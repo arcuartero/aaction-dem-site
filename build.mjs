@@ -294,6 +294,7 @@ ${header(current ?? p)}
 <main id="contenu">${body}</main>
 ${footer}
 ${cookieDialog(lang, p)}
+<button type="button" class="ccfab" data-cc-open aria-label="${lang === 'en' ? 'Cookie settings' : 'Gestion des cookies'}" title="${lang === 'en' ? 'Cookie settings' : 'Gestion des cookies'}">${ccIcon}</button>
 <script>${js}</script>
 </body>
 </html>`;

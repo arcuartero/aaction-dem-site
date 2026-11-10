@@ -661,3 +661,10 @@ html.cc-lock{overflow:hidden}
 .linkbtn{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
 .linkbtn:hover{text-decoration:underline}
 .mapbox--on .mapbox__note,.mapbox--on .mapbox__btn{visibility:hidden}
+/* Bouton flottant permanent pour modifier le consentement */
+.ccfab{position:fixed;left:1rem;bottom:1rem;z-index:55;width:48px;height:48px;display:grid;place-items:center;padding:0;border:2px solid var(--cta);background:#fff;color:var(--cta);cursor:pointer;box-shadow:0 8px 22px -8px rgba(0,0,0,.35);transition:transform .15s,background .15s,color .15s}
+.ccfab svg{width:28px;height:28px}
+.ccfab:hover{transform:translateY(-2px) rotate(-12deg);background:var(--cta);color:#fff}
+.ccfab:focus-visible{outline:3px solid rgba(250,91,74,.45);outline-offset:2px}
+@media print{.ccfab{display:none}}
+@media (max-width:760px){.ccfab{left:.75rem;bottom:calc(3.4rem + .75rem);width:44px;height:44px}.ccfab svg{width:25px;height:25px}}
