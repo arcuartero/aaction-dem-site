@@ -56,3 +56,12 @@ Si la API falla, el build no se rompe: se conservan las últimas reseñas descar
 
 ## Datos legales
 Están en `site.legal` (`src/content.mjs`): SIRET, RCS, TVA, director de la publicación, hosting y mediador de consumo. Revísalos si cambia el hosting o el mediador.
+
+## Cookies et traceurs
+
+Bandeau central (fond flouté) : « Tout refuser », « Personnaliser », « Tout accepter ». Rien n’est chargé avant le choix ; il est conservé 6 mois (localStorage `aaction-cookies`) et modifiable via « Gestion des cookies » en pied de page.
+
+- **Google Tag Manager** n’est chargé qu’après accord « Mesure d’audience » ou « Publicité », avec Consent Mode v2 (refus par défaut) et l’événement `cookie_consent_update` (`consent_analytics`, `consent_ads`, `consent_maps`).
+- Activer à la mise en ligne : variable de dépôt `GTM_ID=GTM-PF9WCT9C` (conteneur du site actuel). Non défini = aucun traceur (préprod).
+- Dans GTM : exiger `analytics_storage` sur la balise Microsoft Clarity et `ad_storage` sur le pixel Meta (« Paramètres de consentement supplémentaires »), sinon un accord partiel déclencherait les deux.
+- Les cartes Google Maps (page Contact) ne s’affichent qu’avec l’accord « Cartes Google Maps » (ou le bouton « Afficher la carte »).

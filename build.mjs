@@ -179,7 +179,8 @@ const footer = `
 <div class="footer__bottom"><div class="wrap footer__bottom-in"><ul>
     <li><a href="/politique-de-confidentialite/">Politique de confidentialité</a></li>
     <li><a href="/mentions-legales/">Mentions légales</a></li>
-    <li><a href="/conditions-generales-de-vente/">CGV</a></li></ul>
+    <li><a href="/conditions-generales-de-vente/">CGV</a></li>
+    <li><button type="button" class="linkbtn" data-cc-open>Gestion des cookies</button></li></ul>
     <span>© ${new Date().getFullYear()} Aaction Dem – Membre du réseau Les Gentlemen du Déménagement</span></div></div>
 </footer>
 <form name="rappel" method="POST" action="${site.formAction}" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true"><input type="hidden" name="form-name" value="rappel"><input name="telephone"><input name="page"><input name="reouverture"><input name="bot-field"></form>
@@ -237,6 +238,27 @@ const quoteSection = `
 
 const band = `<section class="band"><div class="wrap band__in"><h2>Un projet de déménagement ?</h2><div style="display:flex;gap:.8rem;flex-wrap:wrap"><a class="btn btn--white" href="/contact/">Devis gratuit ${ic.arrow}</a><a class="btn btn--ghost" href="tel:${site.phone.replace(/\s/g, '')}">${ic.phone} ${site.phoneDisplay}</a></div></div></section>`;
 
+// ---------------------------------------------------------------- Bandeau cookies (rien n'est chargé avant accord)
+const ccIcon = `<svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M41.5 25.5A17.5 17.5 0 1 1 22.5 6.5a6 6 0 0 0 7 7 6 6 0 0 0 6 6 6 6 0 0 0 6 6z"/><circle cx="17" cy="20" r="1.6" fill="currentColor"/><circle cx="27" cy="29" r="1.6" fill="currentColor"/><circle cx="16" cy="31" r="1.6" fill="currentColor"/><circle cx="31" cy="38" r="1.2" fill="currentColor"/></svg>`;
+const CC = {
+  fr: { title: 'Vos cookies, votre choix', text: 'Avec votre accord, nous utilisons des cookies pour mesurer l’audience du site, afficher les cartes Google Maps et mesurer l’efficacité de nos publicités. <strong>Aucun n’est déposé tant que vous n’avez pas choisi.</strong> Vous pouvez changer d’avis à tout moment via « Gestion des cookies » en bas de page.',
+    deny: 'Tout refuser', custom: 'Personnaliser', save: 'Enregistrer mes choix', accept: 'Tout accepter', more: 'En savoir plus', on: 'Toujours actifs', policy: '/politique-de-confidentialite/#cookies', prefs: 'Vos préférences',
+    cats: [['necessary', 'Nécessaires', 'Mémoriser vos choix de cookies. Ces informations restent dans votre navigateur.'], ['analytics', 'Mesure d’audience', 'Microsoft Clarity : comprendre comment le site est utilisé pour l’améliorer.'], ['ads', 'Publicité', 'Pixel Meta (Facebook, Instagram) : mesurer l’efficacité de nos publicités.'], ['maps', 'Cartes Google Maps', 'Afficher les cartes de nos agences (Google peut déposer ses propres cookies).']] },
+  en: { title: 'Your cookies, your choice', text: 'With your consent, we use cookies to measure site traffic, display Google Maps and measure the effectiveness of our ads. <strong>Nothing is stored until you choose.</strong> You can change your mind at any time via “Gestion des cookies” at the bottom of the page.',
+    deny: 'Reject all', custom: 'Customise', save: 'Save my choices', accept: 'Accept all', more: 'Learn more (in French)', on: 'Always active', policy: '/politique-de-confidentialite/#cookies', prefs: 'Your preferences',
+    cats: [['necessary', 'Strictly necessary', 'Remember your cookie choices. This stays in your browser.'], ['analytics', 'Audience measurement', 'Microsoft Clarity: understand how the site is used in order to improve it.'], ['ads', 'Advertising', 'Meta pixel (Facebook, Instagram): measure the effectiveness of our ads.'], ['maps', 'Google Maps', 'Display maps of our offices (Google may set its own cookies).']] },
+};
+const cookieDialog = (lang, p) => { const t = CC[lang === 'en' ? 'en' : 'fr']; return `<dialog class="cc" id="cc" aria-labelledby="cc-title" aria-describedby="cc-desc"${/politique-de-confidentialite|mentions-legales/.test(p) ? ' data-noauto' : ''}>
+<div class="cc__icon">${ccIcon}</div>
+<h2 id="cc-title">${t.title}</h2>
+<p id="cc-desc">${t.text}</p>
+<fieldset class="cc__prefs" hidden><legend class="sr-only">${t.prefs}</legend>${t.cats.map(([k, n, d]) => `
+  <div class="cc__cat"><div><strong id="cc-${k}">${n}</strong><p>${d}</p></div>${k === 'necessary' ? `<span class="cc__on">${t.on}</span>` : `<label class="cc__sw"><input type="checkbox" name="${k}" aria-labelledby="cc-${k}"><span aria-hidden="true"></span></label>`}</div>`).join('')}
+</fieldset>
+<div class="cc__btns"><button type="button" class="btn cc__b" data-cc="deny">${t.deny}</button><button type="button" class="btn cc__b" data-cc="custom" data-save="${t.save}">${t.custom}</button><button type="button" class="btn btn--red" data-cc="accept">${t.accept}</button></div>
+<p class="cc__more"><a href="${t.policy}">${t.more}</a></p>
+</dialog>`; };
+
 // ---------------------------------------------------------------- Layout
 const layout = ({ path: p, title, description, body, ld = [], ogImage = 'og-image', robots = 'index, follow, max-image-preview:large', preload, current, lang = 'fr', alt }) => {
   const og = imgMeta[ogImage];
@@ -267,10 +289,11 @@ ${preload ? `<link rel="preload" as="image" href="${imgMeta[preload].src}" fetch
 <style>${css}</style>
 <script type="application/ld+json">${JSON.stringify(graph)}</script>
 </head>
-<body>
+<body${site.gtmId ? ` data-gtm="${esc(site.gtmId)}"` : ''}>
 ${header(current ?? p)}
 <main id="contenu">${body}</main>
 ${footer}
+${cookieDialog(lang, p)}
 <script>${js}</script>
 </body>
 </html>`;
@@ -768,7 +791,7 @@ ${band}`
 </div></div></section>
 <section class="sec sec--cream" aria-labelledby="carte"><div class="wrap"><div class="sec__head"><h2 id="carte">Nos agences sur la carte</h2><p>Deux agences en Moselle, à une trentaine de kilomètres l’une de l’autre, pour couvrir le nord mosellan, l’agglomération messine et le Luxembourg.</p></div>
 <div class="maps">${site.agencies.map((a) => `
-  <article class="mapcard"><div class="mapbox mapbox--on"><iframe src="${a.maps}&amp;output=embed" title="Carte de l’agence Aaction Dem de ${a.city}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+  <article class="mapcard"><div class="mapbox" data-consent="maps"><iframe data-src="${a.maps}&amp;output=embed" title="Carte de l’agence Aaction Dem de ${a.city}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe><p class="mapbox__note">Google Maps dépose ses propres cookies : la carte s’affiche si vous l’acceptez.</p><button type="button" class="mapbox__btn" data-cc-grant="maps">Afficher la carte</button></div>
     <div class="mapcard__txt"><h3>Agence de ${a.city}${a.id === site.agencies[0].id ? ' <span>(siège)</span>' : ''}</h3><address>${a.street}<br>${a.zip} ${a.city}</address><p>${a.hoursText}</p>
     <p><a href="${a.maps}" target="_blank" rel="noopener">Itinéraire sur Google Maps ↗</a> · <a href="${a.id === 'metz' ? '/demenagement-metz/' : '/demenagement-knutange/'}">Déménageur ${a.city}</a></p></div></article>`).join('')}
 </div></div></section>
@@ -862,7 +885,13 @@ await simple('/politique-de-confidentialite/', 'Politique de confidentialité | 
 <p>Les données collectées via le formulaire de devis (nom, e-mail, téléphone, adresses, date) sont utilisées uniquement par ${site.name} pour traiter votre demande et établir un devis. Elles ne sont ni vendues ni cédées à des tiers.</p>
 <h2>Durée de conservation</h2><p>3 ans à compter du dernier contact pour les prospects ; durée légale pour les clients.</p>
 <h2>Vos droits</h2><p>Conformément au RGPD, vous disposez d’un droit d’accès, de rectification, d’effacement, d’opposition et de portabilité. Écrivez-nous à <a href="mailto:${site.email}">${site.email}</a>. Vous pouvez également saisir la CNIL.</p>
-<h2>Cookies</h2><p>Ce site n’utilise aucun cookie publicitaire ni outil de mesure d’audience. Les polices sont hébergées localement.</p><p>La page <a href="/contact/">Contact</a> intègre des cartes Google Maps. Leur affichage est susceptible de transmettre des données de navigation à Google (adresse IP, informations techniques) et de déposer des cookies, selon la <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">politique de confidentialité de Google</a>.</p>`, { robots: 'noindex, follow', sitemap: false });
+<h2 id="cookies">Cookies</h2><p>Lors de votre première visite, un bandeau vous permet d’accepter, de refuser ou de choisir catégorie par catégorie. <strong>Aucun cookie non essentiel n’est déposé avant votre choix</strong>, et refuser est aussi simple qu’accepter. Votre choix est conservé 6 mois dans votre navigateur, puis vous est redemandé.</p>
+<ul><li><strong>Nécessaires</strong> – mémorisation de votre choix (stockage local du navigateur). Toujours actifs.</li>
+<li><strong>Mesure d’audience</strong> – Microsoft Clarity, pour comprendre l’usage du site et l’améliorer (<a href="https://privacy.microsoft.com/fr-fr/privacystatement" rel="noopener" target="_blank">politique de Microsoft</a>).</li>
+<li><strong>Publicité</strong> – pixel Meta (Facebook, Instagram), pour mesurer l’efficacité de nos publicités (<a href="https://www.facebook.com/privacy/policy/" rel="noopener" target="_blank">politique de Meta</a>).</li>
+<li><strong>Cartes Google Maps</strong> – affichage des cartes de nos agences sur la page <a href="/contact/">Contact</a>. Google peut déposer ses propres cookies (<a href="https://policies.google.com/privacy" rel="noopener" target="_blank">politique de Google</a>).</li></ul>
+<p>Ces outils sont déclenchés via Google Tag Manager, uniquement après votre accord. Les polices sont hébergées sur notre site.</p>
+<p><button type="button" class="btn btn--outline-red" data-cc-open>Modifier mes choix de cookies</button></p>`, { robots: 'noindex, follow', sitemap: false });
 
 // ---------------------------------------------------------------- Fichiers techniques
 await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
@@ -878,7 +907,8 @@ await copyFile(path.join(root, 'images/icons/favicon.ico'), path.join(dist, 'fav
 await writeFile(path.join(dist, 'logo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80"><text x="0" y="44" font-family="Impact,Arial Black,sans-serif" font-size="44" fill="#fa5b4a">AACTION</text><text x="2" y="72" font-family="Arial,sans-serif" font-weight="700" letter-spacing="8" font-size="22" fill="#1d1d1f">DEM</text></svg>`);
 await writeFile(path.join(dist, 'site.webmanifest'), JSON.stringify({ name: 'Aaction Dem – Déménageur Moselle & Luxembourg', short_name: 'Aaction Dem', lang: 'fr-FR', start_url: '/', display: 'standalone', background_color: '#ffffff', theme_color: '#fa5b4a', icons: [{ src: '/images/icons/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/images/icons/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: '/images/icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }] }, null, 2).replace(/"\/(?!\/)/g, `"${BASE}/`));
 // En-têtes de cache et de sécurité (Netlify / Cloudflare Pages). CSS/JS inline -> 'unsafe-inline' ; carte Google chargée au clic -> frame-src
-const csp = ["default-src 'self'", "script-src 'self' 'unsafe-inline'", "style-src 'self' 'unsafe-inline'", "img-src 'self' data:", "font-src 'self'", "connect-src 'self'", "frame-src https://www.google.com https://maps.google.com", `form-action 'self'${/^https?:/.test(site.formAction) ? ' ' + new URL(site.formAction).origin : ''}`, "frame-ancestors 'none'", "base-uri 'self'", "object-src 'none'", "upgrade-insecure-requests"].join('; ');
+const tagHosts = site.gtmId ? ' https://www.googletagmanager.com https://*.clarity.ms https://connect.facebook.net' : '';
+const csp = ["default-src 'self'", `script-src 'self' 'unsafe-inline'${tagHosts}`, "style-src 'self' 'unsafe-inline'", `img-src 'self' data:${site.gtmId ? ' https:' : ''}`, "font-src 'self'", `connect-src 'self'${site.gtmId ? ' https:' : ''}`, `frame-src https://www.google.com https://maps.google.com${site.gtmId ? ' https://www.googletagmanager.com https://www.facebook.com' : ''}`, `form-action 'self'${/^https?:/.test(site.formAction) ? ' ' + new URL(site.formAction).origin : ''}`, "frame-ancestors 'none'", "base-uri 'self'", "object-src 'none'", "upgrade-insecure-requests"].join('; ');
 // En-têtes de cache (Netlify / Cloudflare Pages)
 await writeFile(path.join(dist, '_headers'), `/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/images/*\n  Cache-Control: public, max-age=31536000, immutable\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Strict-Transport-Security: max-age=31536000; includeSubDomains\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()\n  Cross-Origin-Opener-Policy: same-origin\n  Content-Security-Policy: ${csp}\n`);
 

@@ -44,6 +44,7 @@ jobs:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
           SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}
           FORM_ACTION: ${{ vars.FORM_ACTION }}
+          GTM_ID: ${{ vars.GTM_ID }}
         run: node build.mjs
       - uses: actions/upload-pages-artifact@v3
         with:

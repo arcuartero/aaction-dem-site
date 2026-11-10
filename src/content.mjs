@@ -18,6 +18,9 @@ export const site = {
   email: 'contact@aaction-dem.com',
   // Endpoint du formulaire. Netlify Forms par défaut ; remplacez par Formspree, Getform, votre CRM…
   formAction: process.env.FORM_ACTION || '/merci/',
+  // Google Tag Manager (pixel Meta, Microsoft Clarity…) : chargé UNIQUEMENT après accord dans le bandeau cookies.
+  // Site actuel : GTM-PF9WCT9C. Vide = aucun traceur (préprod).
+  gtmId: process.env.GTM_ID || '',
   sameAs: [
     'https://www.instagram.com/aactiondem/',
     'https://www.facebook.com/profile.php?id=100089757685866',

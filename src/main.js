@@ -195,3 +195,74 @@ document.querySelectorAll('form.form[data-next]').forEach((f) => {
     }
   });
 });
+
+// Consentement cookies : rien (GTM → pixel Meta, Clarity ; cartes Google) n'est chargé avant le choix du visiteur.
+(() => {
+  const dlg = document.getElementById('cc'); if (!dlg) return;
+  const KEY = 'aaction-cookies', MAX = 182 * 864e5;   // choix conservé 6 mois
+  const CATS = ['analytics', 'ads', 'maps'];
+  const read = () => { try { const c = JSON.parse(localStorage.getItem(KEY)); return c && Date.now() - c.t < MAX ? c : null; } catch { return null; } };
+  const write = (c) => { try { localStorage.setItem(KEY, JSON.stringify(c)); } catch {} };
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', wait_for_update: 500 });
+  let gtmLoaded = false;
+  const apply = (c) => {
+    gtag('consent', 'update', { analytics_storage: c.analytics ? 'granted' : 'denied', ad_storage: c.ads ? 'granted' : 'denied', ad_user_data: c.ads ? 'granted' : 'denied', ad_personalization: c.ads ? 'granted' : 'denied' });
+    dataLayer.push({ event: 'cookie_consent_update', consent_analytics: !!c.analytics, consent_ads: !!c.ads, consent_maps: !!c.maps });
+    const id = document.body.dataset.gtm;
+    if (id && !gtmLoaded && (c.analytics || c.ads)) {
+      gtmLoaded = true;
+      dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+      const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(id); document.head.append(s);
+    }
+    document.querySelectorAll('[data-consent="maps"]').forEach((box) => {
+      const f = box.querySelector('iframe');
+      if (c.maps && f && !f.src) { f.src = f.dataset.src; f.hidden = false; box.classList.add('mapbox--on'); }
+    });
+  };
+  // Retrait d'un accord : on efface les cookies connus des traceurs puis on recharge pour arrêter les scripts.
+  const purge = () => {
+    const host = location.hostname.replace(/^www\./, '');
+    document.cookie.split(';').map((x) => x.split('=')[0].trim()).filter((n) => /^(_ga|_gid|_gcl|_fbp|_fbc|_clck|_clsk|CLID|MUID|_uet)/.test(n)).forEach((n) => {
+      ['', '; domain=' + host, '; domain=.' + host].forEach((d) => { document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d; });
+    });
+  };
+  const prefs = dlg.querySelector('.cc__prefs'), custom = dlg.querySelector('[data-cc="custom"]'), customTxt = custom.textContent;
+  const boxes = () => prefs.querySelectorAll('input[type=checkbox]');
+  let current = read();
+  const save = (c) => {
+    const before = current;
+    current = Object.assign({ v: 1, t: Date.now() }, c);
+    write(current);
+    if (dlg.open) dlg.close();
+    document.documentElement.classList.remove('cc-lock');
+    if (before && CATS.some((k) => before[k] && !current[k])) { purge(); location.reload(); return; }
+    apply(current);
+  };
+  const open = () => {
+    prefs.hidden = true; custom.textContent = customTxt; custom.dataset.cc = 'custom';
+    boxes().forEach((b) => { b.checked = !!(current && current[b.name]); });
+    document.documentElement.classList.add('cc-lock');
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    dlg.querySelector('[data-cc="accept"]').focus();
+  };
+  const all = (v) => Object.fromEntries(CATS.map((k) => [k, v]));
+  dlg.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cc]'); if (!b) return;
+    const a = b.dataset.cc;
+    if (a === 'accept') save(all(true));
+    else if (a === 'deny') save(all(false));
+    else if (a === 'custom') { prefs.hidden = false; b.textContent = b.dataset.save; b.dataset.cc = 'save'; prefs.querySelector('input').focus(); }
+    else if (a === 'save') save(Object.fromEntries([...boxes()].map((x) => [x.name, x.checked])));
+  });
+  // Échap : ferme seulement si un choix existe déjà (sinon le choix reste à faire)
+  dlg.addEventListener('cancel', (e) => { if (!current) e.preventDefault(); else document.documentElement.classList.remove('cc-lock'); });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-cc-open]')) { e.preventDefault(); open(); }
+    const g = e.target.closest('[data-cc-grant]');
+    if (g) save(Object.assign(all(false), current || {}, { [g.dataset.ccGrant]: true }));
+  });
+  if (current) apply(current);
+  else if (!dlg.hasAttribute('data-noauto')) open();
+})();
