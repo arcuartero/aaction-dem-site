@@ -27,6 +27,13 @@ También puedes crearlas en ChatGPT a mano con los prompts del JSON y guardarlas
 python3 -m http.server 4321 -d dist
 ```
 
+## URLs (idénticas a Wix)
+
+- Todas las páginas se publican **en la misma URL que en Wix**, sin barra final: `/demenagement-metz`, `/post/prix-demenagement-piano`, `/mentions-l%C3%A9gales`… Así ninguna URL cambia al migrar y Google no tiene que seguir ninguna redirección.
+- Cada página se genera como `pagina.html`; GitHub Pages y Netlify la sirven sin extensión.
+- URLs antiguas redirigidas (tabla `OLD_URLS` en `build.mjs`): `/accueil` → `/`, `/demenagement-metz-thionville` → `/demenagement-metz`, `/vente-de-materiel` → `/vente-materiel-demenagement`. En Netlify, `dist/_redirects` da 301 reales; en GitHub Pages lo hace una página de redirección.
+- Una URL con barra final (`/demenagement-metz/`) cae en la 404, que redirige a la versión sin barra.
+
 ## Publicar (automático)
 - Repositorio: https://github.com/arcuartero/aaction-dem-site
 - Web pública: https://www.admastr.com/aaction-dem-site/

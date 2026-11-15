@@ -16,13 +16,21 @@ const js = (await readFile(path.join(root, 'src/main.js'), 'utf8'));
 const imgCfg = JSON.parse(await readFile(path.join(root, 'scripts/image-prompts.json'), 'utf8'));
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const abs = (p) => site.url.replace(/\/$/, '') + p;
+// URL publiques IDENTIQUES à celles de l'ancien site Wix (aucune URL ne change à la migration) :
+// pas de barre finale (/demenagement-metz, /post/prix-demenagement-piano) et pages légales accentuées comme sur Wix.
+// Dans le code, les chemins s'écrivent avec barre finale ('/demenagement-metz/') ; pub() donne l'URL publiée.
+const WIX_SLUGS = { '/mentions-legales/': '/mentions-légales', '/politique-de-confidentialite/': '/politique-de-confidentialité' };
+const pub = (p) => p === '/' || p.endsWith('.html') ? p : WIX_SLUGS[p] ?? p.replace(/\/$/, '');
+const siteRe = site.url.replace(/\/$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const urlRe = new RegExp(`(^|["'(\\s,=])((?:${siteRe})?)(\\/(?:[\\w\\u00C0-\\u024F-]+\\/)+)(?=[#?"'\\s<),]|$)`, 'g');
+const wixUrls = (html) => html.replace(urlRe, (m, pre, host, p) => pre + host + encodeURI(pub(p))); // accents encodés comme sur Wix (mentions-l%C3%A9gales)
 // Sous-dossier de publication (ex. GitHub Pages : BASE_PATH=/aaction-dem-site). Vide = racine du domaine.
 const BASE = (process.env.BASE_PATH || '').replace(/\/+$/, '');
 const withBase = (html) => !BASE ? html : html
   .replace(/(\s(?:href|src|action|poster)=")\/(?!\/)/g, `$1${BASE}/`)
   .replace(/(\ssrcset=")([^"]*)"/g, (m, a, v) => a + v.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`) + '"')
   .replace(/url\((["']?)\/(?!\/)/g, `url($1${BASE}/`)
-  .replace(/'\/contact\/#devis'/g, `'${BASE}/contact/#devis'`);
+  .replace(/'\/contact#devis'/g, `'${BASE}/contact#devis'`);
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(path.join(dist, 'images'), { recursive: true });
@@ -179,6 +187,7 @@ const footer = `
 <div class="footer__bottom"><div class="wrap footer__bottom-in"><ul>
     <li><a href="/politique-de-confidentialite/">Politique de confidentialité</a></li>
     <li><a href="/mentions-legales/">Mentions légales</a></li>
+    <li><a href="/politique-de-cookies/">Politique de cookies</a></li>
     <li><a href="/conditions-generales-de-vente/">CGV</a></li>
     <li><button type="button" class="linkbtn" data-cc-open>Gestion des cookies</button></li></ul>
     <span>© ${new Date().getFullYear()} Aaction Dem – Membre du réseau Les Gentlemen du Déménagement</span></div></div>
@@ -242,13 +251,13 @@ const band = `<section class="band"><div class="wrap band__in"><h2>Un projet de 
 const ccIcon = `<svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M41.5 25.5A17.5 17.5 0 1 1 22.5 6.5a6 6 0 0 0 7 7 6 6 0 0 0 6 6 6 6 0 0 0 6 6z"/><circle cx="17" cy="20" r="1.6" fill="currentColor"/><circle cx="27" cy="29" r="1.6" fill="currentColor"/><circle cx="16" cy="31" r="1.6" fill="currentColor"/><circle cx="31" cy="38" r="1.2" fill="currentColor"/></svg>`;
 const CC = {
   fr: { title: 'Vos cookies, votre choix', text: 'Avec votre accord, nous utilisons des cookies pour mesurer l’audience du site, afficher les cartes Google Maps et mesurer l’efficacité de nos publicités. <strong>Aucun n’est déposé tant que vous n’avez pas choisi.</strong> Vous pouvez changer d’avis à tout moment via « Gestion des cookies » en bas de page.',
-    deny: 'Tout refuser', custom: 'Personnaliser', save: 'Enregistrer mes choix', accept: 'Tout accepter', more: 'En savoir plus', on: 'Toujours actifs', policy: '/politique-de-confidentialite/#cookies', prefs: 'Vos préférences',
+    deny: 'Tout refuser', custom: 'Personnaliser', save: 'Enregistrer mes choix', accept: 'Tout accepter', more: 'En savoir plus', on: 'Toujours actifs', policy: '/politique-de-cookies/', prefs: 'Vos préférences',
     cats: [['necessary', 'Nécessaires', 'Mémoriser vos choix de cookies. Ces informations restent dans votre navigateur.'], ['analytics', 'Mesure d’audience', 'Microsoft Clarity : comprendre comment le site est utilisé pour l’améliorer.'], ['ads', 'Publicité', 'Pixel Meta (Facebook, Instagram) : mesurer l’efficacité de nos publicités.'], ['maps', 'Cartes Google Maps', 'Afficher les cartes de nos agences (Google peut déposer ses propres cookies).']] },
   en: { title: 'Your cookies, your choice', text: 'With your consent, we use cookies to measure site traffic, display Google Maps and measure the effectiveness of our ads. <strong>Nothing is stored until you choose.</strong> You can change your mind at any time via “Gestion des cookies” at the bottom of the page.',
-    deny: 'Reject all', custom: 'Customise', save: 'Save my choices', accept: 'Accept all', more: 'Learn more (in French)', on: 'Always active', policy: '/politique-de-confidentialite/#cookies', prefs: 'Your preferences',
+    deny: 'Reject all', custom: 'Customise', save: 'Save my choices', accept: 'Accept all', more: 'Learn more (in French)', on: 'Always active', policy: '/politique-de-cookies/', prefs: 'Your preferences',
     cats: [['necessary', 'Strictly necessary', 'Remember your cookie choices. This stays in your browser.'], ['analytics', 'Audience measurement', 'Microsoft Clarity: understand how the site is used in order to improve it.'], ['ads', 'Advertising', 'Meta pixel (Facebook, Instagram): measure the effectiveness of our ads.'], ['maps', 'Google Maps', 'Display maps of our offices (Google may set its own cookies).']] },
 };
-const cookieDialog = (lang, p) => { const t = CC[lang === 'en' ? 'en' : 'fr']; return `<dialog class="cc" id="cc" aria-labelledby="cc-title" aria-describedby="cc-desc"${/politique-de-confidentialite|mentions-legales/.test(p) ? ' data-noauto' : ''}>
+const cookieDialog = (lang, p) => { const t = CC[lang === 'en' ? 'en' : 'fr']; return `<dialog class="cc" id="cc" aria-labelledby="cc-title" aria-describedby="cc-desc"${/politique-de-|mentions-legales/.test(p) ? ' data-noauto' : ''}>
 <div class="cc__icon">${ccIcon}</div>
 <h2 id="cc-title">${t.title}</h2>
 <p id="cc-desc">${t.text}</p>
@@ -311,9 +320,11 @@ const versionAssets = async (html) => {
   return urls.reduce((h, u) => assetHash[u] ? h.split(u).join(`${u}?v=${assetHash[u]}`) : h, html);
 };
 const emit = async (p, html, { priority = '0.7', sitemap = true } = {}) => {
-  const file = p === '/404.html' ? path.join(dist, '404.html') : path.join(dist, p, 'index.html');
+  // /demenagement-metz -> demenagement-metz.html (servi sans extension ni barre finale par GitHub Pages et Netlify)
+  const u = pub(p);
+  const file = path.join(dist, u === '/' ? 'index.html' : u.endsWith('.html') ? u : u + '.html');
   await mkdir(path.dirname(file), { recursive: true });
-  await writeFile(file, withBase(await versionAssets(html)));
+  await writeFile(file, withBase(wixUrls(await versionAssets(html))));
   if (sitemap) outputs.push({ p, priority });
 };
 const pageBySlug = Object.fromEntries(pages.map((pg) => [pg.slug, pg]));
@@ -605,12 +616,18 @@ ${quoteSection}`
 }
 
 // Anciennes URL de l'ancien site sans équivalent direct : pages de redirection (meta refresh + canonical, équivalent 301 pour Google)
-const redirectStub = async (from, to) => {
-  const file = path.join(dist, from, 'index.html');
-  await mkdir(path.dirname(file), { recursive: true });
-  await writeFile(file, withBase(`<!doctype html><html lang="fr-FR"><head><meta charset="utf-8"><title>Redirection</title><meta name="robots" content="noindex, follow"><link rel="canonical" href="${abs(to)}"><meta http-equiv="refresh" content="0; url=${BASE}${to}"><script>location.replace('${BASE}${to}')</script></head><body><p><a href="${to}">Continuer vers la page</a></p></body></html>`));
-};
-for (const [from, to] of [['mentions-légales', '/mentions-legales/'], ['politique-de-confidentialité', '/politique-de-confidentialite/'], ['politique-de-cookies', '/politique-de-confidentialite/']]) await redirectStub(from, to);
+// En production (Netlify), _redirects envoie de vraies 301 ; sur GitHub Pages, ces pages prennent le relais.
+const OLD_URLS = [
+  ['/accueil', '/'], // doublon de l'accueil sur Wix
+  ['/demenagement-metz-thionville', '/demenagement-metz'], // déjà redirigée en 301 par Wix
+  ['/vente-de-materiel', '/vente-materiel-demenagement'], // ancienne page (archive web)
+  ['/mentions-legales', '/mentions-légales'], // URL sans accent de la préversion
+  ['/politique-de-confidentialite', '/politique-de-confidentialité'],
+];
+for (const [from, raw] of OLD_URLS) {
+  const to = encodeURI(raw);
+  await writeFile(path.join(dist, from + '.html'), `<!doctype html><html lang="fr-FR"><head><meta charset="utf-8"><title>Redirection</title><meta name="robots" content="noindex, follow"><link rel="canonical" href="${abs(to)}"><meta http-equiv="refresh" content="0; url=${BASE}${to}"><script>location.replace('${BASE}${to}'+location.search+location.hash)</script></head><body><p><a href="${BASE}${to}">Continuer vers la page</a></p></body></html>`);
+}
 
 // ---------------------------------------------------------------- Services (hub)
 {
@@ -856,7 +873,8 @@ ${band}`
 const simple = (p, title, h1, html, opts = {}) => emit(p, layout({ path: p, title, description: opts.description || title, robots: opts.robots || 'index, follow', body: `<section class="phero phero--green"><div class="wrap" style="padding:3rem 0"><h1>${h1}</h1></div></section><section class="sec"><div class="wrap prose">${html}</div></section>` }), opts);
 
 await simple('/merci/', 'Merci pour votre demande | Aaction Dem', 'Merci !', `<p>Votre demande de devis a bien été envoyée. Un conseiller Aaction Dem vous recontacte sous 24 h ouvrées.</p><p><a href="/">Retour à l’accueil</a></p>`, { robots: 'noindex, follow', sitemap: false });
-await simple('/404.html', 'Page introuvable | Aaction Dem', 'Oups, ce carton est vide', `<p>La page que vous cherchez n’existe pas ou a été déplacée.</p><ul><li><a href="/">Accueil</a></li><li><a href="/services-demenagement/">Nos services</a></li><li><a href="/contact/">Devis gratuit</a></li></ul>`, { robots: 'noindex, follow', sitemap: false });
+await simple('/404.html', 'Page introuvable | Aaction Dem', 'Oups, ce carton est vide', `<p>La page que vous cherchez n’existe pas ou a été déplacée.</p><ul><li><a href="/">Accueil</a></li><li><a href="/services-demenagement/">Nos services</a></li><li><a href="/contact/">Devis gratuit</a></li></ul>
+<script>(function(){var p=location.pathname;if(p.length>1&&p.slice(-1)==='/')location.replace(p.replace(/\/+$/,'')+location.search+location.hash)})()</script>`, { robots: 'noindex, follow', sitemap: false });
 const med = site.legal.mediator;
 const mediationHtml = `<p>Conformément aux articles L.611-1 et suivants du Code de la consommation, tout client consommateur peut, en cas de litige avec ${site.name} non résolu par une réclamation écrite préalable auprès de nos services, recourir gratuitement à un médiateur de la consommation :</p>
 <p><strong>${med.name}</strong><br>${med.address}<br>Site : <a href="${med.url}" rel="noopener" target="_blank">${med.url.replace('https://', '')}</a> – E-mail : <a href="mailto:${med.email}">${med.email}</a></p>`;
@@ -867,7 +885,7 @@ await simple('/mentions-legales/', 'Mentions légales | Aaction Dem', 'Mentions 
 <h2>Médiation de la consommation</h2>${mediationHtml}
 <h2>Conditions générales de vente</h2><p>Nos prestations sont régies par nos <a href="/conditions-generales-de-vente/">conditions générales de vente</a>.</p>
 <h2>Propriété intellectuelle</h2><p>L’ensemble des contenus de ce site (textes, photographies, logos, illustrations) est la propriété de ${site.legalName} ou de ses partenaires. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable est interdite. Les marques et logos des partenaires cités restent la propriété de leurs titulaires.</p>
-<h2>Données personnelles</h2><p>Voir notre <a href="/politique-de-confidentialite/">politique de confidentialité</a>.</p>`, { robots: 'noindex, follow', sitemap: false });
+<h2>Données personnelles et cookies</h2><p>Voir notre <a href="/politique-de-confidentialite/">politique de confidentialité</a> et notre <a href="/politique-de-cookies/">politique de cookies</a>.</p>`, { priority: '0.2' });
 await simple('/conditions-generales-de-vente/', 'Conditions générales de vente | Aaction Dem', 'Conditions générales de vente', `
 <p>Les présentes conditions générales de vente (CGV) s’appliquent aux prestations de déménagement réalisées par <strong>${site.legalName}</strong> (${site.legal.rcs}), membre du réseau Les Gentlemen du Déménagement. Elles sont complétées par les conditions particulières figurant sur le devis accepté par le client ; en cas de contradiction, les conditions particulières prévalent.</p>
 <h2>1. Devis et informations à fournir</h2><p>Chaque déménagement fait l’objet d’un devis gratuit et détaillé. Le client communique toutes les informations utiles à la bonne exécution de la prestation, au chargement comme à la livraison : accès, étages, stationnement, travaux, objets volumineux ou soumis à une réglementation particulière (alcools, armes…). Des informations manquantes ou inexactes peuvent entraîner des suppléments, dont le client est informé à l’avance.</p>
@@ -886,21 +904,24 @@ await simple('/politique-de-confidentialite/', 'Politique de confidentialité | 
 <p>Les données collectées via le formulaire de devis (nom, e-mail, téléphone, adresses, date) sont utilisées uniquement par ${site.name} pour traiter votre demande et établir un devis. Elles ne sont ni vendues ni cédées à des tiers.</p>
 <h2>Durée de conservation</h2><p>3 ans à compter du dernier contact pour les prospects ; durée légale pour les clients.</p>
 <h2>Vos droits</h2><p>Conformément au RGPD, vous disposez d’un droit d’accès, de rectification, d’effacement, d’opposition et de portabilité. Écrivez-nous à <a href="mailto:${site.email}">${site.email}</a>. Vous pouvez également saisir la CNIL.</p>
-<h2 id="cookies">Cookies</h2><p>Lors de votre première visite, un bandeau vous permet d’accepter, de refuser ou de choisir catégorie par catégorie. <strong>Aucun cookie non essentiel n’est déposé avant votre choix</strong>, et refuser est aussi simple qu’accepter. Votre choix est conservé 6 mois dans votre navigateur, puis vous est redemandé.</p>
+<h2 id="cookies">Cookies</h2><p>Les cookies et traceurs utilisés sur ce site, et la façon de modifier vos choix, sont détaillés dans notre <a href="/politique-de-cookies/">politique de cookies</a>.</p>`, { priority: '0.2' });
+await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Politique de cookies', `
+<h2>Votre choix</h2><p>Lors de votre première visite, un bandeau vous permet d’accepter, de refuser ou de choisir catégorie par catégorie. <strong>Aucun cookie non essentiel n’est déposé avant votre choix</strong>, et refuser est aussi simple qu’accepter. Votre choix est conservé 6 mois dans votre navigateur, puis vous est redemandé.</p>
 <ul><li><strong>Nécessaires</strong> – mémorisation de votre choix (stockage local du navigateur). Toujours actifs.</li>
 <li><strong>Mesure d’audience</strong> – Microsoft Clarity, pour comprendre l’usage du site et l’améliorer (<a href="https://privacy.microsoft.com/fr-fr/privacystatement" rel="noopener" target="_blank">politique de Microsoft</a>).</li>
 <li><strong>Publicité</strong> – pixel Meta (Facebook, Instagram), pour mesurer l’efficacité de nos publicités (<a href="https://www.facebook.com/privacy/policy/" rel="noopener" target="_blank">politique de Meta</a>).</li>
 <li><strong>Cartes Google Maps</strong> – affichage des cartes de nos agences sur la page <a href="/contact/">Contact</a>. Google peut déposer ses propres cookies (<a href="https://policies.google.com/privacy" rel="noopener" target="_blank">politique de Google</a>).</li></ul>
 <p>Ces outils sont déclenchés via Google Tag Manager, uniquement après votre accord. Les polices sont hébergées sur notre site.</p>
-<p><button type="button" class="btn btn--outline-red" data-cc-open>Modifier mes choix de cookies</button></p>`, { robots: 'noindex, follow', sitemap: false });
+<p><button type="button" class="btn btn--outline-red" data-cc-open>Modifier mes choix de cookies</button></p>
+<p>Pour en savoir plus sur vos données personnelles, consultez notre <a href="/politique-de-confidentialite/">politique de confidentialité</a>.</p>`, { description: 'Cookies et traceurs utilisés sur le site Aaction Dem (mesure d’audience, publicité, Google Maps) et comment modifier vos choix à tout moment.', priority: '0.2' });
 
 // ---------------------------------------------------------------- Fichiers techniques
 await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${outputs.map((o) => `  <url><loc>${abs(o.p)}</loc><lastmod>${today}</lastmod><priority>${o.priority}</priority></url>`).join('\n')}
+${outputs.map((o) => `  <url><loc>${abs(encodeURI(pub(o.p)))}</loc><lastmod>${today}</lastmod><priority>${o.priority}</priority></url>`).join('\n')}
 </urlset>
 `);
-await writeFile(path.join(dist, 'robots.txt'), site.indexable ? `User-agent: *\nAllow: /\nDisallow: /merci/\n\nSitemap: ${abs('/sitemap.xml')}\n` : `# Site en préparation : aucune page ne doit être indexée (balise meta « noindex » sur chaque page)\nUser-agent: *\nAllow: /\n`);
+await writeFile(path.join(dist, 'robots.txt'), site.indexable ? `User-agent: *\nAllow: /\nDisallow: /merci\n\nSitemap: ${abs('/sitemap.xml')}\n` : `# Site en préparation : aucune page ne doit être indexée (balise meta « noindex » sur chaque page)\nUser-agent: *\nAllow: /\n`);
 // Favicons (scripts/make-favicon.py) : favicon.ico à la racine + PNG pour iOS / Android
 await mkdir(path.join(dist, 'images/icons'), { recursive: true });
 for (const f of ['icon-32.png', 'icon-180.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'favicon.ico']) await copyFile(path.join(root, 'images/icons', f), path.join(dist, 'images/icons', f));
@@ -912,5 +933,7 @@ const tagHosts = site.gtmId ? ' https://www.googletagmanager.com https://*.clari
 const csp = ["default-src 'self'", `script-src 'self' 'unsafe-inline'${tagHosts}`, "style-src 'self' 'unsafe-inline'", `img-src 'self' data:${site.gtmId ? ' https:' : ''}`, "font-src 'self'", `connect-src 'self'${site.gtmId ? ' https:' : ''}`, `frame-src https://www.google.com https://maps.google.com${site.gtmId ? ' https://www.googletagmanager.com https://www.facebook.com' : ''}`, `form-action 'self'${/^https?:/.test(site.formAction) ? ' ' + new URL(site.formAction).origin : ''}`, "frame-ancestors 'none'", "base-uri 'self'", "object-src 'none'", "upgrade-insecure-requests"].join('; ');
 // En-têtes de cache (Netlify / Cloudflare Pages)
 await writeFile(path.join(dist, '_headers'), `/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/images/*\n  Cache-Control: public, max-age=31536000, immutable\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Strict-Transport-Security: max-age=31536000; includeSubDomains\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()\n  Cross-Origin-Opener-Policy: same-origin\n  Content-Security-Policy: ${csp}\n`);
+// Redirections 301 serveur (Netlify) : anciennes URL, et versions avec barre finale -> URL Wix sans barre (le 404 le fait aussi en JS)
+await writeFile(path.join(dist, '_redirects'), `# Anciennes URL du site Wix et de la préversion -> URL actuelles (301)\n${OLD_URLS.map(([f, t]) => `${f}  ${encodeURI(t)}  301!`).join('\n')}\n`);
 
 console.log(`✅ ${outputs.length} pages générées (${site.indexable ? 'indexables' : 'toutes en noindex'}) dans dist/ (${Object.values(imgMeta).filter((m) => m.src.endsWith('.svg')).length} images en placeholder)`);
