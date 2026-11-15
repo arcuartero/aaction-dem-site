@@ -874,7 +874,7 @@ const simple = (p, title, h1, html, opts = {}) => emit(p, layout({ path: p, titl
 
 await simple('/merci/', 'Merci pour votre demande | Aaction Dem', 'Merci !', `<p>Votre demande de devis a bien été envoyée. Un conseiller Aaction Dem vous recontacte sous 24 h ouvrées.</p><p><a href="/">Retour à l’accueil</a></p>`, { robots: 'noindex, follow', sitemap: false });
 await simple('/404.html', 'Page introuvable | Aaction Dem', 'Oups, ce carton est vide', `<p>La page que vous cherchez n’existe pas ou a été déplacée.</p><ul><li><a href="/">Accueil</a></li><li><a href="/services-demenagement/">Nos services</a></li><li><a href="/contact/">Devis gratuit</a></li></ul>
-<script>(function(){var p=location.pathname;if(p.length>1&&p.slice(-1)==='/')location.replace(p.replace(/\/+$/,'')+location.search+location.hash)})()</script>`, { robots: 'noindex, follow', sitemap: false });
+<script>(function(){var p=location.pathname;if(p.length>1&&p.slice(-1)==='/')location.replace(p.replace(/[/]+$/,'')+location.search+location.hash)})()</script>`, { robots: 'noindex, follow', sitemap: false });
 const med = site.legal.mediator;
 const mediationHtml = `<p>Conformément aux articles L.611-1 et suivants du Code de la consommation, tout client consommateur peut, en cas de litige avec ${site.name} non résolu par une réclamation écrite préalable auprès de nos services, recourir gratuitement à un médiateur de la consommation :</p>
 <p><strong>${med.name}</strong><br>${med.address}<br>Site : <a href="${med.url}" rel="noopener" target="_blank">${med.url.replace('https://', '')}</a> – E-mail : <a href="mailto:${med.email}">${med.email}</a></p>`;
