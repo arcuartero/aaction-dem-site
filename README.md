@@ -24,7 +24,7 @@ También puedes crearlas en ChatGPT a mano con los prompts del JSON y guardarlas
 
 ## Previsualizar
 ```bash
-python3 -m http.server 4321 -d dist
+node scripts/serve.mjs 4321
 ```
 
 ## URLs (idénticas a Wix)
