@@ -1,3 +1,4 @@
+@font-face{font-family:"Seasalt";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/seasalt-regular.otf) format("opentype")}
 @font-face{font-family:"Montserrat";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/montserrat-latin.woff2) format("woff2")}
 
 :root{
@@ -85,7 +86,8 @@ b,strong,th{font-weight:700}
 .hero{background:var(--coral);color:#fff;overflow:hidden;position:relative}
 .hero__in{display:grid;grid-template-columns:.7fr 1.3fr;align-items:stretch;gap:2rem;min-height:clamp(560px,36vw,700px)}
 .hero__txt{padding:3.4rem 0 3.2rem;position:relative;z-index:1;align-self:center}
-.hero h1{font-size:clamp(2rem,4vw,3.6rem);margin-bottom:1.6rem}
+/* Accroche de l’accueil en Seasalt (seule exception à Montserrat) */
+.hero h1{font-family:"Seasalt",var(--body);font-weight:400;text-transform:none;letter-spacing:.01em;word-spacing:.18em;line-height:1.1;font-size:clamp(2.6rem,5.4vw,4.8rem);margin-bottom:1.6rem}
 .hero__kicker{font-weight:700;margin-bottom:.4rem}
 .hero__lead{max-width:34rem;opacity:.95}
 .hero__img{position:relative;align-self:stretch}

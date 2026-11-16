@@ -9,6 +9,12 @@ Sitio estático sin dependencias, generado con Node (`node build.mjs` → carpet
 - `scripts/image-prompts.json`: prompts de las 12 imágenes (texto alternativo incluido).
 - `scripts/generate-images.mjs`: genera las imágenes con la API de imágenes de OpenAI (ChatGPT Images).
 
+## Tipografías
+
+- Todo el texto: **Montserrat Regular (400) y Bold (700)**, alojada en el sitio (`src/fonts/montserrat-latin.woff2`).
+- Única excepción: la frase de la portada «Garde tes amis. Fais appel à des pros» en **Seasalt** (`src/fonts/seasalt-regular.otf`, regla `.hero h1`).
+- **Licencia de Seasalt:** el archivo recibido es una «Desktop License» de Nicky Laatz (nickylaatz.com). Para usarla en la web hace falta la licencia web; el cliente debe comprarla antes de la puesta en producción. El repositorio es público: el archivo queda descargable.
+
 ## Imágenes
 Las fotos y logos de la web actual (hero, equipo, guardamuebles, monte-meuble, oficina, visita técnica, logos Aaction Dem / Gentlemen / partners) se reutilizan: los originales están en `src/wix/` y se optimizan con `python3 -I scripts/import-site-photos.py` (las versiones de ChatGPT que sustituyen quedan en `images/chatgpt/`).
 

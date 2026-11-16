@@ -35,7 +35,7 @@ const withBase = (html) => !BASE ? html : html
 await rm(dist, { recursive: true, force: true });
 await mkdir(path.join(dist, 'images'), { recursive: true });
 await mkdir(path.join(dist, 'fonts'), { recursive: true });
-for (const f of ['montserrat-latin.woff2']) await copyFile(path.join(root, 'src/fonts', f), path.join(dist, 'fonts', f));
+for (const f of ['montserrat-latin.woff2', 'seasalt-regular.otf']) await copyFile(path.join(root, 'src/fonts', f), path.join(dist, 'fonts', f));
 
 // ---------------------------------------------------------------- Images
 let hasSips = true;
@@ -293,7 +293,7 @@ ${alt ? `<link rel="alternate" hreflang="fr-FR" href="${abs(alt.fr)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/images/icons/icon-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/icon-180.png"><link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-${preload ? `<link rel="preload" as="image" href="${imgMeta[preload].src}" fetchpriority="high">` : ''}
+${p === '/' ? '<link rel="preload" href="/fonts/seasalt-regular.otf" as="font" type="font/otf" crossorigin>\n' : ''}${preload ? `<link rel="preload" as="image" href="${imgMeta[preload].src}" fetchpriority="high">` : ''}
 <style>${css}</style>
 <script type="application/ld+json">${JSON.stringify(graph)}</script>
 </head>
