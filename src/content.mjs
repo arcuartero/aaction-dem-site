@@ -85,8 +85,8 @@ export const services = [
 export const formules = [
   { id: 'mobilier-seul', title: 'Mobilier seul', icon: 'wardrobe', text: 'Nous protégeons, transportons et remettons en place vos meubles et votre électroménager. Vous gérez vos cartons.' },
   { id: 'dynamic-plus', title: 'Dynamic +', icon: 'tools', text: 'Meubles et cartons : vous emballez à votre rythme, nous transportons tout.' },
-  { id: 'comfort', title: 'Comfort', icon: 'box', text: 'Nous emballons et déballons le fragile (vaisselle, verres, bibelots), vous préparez le reste.' },
-  { id: 'comfort-plus', title: 'Comfort +', icon: 'truck', text: 'Clé en main : nous emballons tout et déballons le fragile. Déballage du non-fragile en option.' }
+  { id: 'confort', title: 'Confort', icon: 'box', text: 'Nous emballons et déballons le fragile (vaisselle, verres, bibelots), vous préparez le reste.' },
+  { id: 'confort-plus', title: 'Confort +', icon: 'truck', text: 'Clé en main : nous emballons tout et déballons le fragile. Déballage du non-fragile en option.' }
 ];
 
 export const reviews = [
@@ -125,7 +125,7 @@ export const faqGeneral = [
   { cat: 'organisation', q: 'Combien de temps à l’avance faut-il réserver son déménageur ?', a: '<p>Idéalement 4 à 8 semaines avant la date souhaitée, et 2 à 3 mois pour un déménagement en été (juin à septembre) ou en fin de mois, périodes les plus demandées. Nous pouvons néanmoins traiter des demandes urgentes selon nos disponibilités.</p>' },
   { cat: 'assurance', q: 'Mes biens sont-ils assurés pendant le déménagement ?', a: '<p>Oui. Tous les déménagements réalisés par Aaction Dem sont couverts par une assurance responsabilité contractuelle. Vous déclarez la valeur de votre mobilier lors de la signature du devis et, grâce au réseau Les Gentlemen du Déménagement, vous pouvez bénéficier d’une assurance renforcée (ad valorem).</p>' },
   { cat: 'zones', q: 'Déménagez-vous partout en France et à l’étranger ?', a: '<p>Oui. En plus de nos interventions quotidiennes en Moselle et au Luxembourg, nous organisons des déménagements dans toute la France et à l’international grâce au réseau Les Gentlemen du Déménagement, qui regroupe plus de 70 déménageurs sélectionnés.</p>' },
-  { cat: 'services', q: 'Proposez-vous des cartons et du matériel d’emballage ?', a: '<p>Oui, nous fournissons cartons standards, cartons livres, penderies, papier bulle et adhésif. Ils sont livrés avant le jour J. Avec les formules Comfort et Comfort +, nos équipes se chargent elles-mêmes de l’emballage.</p>' },
+  { cat: 'services', q: 'Proposez-vous des cartons et du matériel d’emballage ?', a: '<p>Oui, nous fournissons cartons standards, cartons livres, penderies, papier bulle et adhésif. Ils sont livrés avant le jour J. Avec les formules Confort et Confort +, nos équipes se chargent elles-mêmes de l’emballage.</p>' },
   { cat: 'demarches', q: 'Faut-il une autorisation de stationnement pour le camion ?', a: '<p>Dans la plupart des communes, une autorisation de stationnement est nécessaire pour réserver l’emplacement du camion devant votre logement. Nous pouvons nous charger de cette démarche auprès de la mairie pour vous.</p>' },
   { cat: 'services', q: 'Peut-on stocker ses meubles entre deux logements ?', a: '<p>Bien sûr. Notre <a href="/garde-meuble/">service de garde-meuble</a> permet de stocker vos biens en conteneurs fermés, dans un entrepôt sécurisé, pour la durée de votre choix.</p>' },
   { cat: 'demarches', q: 'Le déménagement est-il déductible ou aidé ?', a: '<p>Selon votre situation, des aides existent : prime de déménagement de la CAF (familles nombreuses), aide Mobili-Pass d’Action Logement pour une mobilité professionnelle, prise en charge par l’employeur… Les entreprises peuvent également passer leurs frais de transfert en charges. Nous vous remettons tous les justificatifs nécessaires.</p>' },
@@ -149,8 +149,8 @@ export const faqGeneral = [
   { cat: 'jour', q: 'Combien de déménageurs viennent le jour J ?', a: '<p>Le nombre de déménageurs dépend du volume, des accès et de la formule. Il est défini lors de la visite technique et indiqué sur votre devis, afin que le déménagement se fasse dans les temps prévus.</p>' },
   { cat: 'assurance', q: 'Quelle est la différence entre la responsabilité contractuelle et l’assurance ad valorem ?', a: '<p>La responsabilité contractuelle est incluse dans tout déménagement : elle couvre vos biens dans les limites prévues par les conditions générales. L’assurance ad valorem est une garantie renforcée calculée sur la valeur que vous déclarez, recommandée pour le mobilier de valeur ou les objets précieux.</p>' },
   { cat: 'assurance', q: 'Qu’est-ce que la déclaration de valeur ?', a: '<p>C’est le document où vous indiquez la valeur globale de votre mobilier et, séparément, celle des objets de valeur. Elle détermine le niveau d’indemnisation en cas de dommage : remplissez-la avec soin au moment de la signature du devis.</p>' },
-  { cat: 'assurance', q: 'Mes objets fragiles sont-ils assurés si je les emballe moi-même ?', a: '<p>Les cartons que vous préparez vous-même sont transportés avec le même soin, mais en cas de casse à l’intérieur d’un carton fermé par vos soins, la prise en charge peut être limitée. Pour la vaisselle et les objets délicats, les formules Comfort et Comfort + confient l’emballage à nos équipes.</p>' },
-  { cat: 'services', q: 'Quelles formules de déménagement proposez-vous ?', a: '<p>Quatre formules : <strong>Mobilier seul</strong> (nous transportons les meubles, vous gérez les cartons), <strong>Dynamic +</strong> (meubles et cartons, vous emballez), <strong>Comfort</strong> (nous emballons et déballons le fragile) et <strong>Comfort +</strong> (clé en main). <a href="/formules-demenagement/">Comparez les formules</a>.</p>' },
+  { cat: 'assurance', q: 'Mes objets fragiles sont-ils assurés si je les emballe moi-même ?', a: '<p>Les cartons que vous préparez vous-même sont transportés avec le même soin, mais en cas de casse à l’intérieur d’un carton fermé par vos soins, la prise en charge peut être limitée. Pour la vaisselle et les objets délicats, les formules Confort et Confort + confient l’emballage à nos équipes.</p>' },
+  { cat: 'services', q: 'Quelles formules de déménagement proposez-vous ?', a: '<p>Quatre formules : <strong>Mobilier seul</strong> (nous transportons les meubles, vous gérez les cartons), <strong>Dynamic +</strong> (meubles et cartons, vous emballez), <strong>Confort</strong> (nous emballons et déballons le fragile) et <strong>Confort +</strong> (clé en main). <a href="/formules-demenagement/">Comparez les formules</a>.</p>' },
   { cat: 'services', q: 'Démontez-vous et remontez-vous les meubles ?', a: '<p>Oui. Le démontage et le remontage du mobilier courant (lits, armoires, tables) sont assurés par nos équipes, qui disposent de l’outillage adapté. Précisez lors de la visite les meubles concernés, notamment les meubles en kit ou volumineux.</p>' },
   { cat: 'services', q: 'Déménagez-vous les objets lourds et encombrants ?', a: '<p>Oui : pianos, coffres-forts, armoires massives, électroménager… Ils nécessitent du matériel et parfois une équipe renforcée. Pour les pianos, consultez notre page <a href="/demenagement-piano/">déménagement de piano</a>.</p>' },
   { cat: 'services', q: 'Quand faut-il un monte-meuble ?', a: '<p>Le monte-meuble est utile quand un meuble ne passe pas par l’escalier, quand il n’y a pas d’ascenseur à partir de quelques étages, ou pour gagner du temps et protéger les parties communes. Découvrez notre <a href="/monte-meubles-demenagement/">service de monte-meuble</a>.</p>' },
@@ -192,10 +192,10 @@ ${h.figure('emballage-protection', 'L’emballage du fragile est réalisé avec 
 <ol class="steps">
   <li><strong>Demande de devis</strong> – Remplissez notre <a href="/contact/">formulaire de devis gratuit</a> ou appelez-nous au ${site.phoneDisplay}.</li>
   <li><strong>Évaluation du volume</strong> – Un conseiller estime le cubage et note les contraintes d’accès.</li>
-  <li><strong>Choix de la formule</strong> – Mobilier seul, Dynamic +, Comfort ou Comfort + selon votre budget.</li>
+  <li><strong>Choix de la formule</strong> – Mobilier seul, Dynamic +, Confort ou Confort + selon votre budget.</li>
   <li><strong>Préparation</strong> – Livraison des cartons, autorisation de stationnement si nécessaire.</li>
   <li><strong>Jour J</strong> – Chargement, transport et livraison dans votre nouveau logement.</li>
-  <li><strong>Installation</strong> – Remontage des meubles et, en Comfort +, déballage de vos cartons.</li>
+  <li><strong>Installation</strong> – Remontage des meubles et, en Confort +, déballage de vos cartons.</li>
 </ol>
 ${h.figure('visite-technique', 'La visite technique gratuite permet d’estimer précisément le volume et les contraintes d’accès.')}
 <h2>Quel prix pour un déménagement de particulier ?</h2>
@@ -227,7 +227,7 @@ ${h.figure('cartons-gentlemen', 'Cartons et matériel professionnels du réseau 
       { q: 'Que faire des objets de valeur ?', a: '<p>Nous vous conseillons de transporter vous-même bijoux, documents importants et espèces. Les objets d’art peuvent faire l’objet d’un emballage spécifique et d’une déclaration de valeur.</p>' },
       { q: 'Déménagez-vous aussi le week-end ?', a: '<p>Le samedi est possible sur demande, selon disponibilités. Contactez-nous pour en parler.</p>' },
       { q: 'Combien de temps dure un déménagement de particulier ?', a: '<p>En local, comptez une demi-journée pour un studio, une journée pour un T3 et une à deux journées pour une maison, selon la formule choisie et l’accès aux logements.</p>' },
-      { q: 'Comment bien préparer mes cartons ?', a: '<p>Indiquez sur chaque carton la pièce de destination et son contenu, gardez les cartons sous 20 kg, placez les objets lourds (livres) dans de petits cartons et le fragile dans des cartons dédiés. Avec les formules Comfort et Comfort +, nos équipes emballent pour vous.</p>' },
+      { q: 'Comment bien préparer mes cartons ?', a: '<p>Indiquez sur chaque carton la pièce de destination et son contenu, gardez les cartons sous 20 kg, placez les objets lourds (livres) dans de petits cartons et le fragile dans des cartons dédiés. Avec les formules Confort et Confort +, nos équipes emballent pour vous.</p>' },
       { q: 'Démontez-vous les meubles et l’électroménager ?', a: '<p>Oui, nos déménageurs démontent et remontent lits, armoires et meubles en kit. Pensez à débrancher et vider le réfrigérateur et le lave-linge la veille.</p>' }
     ],
     related: ['demenagement-metz', 'demenagement-thionville', 'demenagement-longwy', 'demenagement-luxembourg', 'formules-demenagement']
@@ -522,7 +522,7 @@ ${h.figure('longwy-ville-haute', 'Nos camions dans la ville haute de Longwy, cla
 <h2>Longwy, Luxembourg, Belgique : au carrefour des trois frontières</h2>
 <p>À quelques minutes de la Belgique et du Luxembourg, Longwy est une ville de frontaliers. Nous organisons régulièrement des déménagements vers <a href="/demenagement-luxembourg/">le Luxembourg</a>, Arlon, Athus ou Esch-sur-Alzette, ainsi que partout en France grâce au réseau <strong>Les Gentlemen du Déménagement</strong>.</p>
 <h2>Une formule pour chaque budget</h2>
-<p>Mobilier seul, Dynamic +, Comfort ou Comfort + : <a href="/formules-demenagement/">comparez nos formules</a> et choisissez jusqu’où nous vous aidons, de l’économique au clé en main.</p>`,
+<p>Mobilier seul, Dynamic +, Confort ou Confort + : <a href="/formules-demenagement/">comparez nos formules</a> et choisissez jusqu’où nous vous aidons, de l’économique au clé en main.</p>`,
     faq: [
       { q: 'Intervenez-vous dans tout le Pays-Haut ?', a: '<p>Oui : Longwy, Mont-Saint-Martin, Herserange, Villerupt, Audun-le-Tiche et l’ensemble du bassin de Longwy, ainsi que vers la Belgique et le Luxembourg.</p>' },
       { q: 'Combien coûte un déménagement à Longwy ?', a: '<p>Le tarif dépend du volume, de la formule choisie et de l’accès aux logements. <a href="/contact/">Demandez un devis gratuit</a> : nous vous remettons un prix ferme après évaluation.</p>' },
@@ -607,7 +607,7 @@ ${h.figure('protection-mobilier', 'Couvertures et housses protègent vos meubles
 export const formulesPage = {
   slug: 'formules-demenagement',
   title: 'Formules de déménagement : du mobilier seul au clé en main',
-  description: 'Comparez nos 4 formules de déménagement : Mobilier seul, Dynamic +, Comfort et Comfort +. Choisissez jusqu’où on vous aide et maîtrisez votre budget.',
+  description: 'Comparez nos 4 formules de déménagement : Mobilier seul, Dynamic +, Confort et Confort +. Choisissez jusqu’où on vous aide et maîtrisez votre budget.',
   h1: 'À vous de choisir jusqu’où on vous aide',
   lead: 'Quatre formules pour tous les budgets et tous les types de déménagement, de l’économique au clé en main.'
 };

@@ -35,7 +35,7 @@ const withBase = (html) => !BASE ? html : html
 await rm(dist, { recursive: true, force: true });
 await mkdir(path.join(dist, 'images'), { recursive: true });
 await mkdir(path.join(dist, 'fonts'), { recursive: true });
-for (const f of ['anton-latin.woff2', 'montserrat-latin.woff2']) await copyFile(path.join(root, 'src/fonts', f), path.join(dist, 'fonts', f));
+for (const f of ['montserrat-latin.woff2']) await copyFile(path.join(root, 'src/fonts', f), path.join(dist, 'fonts', f));
 
 // ---------------------------------------------------------------- Images
 let hasSips = true;
@@ -292,7 +292,6 @@ ${alt ? `<link rel="alternate" hreflang="fr-FR" href="${abs(alt.fr)}">
 <meta property="og:url" content="${abs(p)}"><meta property="og:image" content="${abs(og.src)}"><meta property="og:image:width" content="${og.w}"><meta property="og:image:height" content="${og.h}"><meta property="og:image:alt" content="${esc(og.alt)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/images/icons/icon-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/icon-180.png"><link rel="manifest" href="/site.webmanifest">
-<link rel="preload" href="/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
 ${preload ? `<link rel="preload" as="image" href="${imgMeta[preload].src}" fetchpriority="high">` : ''}
 <style>${css}</style>
@@ -328,7 +327,7 @@ const emit = async (p, html, { priority = '0.7', sitemap = true } = {}) => {
   if (sitemap) outputs.push({ p, priority });
 };
 const pageBySlug = Object.fromEntries(pages.map((pg) => [pg.slug, pg]));
-const extraTitles = { 'formules-demenagement': ['Nos formules de déménagement', 'Mobilier seul, Dynamic +, Comfort, Comfort +'] };
+const extraTitles = { 'formules-demenagement': ['Nos formules de déménagement', 'Mobilier seul, Dynamic +, Confort, Confort +'] };
 const relatedHtml = (slugs) => `<div class="related">${slugs.map((s) => { const r = pageBySlug[s]; const t = r ? [r.h1, r.kicker] : extraTitles[s]; return `<a href="/${s}/">${t[0]}<small>${t[1]}</small></a>`; }).join('')}</div>`;
 
 // ---------------------------------------------------------------- Accueil
@@ -566,7 +565,7 @@ ${quoteSection}`
 <h2>Cross-border and international moves</h2>
 <p>From our head office in Knutange, about 20 minutes from the border, we handle moves between France and Luxembourg in both directions. Through Les Gentlemen du Déménagement network we also organise moves from Luxembourg to the rest of France, Germany, Belgium, the Netherlands and further afield.</p>
 <h2>Four service levels</h2>
-<p>Choose how much you want to do yourself: <strong>Mobilier seul</strong> (we move the furniture, you pack), <strong>Dynamic +</strong> (furniture and boxes, you pack), <strong>Comfort</strong> (we pack and unpack fragile items) or <strong>Comfort +</strong> (we pack everything). Details are on our <a href="/formules-demenagement/" hreflang="fr">service levels page</a> (in French).</p>
+<p>Choose how much you want to do yourself: <strong>Mobilier seul</strong> (we move the furniture, you pack), <strong>Dynamic +</strong> (furniture and boxes, you pack), <strong>Confort</strong> (we pack and unpack fragile items) or <strong>Confort +</strong> (we pack everything). Details are on our <a href="/formules-demenagement/" hreflang="fr">service levels page</a> (in French).</p>
 <h2>Contact us</h2>
 <p>Call <a href="tel:${site.phone.replace(/\s/g, '')}">+33 3 82 85 49 43</a>, email <a href="mailto:${site.email}">${site.email}</a> or fill in the form below. Our head office is at ${site.agencies[0].street}, ${site.agencies[0].zip} ${site.agencies[0].city}, France.</p>
 </div></section>
@@ -716,8 +715,8 @@ ${quoteSection}`
   <ol class="guide">${[
     ['mobilier-seul', 'Budget serré, du temps devant vous', 'Vous emballez et transportez vous-même vos cartons. Nous nous chargeons de tout ce qui est lourd et encombrant : meubles et électroménager.'],
     ['dynamic-plus', 'Vous emballez, nous portons', 'Vous préparez vos cartons à votre rythme. Le jour J, nos déménageurs chargent et transportent tout, meubles comme cartons.'],
-    ['comfort', 'Beaucoup de vaisselle et d’objets fragiles', 'Vous gérez le linge, les livres et les vêtements. Nous emballons et déballons le fragile avec du matériel professionnel.'],
-    ['comfort-plus', 'Agenda chargé, famille ou mutation', 'Vous n’avez rien à préparer : nous emballons tout et déballons le fragile. Le déballage du reste est disponible en option.']
+    ['confort', 'Beaucoup de vaisselle et d’objets fragiles', 'Vous gérez le linge, les livres et les vêtements. Nous emballons et déballons le fragile avec du matériel professionnel.'],
+    ['confort-plus', 'Agenda chargé, famille ou mutation', 'Vous n’avez rien à préparer : nous emballons tout et déballons le fragile. Le déballage du reste est disponible en option.']
   ].map(([id, profil, txt], i) => { const f = formules.find((x) => x.id === id); return `<li class="guide__item">
       <span class="guide__n">0${i + 1}.</span>
       <p class="guide__tag">Pour vous si…</p>
