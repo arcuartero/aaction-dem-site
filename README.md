@@ -40,6 +40,13 @@ node scripts/serve.mjs 4321
 - URLs antiguas redirigidas (tabla `OLD_URLS` en `build.mjs`): `/accueil` → `/`, `/demenagement-metz-thionville` → `/demenagement-metz`, `/vente-de-materiel` → `/vente-materiel-demenagement`. En Netlify, `dist/_redirects` da 301 reales; en GitHub Pages lo hace una página de redirección.
 - Una URL con barra final (`/demenagement-metz/`) cae en la 404, que redirige a la versión sin barra.
 
+## Contenido idéntico a Wix
+
+- Las 23 páginas que existían en Wix tienen **los mismos H1, H2, H3 y H4, en el mismo orden, y el mismo texto** que el sitio Wix original.
+- Ese contenido está en `src/original/<página>.json` (lista `[etiqueta, html]` en el orden de Wix, con sus enlaces y negritas). `build.mjs` lo pinta con los bloques del diseño nuevo (cifras, formules, opiniones, agencias, preguntas, prestations, presupuesto).
+- Para cambiar un texto de esas páginas, editar el JSON correspondiente. Las páginas que no existían en Wix (Knutange, formules, blog, CGV, inglés) siguen usando `src/content.mjs`.
+- Páginas legales: texto de Wix + lo legalmente obligatorio que faltaba en Wix (hébergeur, médiateur y lista real de cookies), sin títulos añadidos.
+
 ## Publicar (automático)
 - Repositorio: https://github.com/arcuartero/aaction-dem-site
 - Web pública: https://www.admastr.com/aaction-dem-site/

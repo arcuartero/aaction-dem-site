@@ -134,7 +134,7 @@ document.querySelectorAll('[data-faqcat]').forEach((a) => a.addEventListener('cl
     if (!dlg) { dlg = document.createElement('dialog'); dlg.className = 'closed-dlg'; dlg.setAttribute('aria-labelledby', 'closed-dlg-title'); document.body.append(dlg); dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); }); }
     dlg.innerHTML = `<button type="button" class="closed-dlg__x" aria-label="${T.close}">×</button>
 <div class="closed-dlg__icon" aria-hidden="true"><svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M24 13v11l7 5"/></svg></div>
-<h2 id="closed-dlg-title">${T.title}</h2>
+<p class="closed-dlg__title" id="closed-dlg-title">${T.title}</p>
 <p>${T.hours}${when ? ` <strong>${T.reopen} ${when} ${T.at} ${hhmm(st.at)}.</strong>` : ''}</p>
 <a class="btn btn--red closed-dlg__cta" href="${formHref}">${T.cta} →</a>
 <p class="closed-dlg__or"><span>${T.or}</span></p>

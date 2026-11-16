@@ -1,5 +1,5 @@
 // Générateur de site statique ultra-léger, sans dépendance. Usage : node build.mjs
-import { readFile, writeFile, mkdir, rm, copyFile, access } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm, copyFile, access, readdir } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -11,6 +11,12 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 const dist = path.join(root, 'dist');
 const today = new Date().toISOString().slice(0, 10);
 const exists = (p) => access(p).then(() => true, () => false);
+// Pages de l'ancien site Wix : contenu repris à l'identique (titres H1–H4 et textes) depuis src/original/<page>.json
+const ORIG = {};
+for (const f of (await readdir(path.join(root, 'src/original'))).filter((x) => x.endsWith('.json'))) {
+  const n = f.slice(0, -5);
+  ORIG[n === 'index' ? '/' : '/' + n.replace('--', '/') + '/'] = JSON.parse(await readFile(path.join(root, 'src/original', f), 'utf8'));
+}
 const css = (await readFile(path.join(root, 'src/styles.css'), 'utf8')).replace(/\s*\n\s*/g, '').replace(/\/\*.*?\*\//g, '');
 const js = (await readFile(path.join(root, 'src/main.js'), 'utf8'));
 const imgCfg = JSON.parse(await readFile(path.join(root, 'scripts/image-prompts.json'), 'utf8'));
@@ -170,14 +176,14 @@ const footer = `
       <p>Depuis plus de 30 ans, Aaction Dem accompagne particuliers et entreprises dans leurs déménagements et leur stockage, en Moselle, au Luxembourg, partout en France et à l’international.</p>
       <ul class="social">${site.social.map((x) => `<li><a href="${x.href}" rel="noopener" target="_blank" aria-label="Aaction Dem sur ${x.name}">${socialIc[x.name]}</a></li>`).join('')}</ul>
       <p class="footer__gent">${gentLogo(56)}</p></div>
-    <div><h2>Liens utiles</h2><ul>
+    <div><h3>Liens utiles</h3><ul>
       <li><a href="/particulier/">Particulier</a></li><li><a href="/services-demenagement/">Services</a></li>
       <li><a href="/formules-demenagement/">Formules</a></li><li><a href="/avis/">Avis</a></li>
       <li><a href="/faq/">FAQ</a></li><li><a href="/blog/">Conseils</a></li><li><a href="/contact/">Contact</a></li></ul></div>
-    <div><h2>Nos villes</h2><ul>
+    <div><p class="footer__t">Nos villes</p><ul>
       <li><a href="/demenagement-metz/">Déménageur Metz</a></li><li><a href="/demenagement-thionville/">Déménageur Thionville</a></li>
       <li><a href="/demenagement-knutange/">Déménageur Knutange</a></li><li><a href="/demenagement-longwy/">Déménagement Longwy</a></li><li><a href="/demenagement-luxembourg/">Déménagement Luxembourg</a></li></ul></div>
-    <div><h2>Contact</h2><ul class="footer__contact">
+    <div><h3>Contact</h3><ul class="footer__contact">
       <li><a class="footer__tel" href="tel:${site.phone.replace(/\s/g, '')}">${ic.phone} ${site.phoneDisplay}</a></li>
       <li><a href="mailto:${site.email}">${site.email}</a></li>
       ${site.agencies.map((a) => `<li><strong>${a.city}</strong><br><a href="${a.maps}" rel="noopener" target="_blank">${a.street}, ${a.zip} ${a.city}</a></li>`).join('')}</ul>
@@ -259,7 +265,7 @@ const CC = {
 };
 const cookieDialog = (lang, p) => { const t = CC[lang === 'en' ? 'en' : 'fr']; return `<dialog class="cc" id="cc" aria-labelledby="cc-title" aria-describedby="cc-desc"${/politique-de-|mentions-legales/.test(p) ? ' data-noauto' : ''}>
 <div class="cc__icon">${ccIcon}</div>
-<h2 id="cc-title">${t.title}</h2>
+<p class="cc__title" id="cc-title">${t.title}</p>
 <p id="cc-desc">${t.text}</p>
 <fieldset class="cc__prefs" hidden><legend class="sr-only">${t.prefs}</legend>${t.cats.map(([k, n, d]) => `
   <div class="cc__cat"><div><strong id="cc-${k}">${n}</strong><p>${d}</p></div>${k === 'necessary' ? `<span class="cc__on">${t.on}</span>` : `<label class="cc__sw"><input type="checkbox" name="${k}" aria-labelledby="cc-${k}"><span aria-hidden="true"></span></label>`}</div>`).join('')}
@@ -269,7 +275,7 @@ const cookieDialog = (lang, p) => { const t = CC[lang === 'en' ? 'en' : 'fr']; r
 </dialog>`; };
 
 // ---------------------------------------------------------------- Layout
-const layout = ({ path: p, title, description, body, ld = [], ogImage = 'og-image', robots = 'index, follow, max-image-preview:large', preload, current, lang = 'fr', alt }) => {
+const layoutRaw = ({ path: p, title, description, body, ld = [], ogImage = 'og-image', robots = 'index, follow, max-image-preview:large', preload, current, lang = 'fr', alt }) => {
   const og = imgMeta[ogImage];
   const graph = { '@context': 'https://schema.org', '@graph': [orgLd, websiteLd, ...ld] };
   return `<!doctype html>
@@ -308,6 +314,10 @@ ${cookieDialog(lang, p)}
 </html>`;
 };
 
+// Paramètres (titre, description, données structurées…) de chaque page, réutilisés pour les pages reprises de Wix
+const layoutArgs = {};
+const layout = (a) => { layoutArgs[a.path] = a; return layoutRaw(a); };
+
 const outputs = [];
 // Cache-busting : /images/x.webp -> /images/x.webp?v=<hash du fichier> (les images sont en cache 1 an)
 const assetHash = {};
@@ -318,7 +328,8 @@ const versionAssets = async (html) => {
   }
   return urls.reduce((h, u) => assetHash[u] ? h.split(u).join(`${u}?v=${assetHash[u]}`) : h, html);
 };
-const emit = async (p, html, { priority = '0.7', sitemap = true } = {}) => {
+const emit = async (p, html, { priority = '0.7', sitemap = true, orig = false } = {}) => {
+  if (ORIG[p] && !orig) return; // remplacée par la version reprise de Wix (plus bas)
   // /demenagement-metz -> demenagement-metz.html (servi sans extension ni barre finale par GitHub Pages et Netlify)
   const u = pub(p);
   const file = path.join(dist, u === '/' ? 'index.html' : u.endsWith('.html') ? u : u + '.html');
@@ -913,6 +924,303 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
 <p>Ces outils sont déclenchés via Google Tag Manager, uniquement après votre accord. Les polices sont hébergées sur notre site.</p>
 <p><button type="button" class="btn btn--outline-red" data-cc-open>Modifier mes choix de cookies</button></p>
 <p>Pour en savoir plus sur vos données personnelles, consultez notre <a href="/politique-de-confidentialite/">politique de confidentialité</a>.</p>`, { description: 'Cookies et traceurs utilisés sur le site Aaction Dem (mesure d’audience, publicité, Google Maps) et comment modifier vos choix à tout moment.', priority: '0.2' });
+
+// ---------------------------------------------------------------- Pages reprises de l'ancien site Wix
+// Mêmes titres H1–H4, dans le même ordre, et mêmes textes que l'ancien site (src/original/<page>.json : [balise, html]).
+// Chaque section de l'ancien site est rendue avec le bloc équivalent du nouveau design (chiffres, formules, avis, agences…).
+{
+  const tx = (h) => String(h).replace(/<br>/g, ' ').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+  const isH = (t) => /^h[1-6]$/.test(t);
+  const STAT_SEQ = ['90%', 'Satisfaction client', '30', "Années d'expérience", '1200', 'Déménagements par an', 'ISO'];
+  const CARD_LINKS = {
+    'Garde-meuble': ['/garde-meuble/', 'garde-meuble'], 'Location monte-meuble': ['/monte-meubles-demenagement/', 'monte-meuble'],
+    'Vente de matériel': ['/vente-materiel-demenagement/', 'vente-materiel'], 'Déménagement piano': ['/demenagement-piano/', 'demenagement-piano'],
+    'Déménagement pour particuliers': ['/particulier/', 'particulier'], 'Déménagement pour entreprises': ['/entreprise/', 'entreprise']
+  };
+  const FORMULE_IDS = { 'La formule mobilier seul': 'mobilier-seul', 'La formule Dynamic +': 'dynamic-plus', 'La formule Confort': 'confort', 'La formule Confort +': 'confort-plus' };
+  // Images d'illustration par page (photo d'en-tête puis photos placées à côté des sections de texte)
+  const HERO_IMG = { '/': 'hero-demenageur', '/services-demenagement/': 'equipe-demenageurs', '/qui-sommes-nous/': 'equipe-demenageurs', '/avis/': 'avis-clients', '/particulier/': 'famille-demenagement' };
+  const POOL = {
+    '/': ['equipe-gentlemen', 'cartons-gentlemen'], '/particulier/': ['emballage-protection', 'equipe-gentlemen', 'protection-mobilier'],
+    '/entreprise/': ['bureaux-entreprise', 'visite-technique'], '/garde-meuble/': ['dechargement-camion', 'protection-mobilier', 'cartons-gentlemen'],
+    '/monte-meubles-demenagement/': ['monte-meuble-rue', 'camion-centre-ville', 'equipe-gentlemen'], '/demenagement-metz/': ['camion-centre-ville', 'dechargement-camion', 'equipe-gentlemen'],
+    '/demenagement-thionville/': ['cartons-gentlemen', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-luxembourg/': ['dechargement-camion', 'equipe-gentlemen'],
+    '/demenagement-longwy/': ['longwy-ville-haute', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-piano/': ['protection-mobilier', 'equipe-gentlemen'],
+    '/vente-materiel-demenagement/': ['emballage-protection', 'cartons-gentlemen'], '/qui-sommes-nous/': ['equipe-gentlemen', 'camion-centre-ville'],
+    '/services-demenagement/': ['visite-technique']
+  };
+
+  // 1. Blocs -> éléments (chiffres clés, agences et questions/réponses regroupés)
+  const toItems = (blocks) => {
+    const out = [];
+    for (let i = 0; i < blocks.length; i++) {
+      const [t, h] = blocks[i];
+      if (tx(h) === '90%' && STAT_SEQ.every((s, k) => tx(blocks[i + k]?.[1] || '') === s) && blocks[i + 7]) {
+        const v = blocks.slice(i, i + 8).map((b) => b[1]);
+        out.push({ k: 'stats', v: [[v[0], v[1]], [v[2], v[3]], [v[4], v[5]], [v[6], v[7]]] }); i += 7; continue;
+      }
+      if (/^Agence de KNUTANGE$/i.test(tx(h))) {
+        const end = blocks.findIndex((b, j) => j > i && /^Accueil sur rendez-vous/.test(tx(b[1])));
+        const seg = blocks.slice(i, end + 1).map((b) => b[1]);
+        const m = seg.findIndex((x, j) => j > 0 && /^Agence de/i.test(tx(x)));
+        if (end > i && m > 0) { out.push({ k: 'agencies', v: [seg.slice(0, m), seg.slice(m)] }); i = end; continue; }
+      }
+      if (t === 'button') {
+        const a = []; let j = i + 1;
+        while (j < blocks.length && !isH(blocks[j][0]) && blocks[j][0] !== 'button') a.push(blocks[j++]);
+        const last = out[out.length - 1]; const qa = { q: h, a };
+        if (last?.k === 'faq') last.v.push(qa); else out.push({ k: 'faq', v: [qa] });
+        i = j - 1; continue;
+      }
+      out.push({ k: t, v: h });
+    }
+    return out;
+  };
+  // 2. Éléments -> sections (une par H1/H2)
+  const toSections = (items) => {
+    const secs = [{ h: null, items: [] }];
+    for (const it of items) { if (it.k === 'h1' || it.k === 'h2') secs.push({ h: it, items: [] }); else secs[secs.length - 1].items.push(it); }
+    // Sur Wix, certains titres sont placés après leur contenu dans le code : on remet le contenu sous son titre (l'ordre des titres ne change pas)
+    for (let i = 0; i < secs.length - 1; i++) {
+      const s = secs[i], n = secs[i + 1];
+      const ai = s.items.findIndex((x) => x.k === 'agencies');
+      if (ai >= 0 && /^Conseil personnalisé/.test(tx(n.h.v)) && !n.items.some((x) => x.k === 'agencies')) n.items.unshift(...s.items.splice(ai, 1));
+      if (!n.items.length && n.h.k === 'h2') {
+        let k = s.items.length; while (k > 0 && s.items[k - 1].k === 'p' && /^✅/.test(tx(s.items[k - 1].v))) k--;
+        if (s.items.length - k >= 2) n.items.push(...s.items.splice(k));
+      }
+    }
+    return secs;
+  };
+
+  const tag = (it, cls = '') => `<${it.k}${cls ? ` class="${cls}"` : ''}>${it.v}</${it.k}>`;
+  const isTitle = (h) => { const t = tx(h); return t.length > 0 && t.length <= 70 && !/<a /.test(h) && !/[.!?:…;,]$/.test(t) && !/^[✅👉📦📞💰]/u.test(t) && !/^[a-zà-ÿ]/.test(t); };
+  const pairsAt = (its, i) => { const r = []; while (its[i]?.k === 'p' && isTitle(its[i].v) && its[i + 1]?.k === 'p' && !isTitle(its[i + 1].v)) { r.push([its[i].v, its[i + 1].v]); i += 2; } return r; };
+  const agencyCard = (seg, i) => `<div class="agency ${i ? 'agency--green' : 'agency--orange'}"><p class="agency__t">${seg[0]}</p>
+<address>${seg.slice(1, -1).join('<br>')}<span>${seg[seg.length - 1]}</span></address>
+<a class="btn btn--white" href="/contact/">Nous rendre visite ${ic.arrow}</a>
+<img class="agency__art" src="/images/villes/${i ? 'metz' : 'knutange'}.svg" width="${i ? 1066 : 953}" height="${i ? 630 : 662}" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>`;
+  const statsBand = (v, head = '') => `<section class="stats"><div class="wrap">${head ? `<div class="sec__head">${head}</div>` : ''}<ul>${v.map(([n, l], i) => `<li>${[ic.medal, ic.box, ic.truck, ic.iso][i]}<div><strong>${n}</strong><span>${l}</span></div></li>`).join('')}</ul></div></section>`;
+  const serviceCard = ([t, d]) => { const [href, im] = CARD_LINKS[tx(t)]; return `<article class="card">${img(im, { sizes: '(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 280px' })}<div class="card__b"><p class="card__t">${t}</p><p>${d}</p><a class="btn btn--outline-red" href="${href}">Voir plus ${ic.arrow}</a></div></article>`; };
+  const ulOf = (lis) => `<ul class="${lis.some((l) => /^\p{Extended_Pictographic}/u.test(tx(l))) ? 'plain' : 'checks'}">${lis.map((l) => `<li>${l}</li>`).join('')}</ul>`;
+
+  // Rendu d'une suite d'éléments « texte » (paragraphes, listes, sous-titres, petites cartes, questions)
+  const flow = (its, { points = false } = {}) => {
+    let html = '';
+    for (let i = 0; i < its.length; i++) {
+      const it = its[i];
+      if (it.k === 'li') { const lis = []; while (its[i]?.k === 'li') lis.push(its[i++].v); i--; html += points ? `<ol class="points">${lis.map((l) => `<li class="point"><span>${l}</span></li>`).join('')}</ol>` : ulOf(lis); continue; }
+      if (it.k === 'faq') { html += `<div class="faq">${it.v.map((f) => `<details><summary>${f.q}</summary><div>${f.a.map(([t, h]) => `<${t}>${h}</${t}>`).join('')}</div></details>`).join('')}</div>`; continue; }
+      if (/^h[3-6]$/.test(it.k) && /^h[3-6]$/.test(its[i + 1]?.k || '')) {
+        const hs = []; while (/^h[3-6]$/.test(its[i]?.k || '')) hs.push(its[i++]); i--; html += `<div class="feats">${hs.map((x) => tag(x)).join('')}</div>`; continue;
+      }
+      if (it.k === 'p') {
+        const pr = pairsAt(its, i);
+        if (pr.length >= 2) { html += pr.every((x) => CARD_LINKS[tx(x[0])]) ? `<div class="cards cards--o">${pr.map(serviceCard).join('')}</div>` : `<div class="mcards">${pr.map(([t, d]) => `<div class="mcard"><p class="mcard__t">${t}</p><p>${d}</p></div>`).join('')}</div>`; i += pr.length * 2 - 1; continue; }
+        const t = tx(it.v);
+        const titleLike = (isTitle(it.v) && its[i + 1] && its[i + 1].k !== 'li' ? true : false) || (t.length <= 90 && /[?:]$/.test(t) && (its[i + 1]?.k === 'li' || its[i + 1]?.k === 'p')) || /^\d+\.\s/.test(t) && t.length <= 80;
+        html += tag(it, titleLike ? 'ptitle' : ''); continue;
+      }
+      if (it.k === 'stats' || it.k === 'agencies') continue; // rendus à part
+      html += tag(it);
+    }
+    return html;
+  };
+  const textLen = (its) => its.reduce((n, x) => n + (x.k === 'p' || x.k === 'li' ? tx(x.v).length : 0), 0);
+
+  const renderPage = (p, blocks) => {
+    const secs = toSections(toItems(blocks));
+    const pre = secs[0].items, hero = secs[1];
+    const pageImg = HERO_IMG[p] || pageBySlug[p.replace(/\//g, '')]?.img || posts.find((po) => `/post/${po.slug}/` === p)?.img;
+    const pool = [...(POOL[p] || [])].filter((x) => x !== pageImg && imgMeta[x]);
+    const hasQuote = secs.some((s) => s.h && /^Demandez/.test(tx(s.h.v)));
+    const cta = hasQuote ? '#devis' : '/contact/';
+    let rest = secs.slice(2);
+    // H2 placé juste sous le H1 sans contenu propre (ex. « en toute sérénité ») : sous-titre de l'en-tête
+    const subs = [];
+    if (!hero.items.length && rest[0] && !rest[0].items.length && rest[1]) subs.push(rest.shift().h);
+    // Contenu de l'en-tête : premier paragraphe court ; le reste ouvre la page
+    const heroP = [];
+    const hi = [...hero.items];
+    if (hi[0]?.k === 'p' && tx(hi[0].v).length <= 320 && !pairsAt(hi, 0).length) heroP.push(hi.shift());
+    const lux = p === '/demenagement-luxembourg/' ? `<p class="langlink"><a href="${EN_LUX}" hreflang="en" lang="en">Moving in Luxembourg? Read this page in English →</a></p>` : '';
+    let html;
+    if (p === '/') {
+      html = `<section class="hero"${dims._heroBg ? ` style="background:${dims._heroBg}"` : ''}><div class="wrap hero__in">
+  <div class="hero__txt">
+    <p class="hero__slogan"><span class="hero__l">Garde tes amis.</span> <span class="hero__l">Fais appel à des pros</span></p>
+    ${pre.map((x) => tag(x, 'hero__pre')).join('')}${tag(hero.h, 'hero__kicker')}${subs.map((s) => tag(s, 'hero__lead')).join('')}${heroP.map((x) => tag(x, 'hero__lead')).join('')}
+    <a class="btn btn--white" href="${cta}">Demander un devis gratuit ${ic.arrow}</a>
+  </div>
+  <div class="hero__img">${img('hero-demenageur', { eager: true, sizes: '(max-width: 860px) 100vw, 600px' })}${dims['hero-demenageur'] ? '' : '<p class="badge30" aria-hidden="true">30 ans<small>d’expérience</small></p>'}</div>
+</div></section>`;
+    } else {
+      html = `<section class="phero${pageImg ? '' : ' phero--noimg'}"><div class="wrap phero__in">
+  <div>${pre.map((x) => tag(x, 'hero__kicker')).join('')}${tag(hero.h)}${subs.map((s) => tag(s, 'phero__sub')).join('')}${heroP.map((x) => tag(x)).join('')}
+  <a class="btn btn--white" href="${cta}">Devis gratuit ${ic.arrow}</a>${lux}</div>
+  ${pageImg ? `<div class="phero__img">${img(pageImg, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>` : ''}
+</div></section>`;
+    }
+    // Reste du contenu du H1 (sans titre) puis une section par H2
+    const body = [];
+    if (hi.length) body.push({ h: null, items: hi });
+    body.push(...rest);
+    let alt = 0, side = 0, pendingHead = '';
+    const blocksOut = [];
+    const push = (cls, inner, full = false) => {
+      const head = pendingHead; pendingHead = '';
+      blocksOut.push(full ? inner.replace('<div class="wrap">', `<div class="wrap">${head}`) : `<section class="sec ${cls}"><div class="wrap">${head}${inner}</div></section>`);
+    };
+    for (let si = 0; si < body.length; si++) {
+      const s = body[si]; const ht = s.h ? tx(s.h.v) : ''; const H2 = s.h ? tag(s.h) : '';
+      const stats = s.items.find((x) => x.k === 'stats'); const ag = s.items.find((x) => x.k === 'agencies');
+      const its = s.items.filter((x) => x.k !== 'stats' && x.k !== 'agencies');
+      if (s.h && !s.items.length) {
+        // H2 sans contenu suivi de sections courtes à un paragraphe : grille de cartes (ex. garde-meuble Metz / Thionville / Moselle)
+        const run = []; let j = si + 1;
+        while (body[j] && body[j].items.length === 1 && body[j].items[0].k === 'p' && tx(body[j].items[0].v).length < 220) run.push(body[j++]);
+        if (run.length >= 2) { push('sec--cream', `<div class="sec__head">${H2}</div><div class="mcards">${run.map((r) => `<div class="mcard">${tag(r.h)}${tag(r.items[0])}</div>`).join('')}</div>`); si = j - 1; continue; }
+        pendingHead += `<div class="sec__head sec__head--solo">${H2}</div>`; continue;
+      }
+      if (/^Choisissez la formule/.test(ht)) {
+        const pr = pairsAt(its, 0);
+        push('sec--green', `<div class="formules"><div>${H2}</div><div class="fgrid">${pr.map(([t, d]) => { const f = formules.find((x) => x.id === FORMULE_IDS[tx(t)]) || formules[0]; return `<a class="fcard" href="/formules-demenagement/#${f.id}">${ic[f.icon]}<p class="fcard__t">${t}</p><p>${d}</p><span class="more">Voir la formule →</span></a>`; }).join('')}</div></div>`);
+        continue;
+      }
+      if (/^Nos clients nous recommandent/.test(ht)) {
+        const rv = []; for (let i = 0; i < its.length; i += 2) rv.push([its[i].v, its[i + 1]?.v || '']);
+        push('sec--pink', `<div class="sec__head">${H2}</div><div class="rgrid rgrid--3">${rv.map(([n, t]) => `<figure class="review"><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><blockquote>${t}</blockquote><figcaption><strong>${n}</strong></figcaption></figure>`).join('')}</div><p class="center"><a class="btn btn--outline-red" href="/avis/">Voir tous les avis</a></p>`);
+        continue;
+      }
+      if (/^L’ensemble de nos prestations/.test(ht)) { push('sec--pink', `<div class="sec__head">${H2}</div><div class="cards cards--o">${pairsAt(its, 0).map(serviceCard).join('')}</div>`); continue; }
+      if (/^Demandez/.test(ht)) {
+        const head = pendingHead; pendingHead = '';
+        blocksOut.push(`<section class="quote" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-demenageurs', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
+        continue;
+      }
+      if (/^Posts récents/.test(ht)) {
+        push('sec--cream', `<div class="sec__head">${H2}</div><div class="pgrid">${posts.filter((po) => `/post/${po.slug}/` !== p).slice(0, 3).map((po) => `<a class="pcard" href="/post/${po.slug}/">${img(po.img, { sizes: '(max-width: 860px) 100vw, 420px' })}<p class="pcard__t">${tx((ORIG[`/post/${po.slug}/`] || [])[0]?.[1] || po.h1)}</p><span class="more">Lire l’article ${ic.arrow}</span></a>`).join('')}</div>`);
+        continue;
+      }
+      if (ag) {
+        const head = pendingHead + (H2 ? `<div class="sec__head sec__head--solo">${H2}</div>` : ''); pendingHead = '';
+        if (its.length) push('', flow(its));
+        blocksOut.push(`<section class="sec sec--agh"><div class="wrap">${head}</div></section><section class="agencies" aria-label="Nos agences">${ag.v.map(agencyCard).join('')}</section>`);
+        if (stats) blocksOut.push(statsBand(stats.v));
+        continue;
+      }
+      if (stats && textLen(its) < 600 && !its.some((x) => x.k === 'li' || x.k === 'faq')) {
+        // Titre + court texte + chiffres clés : un seul bandeau
+        const head = pendingHead; pendingHead = '';
+        blocksOut.push(statsBand(stats.v, head + H2 + flow(its)));
+        continue;
+      }
+      const gent = /Gentlemen/.test(ht) && !its.some((x) => x.k === 'faq');
+      const headHtml = gent ? `<div class="net"><div>${H2}</div><p class="gent">${gentLogo(150)}</p></div>` : H2;
+      const plain = !its.some((x) => x.k === 'faq' || x.k === 'li' && gent) && !its.some((x, i) => pairsAt(its, i).length >= 2) && !its.some((x) => /^h[3-6]$/.test(x.k));
+      const im = plain && textLen(its) >= 350 && pool.length ? pool.shift() : '';
+      const plogos = /partenariats/.test(ht) ? `<ul class="plogos">${partners.map((x) => `<li>${logoMeta[x.logo] ? logoImg(x.logo, x.name, 72) : x.name}</li>`).join('')}</ul>` : '';
+      const cls = alt++ % 2 ? 'sec--cream' : '';
+      if (im) push(cls, `<div class="osplit${side++ % 2 ? ' osplit--rev' : ''}"><div class="prose">${headHtml}${flow(its)}</div><div>${img(im, { sizes: '(max-width: 860px) 100vw, 560px' })}</div></div>`);
+      else push(cls, `<div class="prose prose--o">${headHtml}${flow(its, { points: gent })}</div>${plogos}`);
+      if (stats) blocksOut.push(statsBand(stats.v));
+    }
+    if (pendingHead) blocksOut.push(`<section class="sec"><div class="wrap">${pendingHead}</div></section>`);
+    return { html: html + blocksOut.join('\n'), secs };
+  };
+
+  // Pages particulières : contact, avis, FAQ, articles, pages légales
+  const renderContact = (p, b) => {
+    const it = toItems(b); const at = (re) => it.find((x) => re.test(tx(x.v)));
+    const h1 = it.find((x) => x.k === 'h1'); const intro = it[it.indexOf(h1) + 1];
+    const tel = at(/^\+33/), mail = at(/@/), soc = at(/^Suivez-nous/);
+    const h2s = it.filter((x) => x.k === 'h2'); const h3i = it.map((x, i) => x.k === 'h3' ? i : -1).filter((i) => i >= 0);
+    const cards = h3i.map((i, n) => ({ h: it[i], ps: it.slice(i + 1, h3i[n + 1] ?? it.length).filter((x) => x.k === 'p') }));
+    return `<section class="chero"><div class="wrap chero__in">
+  <div class="chero__txt">${tag(h1)}${tag(intro, 'chero__lead')}
+    <p class="chero__call"><a href="tel:${site.phone.replace(/\s/g, '')}">${ic.phone} ${tel ? tx(tel.v) : site.phoneDisplay}</a></p>
+    <p class="chero__call"><a href="mailto:${site.email}">${mail ? tx(mail.v) : site.email}</a></p>
+    ${soc ? `<p class="chero__soc">${soc.v}</p><ul class="social social--dark">${site.social.map((x) => `<li><a href="${x.href}" rel="noopener" target="_blank" aria-label="Aaction Dem sur ${x.name}">${socialIc[x.name]}</a></li>`).join('')}</ul>` : ''}</div>
+  <div class="chero__form">${quoteFormCompact()}</div>
+</div></section>
+<section class="sec sec--cream" id="carte"><div class="wrap"><div class="sec__head">${h2s.map((h, i) => tag(h, i ? 'sec__h2sub' : '')).join('')}</div>
+<div class="maps">${cards.map((c, i) => { const a = site.agencies[i] || site.agencies[0]; return `
+  <article class="mapcard"><div class="mapbox" data-consent="maps"><iframe data-src="${a.maps}&amp;output=embed" title="Carte de l’agence Aaction Dem de ${a.city}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe><p class="mapbox__note">Google Maps dépose ses propres cookies : la carte s’affiche si vous l’acceptez.</p><button type="button" class="mapbox__btn" data-cc-grant="maps">Afficher la carte</button></div>
+    <div class="mapcard__txt">${tag(c.h)}${c.ps.map((x) => tag(x)).join('')}<p><a href="${a.maps}" target="_blank" rel="noopener">Itinéraire sur Google Maps ↗</a></p></div></article>`; }).join('')}
+</div></div></section>`;
+  };
+  const renderAvis = (p, b) => {
+    const it = toItems(b); const h1 = it.find((x) => x.k === 'h1'); const i0 = it.indexOf(h1);
+    const intro = it[i0 + 1]; const rest = it.slice(i0 + 2);
+    const rv = [];
+    for (let i = 0; i < rest.length; i++) {
+      const t = tx(rest[i].v);
+      if (/^[A-ZÀ-Ý]{1,2}$/.test(t) && rest[i + 1]) { rv.push({ ini: t, name: rest[i + 1].v, txt: [] }); i++; } else if (rv.length) rv[rv.length - 1].txt.push(rest[i].v);
+    }
+    return `<section class="phero"><div class="wrap phero__in"><div>${tag(h1)}${tag(intro)}<a class="btn btn--white" href="/contact/">Devis gratuit ${ic.arrow}</a></div>
+  <div class="phero__img">${img('avis-clients', { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div></div></section>
+<section class="sec sec--pink"><div class="wrap"><div class="rgrid">${rv.map((r) => `<figure class="review"><div class="review__who"><span class="review__ini" aria-hidden="true">${r.ini}</span><figcaption><strong>${r.name}</strong></figcaption></div><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><blockquote>${r.txt.map((x) => `<p>${x}</p>`).join('')}</blockquote></figure>`).join('')}</div>
+<p class="center"><a class="btn btn--red" href="/contact/">Demander un devis gratuit</a></p></div></section>`;
+  };
+  const renderFaq = (p, b) => {
+    const it = toItems(b); const h1 = it.find((x) => x.k === 'h1'); const h2 = it.filter((x) => x.k === 'h2');
+    const bySlug = (h) => posts.find((po) => tx((ORIG[`/post/${po.slug}/`] || [])[0]?.[1] || '') === tx(h.v)) || posts.find((po) => tx(h.v).includes(tx(po.h1).slice(0, 25)));
+    return `<section class="phero phero--noimg"><div class="wrap phero__in"><div>${tag(h1)}</div></div></section>
+<section class="sec"><div class="wrap"><div class="pgrid">${h2.map((h) => { const po = bySlug(h); return po ? `<a class="pcard" href="/post/${po.slug}/">${img(po.img, { sizes: '(max-width: 860px) 100vw, 420px' })}${tag(h)}<span class="more">Lire l’article ${ic.arrow}</span></a>` : tag(h); }).join('')}</div></div></section>`;
+  };
+  const renderPost = (p, b) => {
+    const po = posts.find((x) => `/post/${x.slug}/` === p);
+    const it = toItems(b); const h1 = it.find((x) => x.k === 'h1'); const i0 = it.indexOf(h1);
+    const recent = it.findIndex((x) => x.k === 'h2' && /^Posts récents/.test(tx(x.v)));
+    const date = it[i0 + 1] && /^Dernière mise à jour/.test(tx(it[i0 + 1].v)) ? it[i0 + 1] : null;
+    const content = it.slice(i0 + (date ? 2 : 1), recent < 0 ? it.length : recent);
+    let html = '';
+    for (let i = 0; i < content.length; i++) {
+      const x = content[i];
+      if (x.k === 'li') { const lis = []; while (content[i]?.k === 'li') lis.push(content[i++].v); i--; html += ulOf(lis); continue; }
+      html += tag(x);
+    }
+    return `<section class="phero"><div class="wrap phero__in"><div>${tag(h1)}${date ? tag(date, 'hero__kicker') : ''}<a class="btn btn--white" href="/contact/">Devis gratuit ${ic.arrow}</a></div>
+  <div class="phero__img">${img(po.img, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div></div></section>
+<section class="sec"><div class="wrap"><article class="prose prose--o prose--post">${html}</article></div></section>
+${recent >= 0 ? `<section class="sec sec--cream"><div class="wrap"><div class="sec__head">${tag(it[recent])}</div><div class="pgrid">${posts.filter((x) => x !== po).slice(0, 3).map((x) => `<a class="pcard" href="/post/${x.slug}/">${img(x.img, { sizes: '(max-width: 860px) 100vw, 420px' })}<p class="pcard__t">${tx((ORIG[`/post/${x.slug}/`] || []).find((y) => y[0] === 'h1')?.[1] || x.h1)}</p><span class="more">Lire l’article ${ic.arrow}</span></a>`).join('')}</div></div></section>` : ''}`;
+  };
+  // Pages légales : texte de l'ancien site + mentions obligatoires absentes de Wix (hébergeur, médiateur, cookies réellement utilisés)
+  const LEGAL_EXTRA = {
+    '/mentions-legales/': `<p><strong>Hébergement :</strong> ${site.legal.host.name}, ${site.legal.host.address} – <a href="${site.legal.host.url}" rel="noopener" target="_blank">${site.legal.host.url.replace('https://', '')}</a></p>
+<p><strong>Médiation de la consommation :</strong></p>${mediationHtml}
+<p>Nos prestations sont régies par nos <a href="/conditions-generales-de-vente/">conditions générales de vente</a>. Données personnelles : voir notre <a href="/politique-de-confidentialite/">politique de confidentialité</a> et notre <a href="/politique-de-cookies/">politique de cookies</a>.</p>`,
+    '/politique-de-cookies/': `<p class="ptitle">Cookies et traceurs utilisés sur ce site</p>
+<p>Aucun cookie non essentiel n’est déposé avant votre choix, et refuser est aussi simple qu’accepter. Votre choix est conservé 6 mois dans votre navigateur.</p>
+<ul class="checks"><li><strong>Nécessaires</strong> – mémorisation de votre choix (stockage local du navigateur). Toujours actifs.</li>
+<li><strong>Mesure d’audience</strong> – Microsoft Clarity, pour comprendre l’usage du site et l’améliorer.</li>
+<li><strong>Publicité</strong> – pixel Meta (Facebook, Instagram), pour mesurer l’efficacité de nos publicités.</li>
+<li><strong>Cartes Google Maps</strong> – affichage des cartes de nos agences sur la page Contact.</li></ul>
+<p>Ces outils sont déclenchés via Google Tag Manager, uniquement après votre accord.</p>
+<p><button type="button" class="btn btn--outline-red" data-cc-open>Modifier mes choix de cookies</button></p>`
+  };
+  const renderLegal = (p, b) => {
+    const it = toItems(b); const h1 = it.find((x) => x.k === 'h1');
+    return `<section class="phero phero--green"><div class="wrap" style="padding:3rem 0">${tag(h1)}</div></section>
+<section class="sec"><div class="wrap prose prose--o">${flow(it.slice(it.indexOf(h1) + 1))}${LEGAL_EXTRA[p] || ''}</div></section>`;
+  };
+
+  for (const [p, blocks] of Object.entries(ORIG)) {
+    const a = layoutArgs[p];
+    if (!a) throw new Error(`Page reprise de Wix sans paramètres de page : ${p}`);
+    let body, faqItems = [];
+    if (p === '/contact/') body = renderContact(p, blocks);
+    else if (p === '/avis/') body = renderAvis(p, blocks);
+    else if (p === '/faq/') body = renderFaq(p, blocks);
+    else if (p.startsWith('/post/')) body = renderPost(p, blocks);
+    else if (/mentions-legales|politique-de-/.test(p)) body = renderLegal(p, blocks);
+    else { const r = renderPage(p, blocks); body = r.html; faqItems = r.secs.flatMap((s) => s.items.filter((x) => x.k === 'faq').flatMap((x) => x.v)); }
+    const ld = (a.ld || []).filter((x) => x['@type'] !== 'FAQPage');
+    if (faqItems.length) ld.push(faqLd(faqItems.map((f) => ({ q: tx(f.q), a: f.a.map((x) => tx(x[1])).join(' ') }))));
+    const prio = p === '/' ? '1.0' : /mentions|politique/.test(p) ? '0.2' : p.startsWith('/post/') ? '0.6' : pageBySlug[p.replace(/\//g, '')]?.local ? '0.9' : '0.8';
+    await emit(p, layout({ ...a, ld, body }), { priority: prio, orig: true });
+  }
+}
 
 // ---------------------------------------------------------------- Fichiers techniques
 await writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
