@@ -87,7 +87,10 @@ b,strong,th{font-weight:700}
 .hero__in{display:grid;grid-template-columns:.7fr 1.3fr;align-items:stretch;gap:2rem;min-height:clamp(560px,36vw,700px)}
 .hero__txt{padding:3.4rem 0 3.2rem;position:relative;z-index:1;align-self:center}
 /* Accroche de l’accueil en Seasalt (seule exception à Montserrat) */
-.hero h1{font-family:"Seasalt",var(--body);font-weight:400;text-transform:none;letter-spacing:.01em;word-spacing:.18em;line-height:1.1;font-size:clamp(2.6rem,5.4vw,4.8rem);margin-bottom:1.6rem}
+.hero__txt{container-type:inline-size}
+/* Toujours sur 2 lignes : la taille suit la largeur de la colonne (la 2e ligne mesure ~7,7 em) */
+.hero h1{font-family:"Seasalt",var(--body);font-weight:400;text-transform:none;letter-spacing:.01em;word-spacing:.18em;line-height:.95;font-size:min(12.6cqi,4.8rem);margin-bottom:1.6rem}
+.hero__l{display:block;white-space:nowrap}
 .hero__kicker{font-weight:700;margin-bottom:.4rem}
 .hero__lead{max-width:34rem;opacity:.95}
 .hero__img{position:relative;align-self:stretch}

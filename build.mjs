@@ -413,7 +413,7 @@ await emit('/', layout({
   body: `
 <section class="hero"${dims._heroBg ? ` style="background:${dims._heroBg}"` : ''}><div class="wrap hero__in">
   <div class="hero__txt">
-    <h1><span class="sr-only">Déménageur en Moselle et au Luxembourg – </span>Garde tes amis.<br>Fais appel<br>à des pros</h1>
+    <h1><span class="sr-only">Déménageur en Moselle et au Luxembourg – </span><span class="hero__l">Garde tes amis.</span> <span class="hero__l">Fais appel à des pros</span></h1>
     <p class="hero__kicker">Déménageurs en Moselle et au Luxembourg.</p>
     <p class="hero__lead">Aaction Dem offre un <strong>service complet de déménagement</strong>, d’emballage, de déballage et de stockage pour les déménagements locaux et longue distance.</p>
     <a class="btn btn--white" href="/contact/">Demander un devis gratuit ${ic.arrow}</a>
