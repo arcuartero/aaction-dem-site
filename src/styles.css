@@ -755,3 +755,6 @@ ul.plain li{margin-bottom:.5rem}
 .quote.sec--stack .quote__top h2{font-size:clamp(1.4rem,2.4vw,1.9rem)}.quote.sec--stack>.wrap>.sec__head{padding-top:4rem;margin-bottom:0}
 .quote>.wrap>.sec__head h2{font-size:clamp(1.5rem,3vw,2.2rem)}
 .sec--stack>.wrap>.sec__head{text-align:left;margin-left:0;max-width:none}
+.mcard--img{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.mcard--img img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.mcard--img .mcard__b{padding:1.2rem 1.4rem 1.4rem}

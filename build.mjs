@@ -938,6 +938,11 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     'Vente de matériel': ['/vente-materiel-demenagement/', 'vente-materiel'], 'Déménagement piano': ['/demenagement-piano/', 'demenagement-piano'],
     'Déménagement pour particuliers': ['/particulier/', 'particulier'], 'Déménagement pour entreprises': ['/entreprise/', 'entreprise']
   };
+  // Photos des petites cartes, comme sur l'ancien site (mêmes photos Wix, importées dans images/)
+  const MCARD_IMG = {
+    'Déménagement de maison et d’appartement': 'visite-technique', 'Déménagement de bureaux et de locaux': 'bureaux-entreprise',
+    'Préparation du mobilier et transport sécurisé': 'cartons-gentlemen', 'Des services utiles en plus du déménagement': 'monte-meuble'
+  };
   const FORMULE_IDS = { 'La formule mobilier seul': 'mobilier-seul', 'La formule Dynamic +': 'dynamic-plus', 'La formule Confort': 'confort', 'La formule Confort +': 'confort-plus' };
   // Images d'illustration par page (photo d'en-tête puis photos placées à côté des sections de texte)
   const HERO_IMG = { '/': 'hero-demenageur', '/services-demenagement/': 'equipe-demenageurs', '/qui-sommes-nous/': 'equipe-demenageurs', '/avis/': 'avis-clients', '/particulier/': 'famille-demenagement' };
@@ -1017,7 +1022,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       }
       if (it.k === 'p') {
         const pr = pairsAt(its, i);
-        if (pr.length >= 2) { html += pr.every((x) => CARD_LINKS[tx(x[0])]) ? `<div class="cards cards--o">${pr.map(serviceCard).join('')}</div>` : `<div class="mcards">${pr.map(([t, d]) => `<div class="mcard"><p class="mcard__t">${t}</p><p>${d}</p></div>`).join('')}</div>`; i += pr.length * 2 - 1; continue; }
+        if (pr.length >= 2) { html += pr.every((x) => CARD_LINKS[tx(x[0])]) ? `<div class="cards cards--o">${pr.map(serviceCard).join('')}</div>` : `<div class="mcards">${pr.map(([t, d]) => { const im = MCARD_IMG[tx(t)]; return im ? `<div class="mcard mcard--img">${img(im, { sizes: '(max-width: 860px) 100vw, 340px' })}<div class="mcard__b"><p class="mcard__t">${t}</p><p>${d}</p></div></div>` : `<div class="mcard"><p class="mcard__t">${t}</p><p>${d}</p></div>`; }).join('')}</div>`; i += pr.length * 2 - 1; continue; }
         const t = tx(it.v);
         const titleLike = (isTitle(it.v) && its[i + 1] && its[i + 1].k !== 'li' ? true : false) || (t.length <= 90 && /[?:]$/.test(t) && (its[i + 1]?.k === 'li' || its[i + 1]?.k === 'p')) || /^\d+\.\s/.test(t) && t.length <= 80;
         html += tag(it, titleLike ? 'ptitle' : ''); continue;
@@ -1129,6 +1134,18 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       if (stats) blocksOut.push(statsBand(stats.v));
     }
     if (pendingHead) blocksOut.push(`<section class="sec"><div class="wrap">${pendingHead}</div></section>`);
+    // Bandeau « chiffres clés » avec son titre : placé juste après l'en-tête (demande du client ; l'ordre des H2 diffère alors de Wix)
+    const si0 = blocksOut.findIndex((b) => /^<section class="stats"><div class="wrap"><div class="sec__head">/.test(b));
+    if (si0 > 0) blocksOut.unshift(...blocksOut.splice(si0, 1));
+    // Deux sections voisines n'ont jamais la même couleur de fond : on change celle d'une section de texte/cartes si besoin
+    const bgOf = (b) => { const c = (b.match(/^<section class="([^"]*)"/) || [])[1] || ''; return /\bquote\b|sec--green/.test(c) ? 'green' : /sec--pink/.test(c) ? 'pink' : /sec--cream|\bstats\b/.test(c) ? 'cream' : /\bagencies\b/.test(c) ? 'agencies' : /\bsec\b/.test(c) ? 'white' : 'other'; };
+    const BG = { white: '', cream: ' sec--cream', pink: ' sec--pink' };
+    for (let i = 0; i < blocksOut.length; i++) {
+      const prev = i ? bgOf(blocksOut[i - 1]) : 'hero', cur = bgOf(blocksOut[i]), next = blocksOut[i + 1] ? bgOf(blocksOut[i + 1]) : 'footer';
+      if ((cur !== prev && cur !== next) || !/^<section class="sec[ "]/.test(blocksOut[i])) continue;
+      const pick = ['white', 'cream', 'pink'].find((k) => k !== prev && k !== next);
+      blocksOut[i] = blocksOut[i].replace(/^<section class="sec[^"]*"/, (m) => m.replace(/ ?sec--(cream|pink|green)/g, '').replace('class="sec', `class="sec${BG[pick]}`));
+    }
     return { html: html + blocksOut.join('\n'), secs };
   };
 
