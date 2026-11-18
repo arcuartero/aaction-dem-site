@@ -750,3 +750,7 @@ ul.plain li{margin-bottom:.5rem}
 .prose--o .net .gent img{margin-left:auto}
 @media (max-width:860px){.prose--o .net{grid-template-columns:1fr}.prose--o .net .gent{justify-self:start;text-align:left}.prose--o .net .gent img{margin-left:0}}
 .card{border:1px solid var(--line)}
+/* Second H2 d'une section qui en a deux à la suite : plus petit que le premier */
+.sec--stack .prose>h2,.sec--stack .net h2,.sec--stack .formules h2{font-size:clamp(1.2rem,1.9vw,1.5rem);margin-top:0}
+.quote.sec--stack .quote__top h2{font-size:clamp(1.4rem,2.4vw,1.9rem)}.quote.sec--stack>.wrap>.sec__head{padding-top:4rem;margin-bottom:0}
+.quote>.wrap>.sec__head h2{font-size:clamp(1.5rem,3vw,2.2rem)}

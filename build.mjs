@@ -1070,7 +1070,8 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     const blocksOut = [];
     const push = (cls, inner, full = false) => {
       const head = pendingHead; pendingHead = '';
-      blocksOut.push(full ? inner.replace('<div class="wrap">', `<div class="wrap">${head}`) : `<section class="sec ${cls}"><div class="wrap">${head}${inner}</div></section>`);
+      // Deux H2 à la suite (titre de section sans contenu + titre suivant) : le second est plus petit (classe sec--stack)
+      blocksOut.push(full ? inner.replace('<div class="wrap">', `<div class="wrap">${head}`) : `<section class="sec ${cls}${head ? ' sec--stack' : ''}"><div class="wrap">${head}${inner}</div></section>`);
     };
     for (let si = 0; si < body.length; si++) {
       const s = body[si]; const ht = s.h ? tx(s.h.v) : ''; const H2 = s.h ? tag(s.h) : '';
@@ -1096,7 +1097,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       if (/^L’ensemble de nos prestations/.test(ht)) { push('sec--pink', `<div class="sec__head">${H2}</div><div class="cards cards--o">${pairsAt(its, 0).map(serviceCard).join('')}</div>`); continue; }
       if (/^Demandez/.test(ht)) {
         const head = pendingHead; pendingHead = '';
-        blocksOut.push(`<section class="quote" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-demenageurs', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
+        blocksOut.push(`<section class="quote${head ? ' sec--stack' : ''}" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-demenageurs', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
         continue;
       }
       if (/^Posts récents/.test(ht)) {
