@@ -741,3 +741,11 @@ ul.plain li{margin-bottom:.5rem}
 @media (max-width:380px){.formules h2{font-size:1.4rem}}
 .formules>*,.quote__top>*,.fgrid>*{min-width:0}
 @media (max-width:480px){.quote h2{font-size:1.75rem}}
+/* Sections de texte alignées sur l'en-tête (bord gauche du logo, bord droit des boutons) */
+.prose--o{max-width:none;margin-inline:0}
+.prose--o>p,.prose--o>ul,.prose--o>h3,.prose--o>h4{max-width:72rem}
+.prose--o .faq{margin:0;max-width:none}
+.prose--o .net{grid-template-columns:1fr auto}
+.prose--o .net .gent{text-align:right;justify-self:end}
+.prose--o .net .gent img{margin-left:auto}
+@media (max-width:860px){.prose--o .net{grid-template-columns:1fr}.prose--o .net .gent{justify-self:start;text-align:left}.prose--o .net .gent img{margin-left:0}}
