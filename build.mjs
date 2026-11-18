@@ -486,8 +486,8 @@ for (const [pi, pg] of pages.entries()) {
   const parent = pg.slug === 'particulier' ? [] : inPart ? [{ name: 'Particulier', href: '/particulier/' }] : [{ name: 'Services', href: '/services-demenagement/' }];
   const trail = [{ name: 'Accueil', href: '/' }, ...parent, { name: pg.crumb, href: p }];
   const ld = [
-    { '@type': 'WebPage', '@id': abs(p + '#webpage'), url: abs(p), name: pg.title, description: pg.description, isPartOf: { '@id': abs('/#website') }, breadcrumb: { '@id': abs(p + '#breadcrumb') }, primaryImageOfPage: abs(imgMeta[pg.img].src), inLanguage: 'fr-FR' },
-    { ...crumbsLd(trail), '@id': abs(p + '#breadcrumb') },
+    { '@type': 'WebPage', '@id': abs(p + '#webpage'), url: abs(p), name: pg.title, description: pg.description, isPartOf: { '@id': abs('/#website') }, ...(pg.slug === 'demenagement-knutange' ? {} : { breadcrumb: { '@id': abs(p + '#breadcrumb') } }), primaryImageOfPage: abs(imgMeta[pg.img].src), inLanguage: 'fr-FR' },
+    ...(pg.slug === 'demenagement-knutange' ? [] : [{ ...crumbsLd(trail), '@id': abs(p + '#breadcrumb') }]),
     { '@type': 'Service', name: pg.service, serviceType: pg.service, description: pg.description, provider: { '@id': orgId }, areaServed: pg.local ? { '@type': 'City', name: pg.local } : site.areaServed.map((n) => ({ '@type': 'Place', name: n })), url: abs(p) },
     ...(pg.faq?.length ? [faqLd(pg.faq)] : [])
   ];
@@ -496,7 +496,7 @@ for (const [pi, pg] of pages.entries()) {
     current: p, alt: pg.slug === 'demenagement-luxembourg' ? { fr: p, en: EN_LUX } : undefined,
     body: `
 <section class="phero${pg.heroTheme ? ' phero--' + pg.heroTheme : ''}"><div class="wrap phero__in">
-  <div>${crumbsHtml(trail)}<p class="hero__kicker">${pg.kicker}</p><h1>${pg.h1}</h1><p>${pg.lead}</p>
+  <div>${pg.slug === 'demenagement-knutange' ? '' : crumbsHtml(trail)}<p class="hero__kicker">${pg.kicker}</p><h1>${pg.h1}</h1><p>${pg.lead}</p>
   <a class="btn btn--white" href="#devis">Devis gratuit ${ic.arrow}</a>${pg.slug === 'demenagement-luxembourg' ? `<p class="langlink"><a href="${EN_LUX}" hreflang="en" lang="en">Moving in Luxembourg? Read this page in English →</a></p>` : ''}</div>
   <div class="phero__img">${img(pg.img, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
 </div></section>
@@ -1122,7 +1122,8 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       const plogos = /partenariats/.test(ht) ? `<ul class="plogos">${partners.map((x) => `<li>${logoMeta[x.logo] ? logoImg(x.logo, x.name, 72) : x.name}</li>`).join('')}</ul>` : '';
       const cls = alt++ % 2 ? 'sec--cream' : '';
       if (im) push(cls, `<div class="osplit${side++ % 2 ? ' osplit--rev' : ''}"><div class="prose">${headHtml}${flow(its)}</div><div>${img(im, { sizes: '(max-width: 860px) 100vw, 560px' })}</div></div>`);
-      else push(cls, `<div class="prose prose--o">${headHtml}${flow(its, { points: gent })}</div>${plogos}`);
+      else if (plogos) push(cls, `<div class="partners"><div class="prose">${headHtml}${flow(its)}</div>${plogos}</div>`);
+      else push(cls, `<div class="prose prose--o">${headHtml}${flow(its, { points: gent })}</div>`);
       if (stats) blocksOut.push(statsBand(stats.v));
     }
     if (pendingHead) blocksOut.push(`<section class="sec"><div class="wrap">${pendingHead}</div></section>`);
