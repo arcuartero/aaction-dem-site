@@ -749,3 +749,4 @@ ul.plain li{margin-bottom:.5rem}
 .prose--o .net .gent{text-align:right;justify-self:end}
 .prose--o .net .gent img{margin-left:auto}
 @media (max-width:860px){.prose--o .net{grid-template-columns:1fr}.prose--o .net .gent{justify-self:start;text-align:left}.prose--o .net .gent img{margin-left:0}}
+.card{border:1px solid var(--line)}

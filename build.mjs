@@ -929,6 +929,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
 // Mêmes titres H1–H4, dans le même ordre, et mêmes textes que l'ancien site (src/original/<page>.json : [balise, html]).
 // Chaque section de l'ancien site est rendue avec le bloc équivalent du nouveau design (chiffres, formules, avis, agences…).
 {
+  const WIX_REVIEWS = JSON.parse(await readFile(path.join(root, 'src/data/wix-reviews.json'), 'utf8'));
   const tx = (h) => String(h).replace(/<br>/g, ' ').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
   const isH = (t) => /^h[1-6]$/.test(t);
   const STAT_SEQ = ['90%', 'Satisfaction client', '30', "Années d'expérience", '1200', 'Déménagements par an', 'ISO'];
@@ -1088,8 +1089,8 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
         continue;
       }
       if (/^Nos clients nous recommandent/.test(ht)) {
-        const rv = []; for (let i = 0; i < its.length; i += 2) rv.push([its[i].v, its[i + 1]?.v || '']);
-        push('sec--pink', `<div class="sec__head">${H2}</div><div class="rgrid rgrid--3">${rv.map(([n, t]) => `<figure class="review"><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><blockquote>${t}</blockquote><figcaption><strong>${n}</strong></figcaption></figure>`).join('')}</div><p class="center"><a class="btn btn--outline-red" href="/avis/">Voir tous les avis</a></p>`);
+        // Carrousel : les 6 avis du carrousel de l'accueil Wix (src/data/wix-reviews.json), 3 visibles à la fois sur ordinateur
+        push('sec--pink', `<div class="sec__head">${H2}</div><div class="reviews"><button type="button" class="rnav rnav--prev" aria-label="Avis précédents">‹</button><div class="rtrack" tabindex="0" aria-label="Avis clients">${WIX_REVIEWS.map((r) => `<figure class="review"><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><blockquote>${r.html}</blockquote><figcaption><strong>${r.name}</strong></figcaption></figure>`).join('')}</div><button type="button" class="rnav rnav--next" aria-label="Avis suivants">›</button></div><p class="center"><a class="btn btn--outline-red" href="/avis/">Voir tous les avis</a></p>`);
         continue;
       }
       if (/^L’ensemble de nos prestations/.test(ht)) { push('sec--pink', `<div class="sec__head">${H2}</div><div class="cards cards--o">${pairsAt(its, 0).map(serviceCard).join('')}</div>`); continue; }

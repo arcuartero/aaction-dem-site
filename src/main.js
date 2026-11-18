@@ -12,7 +12,7 @@
     document.querySelectorAll('.rnav').forEach(function (b) {
       b.addEventListener('click', function () {
         var dir = b.classList.contains('rnav--next') ? 1 : -1;
-        track.scrollBy({ left: dir * track.clientWidth / 1.5, behavior: 'smooth' });
+        track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' }); // une « page » d'avis à la fois
       });
     });
   }
