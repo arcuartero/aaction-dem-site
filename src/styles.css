@@ -793,3 +793,11 @@ ul.plain li{margin-bottom:.5rem}
 .acard__b h2{font-family:var(--body);text-transform:none;font-size:clamp(1.25rem,1.8vw,1.6rem);line-height:1.25;margin:0}
 .acard__b p{color:var(--muted);margin:0;flex:1}
 @media (max-width:860px){.fgrid2{grid-template-columns:1fr;gap:1.6rem}.acard__b{padding:1.4rem 1.4rem 1.6rem}}
+/* ---------- Références clients (page Entreprise) : bandeau de logos défilant ---------- */
+.refs{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.refs__track{display:flex;align-items:center;justify-content:space-around;gap:4.5rem;flex:none;min-width:100%;margin:0;padding:1rem 2.25rem;list-style:none;animation:refs 32s linear infinite}
+.refs__track li{flex:none}
+.refs__track img{height:56px;width:auto;max-width:none}
+.refs:hover .refs__track{animation-play-state:paused}
+@keyframes refs{to{transform:translateX(-100%)}}
+@media (max-width:600px){.refs__track{gap:3rem;padding:1rem 1.5rem}.refs__track img{height:44px}}

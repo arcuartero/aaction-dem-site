@@ -67,6 +67,14 @@ LOGO_FILES = {
     'credit-agricole':   'cd448d_8ba7bfc068af4944872d06b19f1d8cf4~mv2.png',
     'direct-assurance':  'cd448d_c607fbd62b884c7180447251499ed90d~mv2.png',
     'visa-premier':      'cd448d_9d3edb3018fc4ce3975341d188783970~mv2.png',
+    # Références clients de la page Entreprise (bandeau de logos de l'ancien site)
+    'ref-mettis':        'cd448d_c6419819f42e4c51904878781b7ff008~mv2.png',
+    'ref-greta':         'cd448d_4c842fb27553425abc885c28f56fddc7~mv2.png',
+    'ref-edf':           'cd448d_0170d645dadd4c10a3830bce97a747c5~mv2.png',
+    'ref-arcelormittal': 'cd448d_4052eaa44f5e462d9991212c0511edf5~mv2.png',
+    'ref-derichebourg':  'cd448d_10a2ab93a45d41a78d777a92b1a3d43d~mv2.png',
+    'ref-la-poste':      'cd448d_1e320d8988de4b28a5732ad0bd20cf95~mv2.png',
+    'ref-audun-le-tiche':'cd448d_852fc95a672144d5ad21d20f9454f412~mv2.png',
 }
 
 

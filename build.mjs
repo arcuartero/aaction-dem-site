@@ -1084,6 +1084,13 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       const s = body[si]; const ht = s.h ? tx(s.h.v) : ''; const H2 = s.h ? tag(s.h) : '';
       const stats = s.items.find((x) => x.k === 'stats'); const ag = s.items.find((x) => x.k === 'agencies');
       const its = s.items.filter((x) => x.k !== 'stats' && x.k !== 'agencies');
+      if (/^Des références qui nous font confiance/.test(ht)) {
+        // Bandeau défilant des logos clients (mêmes logos que l'ancien site, page Entreprise)
+        const REF_LOGOS = [['ref-mettis', 'Mettis'], ['ref-greta', 'GRETA'], ['ref-edf', 'EDF'], ['ref-arcelormittal', 'ArcelorMittal'], ['ref-derichebourg', 'Derichebourg'], ['ref-la-poste', 'La Poste'], ['ref-audun-le-tiche', 'Audun-le-Tiche']];
+        const list = REF_LOGOS.map(([k, alt]) => `<li>${logoImg(k, alt, 56)}</li>`).join('');
+        push('', `<div class="sec__head">${H2}</div><div class="refs"><ul class="refs__track">${list}</ul><ul class="refs__track" aria-hidden="true">${list.replace(/ alt="[^"]*"/g, ' alt=""')}</ul></div>`);
+        continue;
+      }
       if (s.h && !s.items.length) {
         // H2 sans contenu suivi de sections courtes à un paragraphe : grille de cartes (ex. garde-meuble Metz / Thionville / Moselle)
         const run = []; let j = si + 1;
