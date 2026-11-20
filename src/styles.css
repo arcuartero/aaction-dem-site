@@ -801,3 +801,4 @@ ul.plain li{margin-bottom:.5rem}
 .refs:hover .refs__track{animation-play-state:paused}
 @keyframes refs{to{transform:translateX(-100%)}}
 @media (max-width:600px){.refs__track{gap:3rem;padding:1rem 1.5rem}.refs__track img{height:44px}}
+@media (min-width:861px){.mcards--3{grid-template-columns:repeat(3,minmax(0,1fr))!important}}

@@ -941,14 +941,21 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   // Photos des petites cartes, comme sur l'ancien site (mêmes photos Wix, importées dans images/)
   const MCARD_IMG = {
     'Déménagement de maison et d’appartement': 'visite-technique', 'Déménagement de bureaux et de locaux': 'bureaux-entreprise',
-    'Préparation du mobilier et transport sécurisé': 'cartons-gentlemen', 'Des services utiles en plus du déménagement': 'monte-meuble'
+    'Préparation du mobilier et transport sécurisé': 'cartons-gentlemen', 'Des services utiles en plus du déménagement': 'monte-meuble',
+    // Entreprise : « Construisons ensemble votre transfert » (photos de la nouvelle web, celles de Wix venant de sa banque d'images)
+    'Transfert administratif': 'bureaux-entreprise', 'Transfert industriel': 'dechargement-camion', 'Transfert informatique': 'emballage-protection',
+    "Transfert d'archives": 'cartons-gentlemen', 'Relocation': 'famille-demenagement', 'Transfert de matériel spécifique': 'monte-meuble-rue'
   };
+  // Boutons de l'en-tête repris de l'ancien site (sinon « Devis gratuit »)
+  const HERO_CTAS = { '/entreprise/': [['Demande de devis', '#devis', 'btn--white'], ['Ou laissez-nous vous rappeler', '/contact/', 'btn--ghost']] };
+  // Côté de la première photo à côté d'un texte (1 = photo à gauche, comme sur l'ancien site)
+  const FIRST_SIDE = { '/entreprise/': 1 };
   const FORMULE_IDS = { 'La formule mobilier seul': 'mobilier-seul', 'La formule Dynamic +': 'dynamic-plus', 'La formule Confort': 'confort', 'La formule Confort +': 'confort-plus' };
   // Images d'illustration par page (photo d'en-tête puis photos placées à côté des sections de texte)
   const HERO_IMG = { '/': 'hero-demenageur', '/services-demenagement/': 'equipe-demenageurs', '/qui-sommes-nous/': 'equipe-demenageurs', '/avis/': 'avis-clients', '/particulier/': 'famille-demenagement' };
   const POOL = {
     '/': ['equipe-gentlemen', 'cartons-gentlemen'], '/particulier/': ['emballage-protection', 'equipe-gentlemen', 'protection-mobilier'],
-    '/entreprise/': ['bureaux-entreprise', 'visite-technique'], '/garde-meuble/': ['dechargement-camion', 'protection-mobilier', 'cartons-gentlemen'],
+    '/entreprise/': ['camion-centre-ville', 'visite-technique'], '/garde-meuble/': ['dechargement-camion', 'protection-mobilier', 'cartons-gentlemen'],
     '/monte-meubles-demenagement/': ['monte-meuble-rue', 'camion-centre-ville', 'equipe-gentlemen'], '/demenagement-metz/': ['camion-centre-ville', 'dechargement-camion', 'equipe-gentlemen'],
     '/demenagement-thionville/': ['cartons-gentlemen', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-luxembourg/': ['dechargement-camion', 'equipe-gentlemen'],
     '/demenagement-longwy/': ['longwy-ville-haute', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-piano/': ['protection-mobilier', 'equipe-gentlemen'],
@@ -1024,7 +1031,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       }
       if (it.k === 'p') {
         const pr = pairsAt(its, i);
-        if (pr.length >= 2) { html += pr.every((x) => CARD_LINKS[tx(x[0])]) ? `<div class="cards cards--o">${pr.map(serviceCard).join('')}</div>` : `<div class="mcards">${pr.map(([t, d]) => { const im = MCARD_IMG[tx(t)]; return im ? `<div class="mcard mcard--img">${img(im, { sizes: '(max-width: 860px) 100vw, 340px' })}<div class="mcard__b"><p class="mcard__t">${t}</p><p>${d}</p></div></div>` : `<div class="mcard"><p class="mcard__t">${t}</p><p>${d}</p></div>`; }).join('')}</div>`; i += pr.length * 2 - 1; continue; }
+        if (pr.length >= 2) { html += pr.every((x) => CARD_LINKS[tx(x[0])]) ? `<div class="cards cards--o">${pr.map(serviceCard).join('')}</div>` : `<div class="mcards${pr.length % 3 === 0 && pr.length % 4 ? ' mcards--3' : ''}">${pr.map(([t, d]) => { const im = MCARD_IMG[tx(t)]; return im ? `<div class="mcard mcard--img">${img(im, { sizes: '(max-width: 860px) 100vw, 340px' })}<div class="mcard__b"><p class="mcard__t">${t}</p><p>${d}</p></div></div>` : `<div class="mcard"><p class="mcard__t">${t}</p><p>${d}</p></div>`; }).join('')}</div>`; i += pr.length * 2 - 1; continue; }
         const t = tx(it.v);
         const titleLike = (isTitle(it.v) && its[i + 1] && its[i + 1].k !== 'li' ? true : false) || (t.length <= 90 && /[?:]$/.test(t) && (its[i + 1]?.k === 'li' || its[i + 1]?.k === 'p')) || /^\d+\.\s/.test(t) && t.length <= 80;
         html += tag(it, titleLike ? 'ptitle' : ''); continue;
@@ -1065,7 +1072,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     } else {
       html = `<section class="phero${pageImg ? '' : ' phero--noimg'}"><div class="wrap phero__in">
   <div>${pre.map((x) => tag(x, 'hero__kicker')).join('')}${tag(hero.h)}${subs.map((s) => tag(s, 'phero__sub')).join('')}${heroP.map((x) => tag(x)).join('')}
-  <a class="btn btn--white" href="${cta}">Devis gratuit ${ic.arrow}</a>${lux}</div>
+  ${HERO_CTAS[p] ? `<div class="phero__ctas">${HERO_CTAS[p].map(([l, h, c]) => `<a class="btn ${c}" href="${h}">${l} ${ic.arrow}</a>`).join('')}</div>` : `<a class="btn btn--white" href="${cta}">Devis gratuit ${ic.arrow}</a>`}${lux}</div>
   ${pageImg ? `<div class="phero__img">${img(pageImg, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>` : ''}
 </div></section>`;
     }
@@ -1073,7 +1080,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     const body = [];
     if (hi.length) body.push({ h: null, items: hi });
     body.push(...rest);
-    let alt = 0, side = 0, pendingHead = '';
+    let alt = 0, side = FIRST_SIDE[p] || 0, pendingHead = '';
     const blocksOut = [];
     const push = (cls, inner, full = false) => {
       const head = pendingHead; pendingHead = '';
