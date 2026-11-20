@@ -1094,6 +1094,30 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       const s = body[si]; const ht = s.h ? tx(s.h.v) : ''; const H2 = s.h ? tag(s.h) : '';
       const stats = s.items.find((x) => x.k === 'stats'); const ag = s.items.find((x) => x.k === 'agencies');
       const its = s.items.filter((x) => x.k !== 'stats' && x.k !== 'agencies');
+      if (/^Où se situe notre garde-meuble/.test(ht)) {
+        // Garde-meuble : infos pratiques (icônes), atouts (h3) et carte Google Maps (affichée après accord cookies) + itinéraire
+        const intro = []; let k = 0;
+        while (its[k]?.k === 'p' && !/^<strong>/.test(its[k].v)) intro.push(its[k++]);
+        const rows = [];
+        for (; its[k]?.k === 'p'; k++) {
+          const m = its[k].v.match(/^<strong>(.*?)<\/strong>(?:<br>)?(.*)$/);
+          if (m && !m[2] && its[k + 1]?.k === 'p') { rows.push([m[1], its[k + 1].v]); k++; } else if (m) rows.push([m[1], m[2]]); else rows.push(['', its[k].v]);
+        }
+        const chips = its.slice(k).filter((x) => /^h[3-6]$/.test(x.k));
+        const route = (rows.map((r) => r[1]).join(' ').match(/href="([^"]+)"/) || [])[1] || site.agencies[0].maps;
+        const gmIc = [
+          '<path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+          '<path d="M5 17h14v-4.5l-1.8-4.6A2 2 0 0 0 15.3 6.6H8.7a2 2 0 0 0-1.9 1.3L5 12.5z"/><path d="M5 12.5h14M7.5 17v2M16.5 17v2"/><circle cx="8" cy="14.8" r=".9"/><circle cx="16" cy="14.8" r=".9"/>',
+          '<path d="M3 6.5l6-2.5 6 2.5 6-2.5v13l-6 2.5-6-2.5-6 2.5z"/><path d="M9 4v13M15 6.5v13"/>'
+        ];
+        const a0 = site.agencies[0];
+        push(alt++ % 2 ? 'sec--cream' : '', `<div class="prose prose--o">${H2}${flow(intro)}</div>
+<div class="gm"><div class="gm__info"><ul class="gm__rows">${rows.map(([t, d], n) => `<li class="gm__row"><span class="gm__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${gmIc[n] || gmIc[0]}</svg></span><div>${t ? `<p class="gm__t"><strong>${t}</strong></p>` : ''}<p>${d}</p></div></li>`).join('')}</ul>
+${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</div>` : ''}</div>
+<div class="gm__map"><div class="mapbox" data-consent="maps"><iframe data-src="${a0.maps}&amp;output=embed" title="Carte du garde-meuble Aaction Dem à Knutange" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe><p class="mapbox__note">Google Maps dépose ses propres cookies : la carte s’affiche si vous l’acceptez.</p><button type="button" class="mapbox__btn" data-cc-grant="maps">Afficher la carte</button></div>
+<a class="btn btn--red gm__go" href="${route}" target="_blank" rel="noopener">Voir l’itinéraire ${ic.arrow}</a></div></div>`);
+        continue;
+      }
       if (/^Des références qui nous font confiance/.test(ht)) {
         // Bandeau défilant des logos clients (mêmes logos que l'ancien site, page Entreprise)
         const REF_LOGOS = [['ref-mettis', 'Mettis'], ['ref-greta', 'GRETA'], ['ref-edf', 'EDF'], ['ref-arcelormittal', 'ArcelorMittal'], ['ref-derichebourg', 'Derichebourg'], ['ref-la-poste', 'La Poste'], ['ref-audun-le-tiche', 'Audun-le-Tiche']];
