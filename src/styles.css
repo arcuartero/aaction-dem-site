@@ -781,3 +781,15 @@ ul.plain li{margin-bottom:.5rem}
 .agcard__t a{color:inherit;text-decoration:none}.agcard__t a:hover{color:var(--cta)}
 .agcard__t{font-size:clamp(1.25rem,1.55vw,1.6rem)}
 .agsec .sec__head{max-width:none}
+/* ---------- Page FAQ : en-tête complet + grandes cartes d'articles (2 par ligne) ---------- */
+.phero__ctas{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.4rem}
+.phero .btn--ghost{color:#fff}
+.fgrid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.4rem}
+.acard{background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+.acard__img img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .3s}
+.acard__img{display:block;overflow:hidden}
+.acard:hover .acard__img img{transform:scale(1.03)}
+.acard__b{padding:1.8rem 2rem 2rem;display:flex;flex-direction:column;align-items:flex-start;gap:.9rem;flex:1}
+.acard__b h2{font-family:var(--body);text-transform:none;font-size:clamp(1.25rem,1.8vw,1.6rem);line-height:1.25;margin:0}
+.acard__b p{color:var(--muted);margin:0;flex:1}
+@media (max-width:860px){.fgrid2{grid-template-columns:1fr;gap:1.6rem}.acard__b{padding:1.4rem 1.4rem 1.6rem}}

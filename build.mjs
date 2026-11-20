@@ -1184,11 +1184,23 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
 <section class="sec sec--pink"><div class="wrap"><div class="rgrid">${rv.map((r) => `<figure class="review"><div class="review__who"><span class="review__ini" aria-hidden="true">${r.ini}</span><figcaption><strong>${r.name}</strong></figcaption></div><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><blockquote>${r.txt.map((x) => `<p>${x}</p>`).join('')}</blockquote></figure>`).join('')}</div>
 <p class="center"><a class="btn btn--red" href="/contact/">Demander un devis gratuit</a></p></div></section>`;
   };
+  // Extrait d'un article : début de son premier paragraphe (texte de l'ancien site), coupé proprement vers 190 caractères
+  const excerptOf = (slug) => {
+    const first = (ORIG[`/post/${slug}/`] || []).find(([t, h]) => t === 'p' && !/^Dernière mise à jour/.test(tx(h)));
+    const t = first ? tx(first[1]).replace(/\s+([,.])/g, '$1') : '';
+    return t.length > 190 ? t.slice(0, t.lastIndexOf(' ', 190)).replace(/[\s,;:]+$/, '') + '…' : t;
+  };
   const renderFaq = (p, b) => {
     const it = toItems(b); const h1 = it.find((x) => x.k === 'h1'); const h2 = it.filter((x) => x.k === 'h2');
     const bySlug = (h) => posts.find((po) => tx((ORIG[`/post/${po.slug}/`] || [])[0]?.[1] || '') === tx(h.v)) || posts.find((po) => tx(h.v).includes(tx(po.h1).slice(0, 25)));
-    return `<section class="phero phero--noimg"><div class="wrap phero__in"><div>${tag(h1)}</div></div></section>
-<section class="sec"><div class="wrap"><div class="pgrid">${h2.map((h) => { const po = bySlug(h); return po ? `<a class="pcard" href="/post/${po.slug}/">${img(po.img, { sizes: '(max-width: 860px) 100vw, 420px' })}${tag(h)}<span class="more">Lire l’article ${ic.arrow}</span></a>` : tag(h); }).join('')}</div></div></section>`;
+    return `<section class="phero"><div class="wrap phero__in">
+  <div><p class="hero__kicker">Conseils et questions fréquentes</p>${tag(h1)}
+    <p>Prix d’un déménagement, déménagement à Metz ou au Luxembourg, transport de piano : retrouvez nos réponses et nos conseils pour préparer votre déménagement en Moselle et au Luxembourg.</p>
+    <div class="phero__ctas"><a class="btn btn--white" href="/contact/">Demander un devis gratuit ${ic.arrow}</a><a class="btn btn--ghost" href="tel:${site.phone.replace(/\s/g, '')}" data-hours-check>${ic.phone} ${site.phoneDisplay}</a></div></div>
+  <div class="phero__img">${img('cartons-gentlemen', { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
+</div></section>
+<section class="sec sec--cream"><div class="wrap"><div class="fgrid2">${h2.map((h) => { const po = bySlug(h); return po ? `<article class="acard"><a class="acard__img" href="/post/${po.slug}/" tabindex="-1" aria-hidden="true">${img(po.img, { sizes: '(max-width: 860px) 100vw, 680px' })}</a>
+  <div class="acard__b">${tag(h)}<p>${excerptOf(po.slug)}</p><a class="btn btn--outline-red" href="/post/${po.slug}/">Lire l’article ${ic.arrow}<span class="sr-only"> : ${tx(h.v)}</span></a></div></article>` : tag(h); }).join('')}</div></div></section>`;
   };
   const renderPost = (p, b) => {
     const po = posts.find((x) => `/post/${x.slug}/` === p);
