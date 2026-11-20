@@ -802,3 +802,6 @@ ul.plain li{margin-bottom:.5rem}
 @keyframes refs{to{transform:translateX(-100%)}}
 @media (max-width:600px){.refs__track{gap:3rem;padding:1rem 1.5rem}.refs__track img{height:44px}}
 @media (min-width:861px){.mcards--3{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+.phero .phero__note{display:flex;align-items:center;gap:.45rem;margin:.9rem 0 0;font-size:.9rem;font-weight:700;opacity:.95}
+.phero__note svg{width:18px;height:18px;flex:none}
+.phero:not(.phero--green) .phero__in>div:first-child>p.phero__note{font-size:.9rem;line-height:1.4}

@@ -1058,6 +1058,9 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     const heroP = [];
     const hi = [...hero.items];
     if (hi[0]?.k === 'p' && tx(hi[0].v).length <= 320 && !pairsAt(hi, 0).length) heroP.push(hi.shift());
+    // Courte mention juste après (ex. « Sécurisé 24h/24 et 7j/7 ») : petit détail sous le bouton principal de l'en-tête
+    const heroNote = hi[0]?.k === 'p' && tx(hi[0].v).length <= 40 && heroP.length ? hi.shift() : null;
+    const noteHtml = heroNote ? `<p class="phero__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>${tx(heroNote.v)}</p>` : '';
     const lux = p === '/demenagement-luxembourg/' ? `<p class="langlink"><a href="${EN_LUX}" hreflang="en" lang="en">Moving in Luxembourg? Read this page in English →</a></p>` : '';
     let html;
     if (p === '/') {
@@ -1072,7 +1075,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     } else {
       html = `<section class="phero${pageImg ? '' : ' phero--noimg'}"><div class="wrap phero__in">
   <div>${pre.map((x) => tag(x, 'hero__kicker')).join('')}${tag(hero.h)}${subs.map((s) => tag(s, 'phero__sub')).join('')}${heroP.map((x) => tag(x)).join('')}
-  ${HERO_CTAS[p] ? `<div class="phero__ctas">${HERO_CTAS[p].map(([l, h, c]) => `<a class="btn ${c}" href="${h}">${l} ${ic.arrow}</a>`).join('')}</div>` : `<a class="btn btn--white" href="${cta}">Devis gratuit ${ic.arrow}</a>`}${lux}</div>
+  ${HERO_CTAS[p] ? `<div class="phero__ctas">${HERO_CTAS[p].map(([l, h, c]) => `<a class="btn ${c}" href="${h}">${l} ${ic.arrow}</a>`).join('')}</div>` : `<a class="btn btn--white" href="${cta}">Devis gratuit ${ic.arrow}</a>`}${noteHtml}${lux}</div>
   ${pageImg ? `<div class="phero__img">${img(pageImg, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>` : ''}
 </div></section>`;
     }
