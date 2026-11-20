@@ -206,6 +206,22 @@
       "source": "site",
       "alt": "Déménageur Aaction Dem chargeant un meuble protégé dans un camion « Déménageurs de vies »",
       "prompt": ""
+    },
+    {
+      "name": "agence-knutange",
+      "format": "webp",
+      "size": "382x272",
+      "source": "site",
+      "alt": "Knutange : pont sur la Fensch et église au bord de l’eau",
+      "prompt": ""
+    },
+    {
+      "name": "agence-metz",
+      "format": "webp",
+      "size": "382x272",
+      "source": "site",
+      "alt": "Metz : la cathédrale Saint-Étienne vue depuis la Moselle",
+      "prompt": ""
     }
   ]
 }

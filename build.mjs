@@ -1002,10 +1002,12 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   const tag = (it, cls = '') => `<${it.k}${cls ? ` class="${cls}"` : ''}>${it.v}</${it.k}>`;
   const isTitle = (h) => { const t = tx(h); return t.length > 0 && t.length <= 70 && !/<a /.test(h) && !/[.!?:…;,]$/.test(t) && !/^[✅👉📦📞💰]/u.test(t) && !/^[a-zà-ÿ]/.test(t); };
   const pairsAt = (its, i) => { const r = []; while (its[i]?.k === 'p' && isTitle(its[i].v) && its[i + 1]?.k === 'p' && !isTitle(its[i + 1].v)) { r.push([its[i].v, its[i + 1].v]); i += 2; } return r; };
-  const agencyCard = (seg, i) => `<div class="agency ${i ? 'agency--green' : 'agency--orange'}"><p class="agency__t">${seg[0]}</p>
-<address>${seg.slice(1, -1).join('<br>')}<span>${seg[seg.length - 1]}</span></address>
-<a class="btn btn--white" href="/contact/">Nous rendre visite ${ic.arrow}</a>
-<img class="agency__art" src="/images/villes/${i ? 'metz' : 'knutange'}.svg" width="${i ? 1066 : 953}" height="${i ? 630 : 662}" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>`;
+  // Carte d'agence : photo de la ville + adresse et horaires (texte de l'ancien site), Metz avec la photo à droite
+  const pinIc = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
+  const clockIc = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  const agencyCard = (seg, i) => `<div class="agcard${i ? ' agcard--rev' : ''}"><div class="agcard__img">${img(i ? 'agence-metz' : 'agence-knutange', { sizes: '(max-width: 600px) 100vw, 320px' })}</div>
+<div class="agcard__b"><p class="agcard__t">${seg[0]}</p><p class="agcard__l agcard__addr">${pinIc}<span>${seg.slice(1, -1).join('<br>')}</span></p><p class="agcard__l">${clockIc}<span>${seg[seg.length - 1]}</span></p>
+<a class="btn btn--outline-red" href="/contact/">Nous rendre visite ${ic.arrow}</a></div></div>`;
   const statsBand = (v, head = '') => `<section class="stats"><div class="wrap">${head ? `<div class="sec__head">${head}</div>` : ''}<ul>${v.map(([n, l], i) => `<li>${[ic.medal, ic.box, ic.truck, ic.iso][i]}<div><strong>${n}</strong><span>${l}</span></div></li>`).join('')}</ul></div></section>`;
   const serviceCard = ([t, d]) => { const [href, im] = CARD_LINKS[tx(t)]; return `<article class="card">${img(im, { sizes: '(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 280px' })}<div class="card__b"><p class="card__t">${t}</p><p>${d}</p><a class="btn btn--outline-red" href="${href}">Voir plus ${ic.arrow}</a></div></article>`; };
   const ulOf = (lis) => `<ul class="${lis.some((l) => /^\p{Extended_Pictographic}/u.test(tx(l))) ? 'plain' : 'checks'}">${lis.map((l) => `<li>${l}</li>`).join('')}</ul>`;
@@ -1112,7 +1114,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       if (ag) {
         const head = pendingHead + (H2 ? `<div class="sec__head sec__head--solo">${H2}</div>` : ''); pendingHead = '';
         if (its.length) push('', flow(its));
-        blocksOut.push(`<section class="sec sec--agh"><div class="wrap">${head}</div></section><section class="agencies" aria-label="Nos agences">${ag.v.map(agencyCard).join('')}</section>`);
+        blocksOut.push(`<section class="agsec" aria-label="Nos agences"><div class="wrap">${head.replace(/ sec__head--solo/g, '')}<div class="aggrid">${ag.v.map(agencyCard).join('')}</div></div></section>`);
         if (stats) blocksOut.push(statsBand(stats.v));
         continue;
       }
