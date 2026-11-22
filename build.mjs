@@ -1180,6 +1180,9 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
     // Bandeau « chiffres clés » avec son titre : placé juste après l'en-tête (demande du client ; l'ordre des H2 diffère alors de Wix)
     const si0 = blocksOut.findIndex((b) => /^<section class="stats"><div class="wrap"><div class="sec__head">/.test(b));
     if (si0 > 0) blocksOut.unshift(...blocksOut.splice(si0, 1));
+    // Section des agences, quand elle existe : toujours juste avant le formulaire de devis
+    const agi = blocksOut.findIndex((b) => b.startsWith('<section class="agsec"'));
+    if (agi >= 0) { const agb = blocksOut.splice(agi, 1)[0]; const qi = blocksOut.findIndex((b) => b.startsWith('<section class="quote')); blocksOut.splice(qi >= 0 ? qi : blocksOut.length, 0, agb); }
     // Deux sections voisines n'ont jamais la même couleur de fond : on change celle d'une section de texte/cartes si besoin
     const bgOf = (b) => { const c = (b.match(/^<section class="([^"]*)"/) || [])[1] || ''; return /\bquote\b|sec--green/.test(c) ? 'green' : /sec--pink/.test(c) ? 'pink' : /sec--cream|\bstats\b/.test(c) ? 'cream' : /\bagencies\b/.test(c) ? 'agencies' : /\bsec\b/.test(c) ? 'white' : 'other'; };
     const BG = { white: '', cream: ' sec--cream', pink: ' sec--pink' };
