@@ -1209,7 +1209,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
     ${soc ? `<p class="chero__soc">${soc.v}</p><ul class="social social--dark">${site.social.map((x) => `<li><a href="${x.href}" rel="noopener" target="_blank" aria-label="Aaction Dem sur ${x.name}">${socialIc[x.name]}</a></li>`).join('')}</ul>` : ''}</div>
   <div class="chero__form">${quoteFormCompact()}</div>
 </div></section>
-<section class="sec sec--cream" id="carte"><div class="wrap"><div class="sec__head">${h2s.map((h, i) => tag(h, i ? 'sec__h2sub' : '')).join('')}</div>
+<section class="sec sec--pink" id="carte"><div class="wrap"><div class="sec__head">${h2s.map((h, i) => tag(h, i ? 'sec__h2sub' : '')).join('')}</div>
 <div class="maps">${cards.map((c, i) => { const a = site.agencies[i] || site.agencies[0]; return `
   <article class="mapcard"><div class="mapbox" data-consent="maps"><iframe data-src="${a.maps}&amp;output=embed" title="Carte de l’agence Aaction Dem de ${a.city}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe><p class="mapbox__note">Google Maps dépose ses propres cookies : la carte s’affiche si vous l’acceptez.</p><button type="button" class="mapbox__btn" data-cc-grant="maps">Afficher la carte</button></div>
     <div class="mapcard__txt">${tag(c.h)}${c.ps.map((x) => tag(x)).join('')}<p><a href="${a.maps}" target="_blank" rel="noopener">Itinéraire sur Google Maps ↗</a></p></div></article>`; }).join('')}
@@ -1243,7 +1243,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
     <div class="phero__ctas"><a class="btn btn--white" href="/contact/">Demander un devis gratuit ${ic.arrow}</a><a class="btn btn--ghost" href="tel:${site.phone.replace(/\s/g, '')}" data-hours-check>${ic.phone} ${site.phoneDisplay}</a></div></div>
   <div class="phero__img">${img('cartons-gentlemen', { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
 </div></section>
-<section class="sec sec--cream"><div class="wrap"><div class="fgrid2">${h2.map((h) => { const po = bySlug(h); return po ? `<article class="acard"><a class="acard__img" href="/post/${po.slug}/" tabindex="-1" aria-hidden="true">${img(po.img, { sizes: '(max-width: 860px) 100vw, 680px' })}</a>
+<section class="sec sec--pink"><div class="wrap"><div class="fgrid2">${h2.map((h) => { const po = bySlug(h); return po ? `<article class="acard"><a class="acard__img" href="/post/${po.slug}/" tabindex="-1" aria-hidden="true">${img(po.img, { sizes: '(max-width: 860px) 100vw, 680px' })}</a>
   <div class="acard__b">${tag(h)}<p>${excerptOf(po.slug)}</p><a class="btn btn--outline-red" href="/post/${po.slug}/">Lire l’article ${ic.arrow}<span class="sr-only"> : ${tx(h.v)}</span></a></div></article>` : tag(h); }).join('')}</div></div></section>`;
   };
   const renderPost = (p, b) => {
@@ -1261,7 +1261,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
     return `<section class="phero"><div class="wrap phero__in"><div>${tag(h1)}${date ? tag(date, 'hero__kicker') : ''}<a class="btn btn--white" href="/contact/">Devis gratuit ${ic.arrow}</a></div>
   <div class="phero__img">${img(po.img, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div></div></section>
 <section class="sec"><div class="wrap"><article class="prose prose--o prose--post">${html}</article></div></section>
-${recent >= 0 ? `<section class="sec sec--cream"><div class="wrap"><div class="sec__head">${tag(it[recent])}</div><div class="pgrid">${posts.filter((x) => x !== po).slice(0, 3).map((x) => `<a class="pcard" href="/post/${x.slug}/">${img(x.img, { sizes: '(max-width: 860px) 100vw, 420px' })}<p class="pcard__t">${tx((ORIG[`/post/${x.slug}/`] || []).find((y) => y[0] === 'h1')?.[1] || x.h1)}</p><span class="more">Lire l’article ${ic.arrow}</span></a>`).join('')}</div></div></section>` : ''}`;
+${recent >= 0 ? `<section class="sec sec--pink"><div class="wrap"><div class="sec__head">${tag(it[recent])}</div><div class="pgrid">${posts.filter((x) => x !== po).slice(0, 3).map((x) => `<a class="pcard" href="/post/${x.slug}/">${img(x.img, { sizes: '(max-width: 860px) 100vw, 420px' })}<p class="pcard__t">${tx((ORIG[`/post/${x.slug}/`] || []).find((y) => y[0] === 'h1')?.[1] || x.h1)}</p><span class="more">Lire l’article ${ic.arrow}</span></a>`).join('')}</div></div></section>` : ''}`;
   };
   // Pages légales : texte de l'ancien site + mentions obligatoires absentes de Wix (hébergeur, médiateur, cookies réellement utilisés)
   const LEGAL_EXTRA = {

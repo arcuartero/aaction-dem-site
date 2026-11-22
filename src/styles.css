@@ -829,3 +829,12 @@ ul.plain li{margin-bottom:.5rem}
 .agcard .btn{margin-top:auto}
 .agcard__l+.btn{margin-top:auto}
 .agcard__b>.agcard__l:last-of-type{margin-bottom:.7rem}
+/* Contact : formulaire sur fond vert, adresses sur fond rose clair */
+.chero{background:var(--green);color:#fff}
+.chero h1{color:#fff}
+.chero .chero__lead{color:#fff}
+.chero .chero__call a{color:#fff}
+.chero .chero__soc{color:#fff}
+.chero .social a{background:#fff;color:var(--green)}
+.chero .social a:hover{background:var(--coral);color:#fff}
+.chero .chero__txt>.chero__call{display:block}
