@@ -998,6 +998,15 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       const s = secs[i], n = secs[i + 1];
       const ai = s.items.findIndex((x) => x.k === 'agencies');
       if (ai >= 0 && /^Conseil personnalisé/.test(tx(n.h.v)) && !n.items.some((x) => x.k === 'agencies')) n.items.unshift(...s.items.splice(ai, 1));
+    }
+    for (let i = 0; i < secs.length - 1; i++) {
+      const s = secs[i], n = secs[i + 1];
+      // Titre vide dont le texte est resté au-dessus (ex. « Notre engagement » / « Notre engagement est simple… ») : le paragraphe qui commence par le titre et la suite passent dessous
+      if (!n.items.length && n.h.k === 'h2' && s.h) {
+        const key = tx(n.h.v).toLowerCase();
+        const k = s.items.findIndex((x, j) => j > 0 && x.k === 'p' && tx(x.v).toLowerCase().startsWith(key));
+        if (k > 0) n.items.push(...s.items.splice(k));
+      }
       if (!n.items.length && n.h.k === 'h2') {
         let k = s.items.length; while (k > 0 && s.items[k - 1].k === 'p' && /^✅/.test(tx(s.items[k - 1].v))) k--;
         if (s.items.length - k >= 2) n.items.push(...s.items.splice(k));
