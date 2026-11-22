@@ -823,3 +823,9 @@ ul.plain li{margin-bottom:.5rem}
 .gm__go{justify-content:center}
 @media (max-width:960px){.gm{grid-template-columns:1fr}}
 @media (max-width:600px){.gm__rows{padding:1.4rem}.gm__chips{grid-template-columns:1fr}.gm__ic{width:50px;height:50px}}
+/* Boutons « Nous rendre visite » des deux agences toujours à la même hauteur (cartes de même hauteur, bouton en bas) */
+.aggrid{align-items:stretch}
+.agcard__b{height:100%}
+.agcard .btn{margin-top:auto}
+.agcard__l+.btn{margin-top:auto}
+.agcard__b>.agcard__l:last-of-type{margin-bottom:.7rem}
