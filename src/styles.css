@@ -186,9 +186,10 @@ b,strong,th{font-weight:700}
 
 /* Reviews */
 .reviews{position:relative}
-.rtrack{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 2.8rem)/3);gap:1.4rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:.3rem}
+.rtrack{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 2.8rem)/3);gap:1.4rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:.3rem .3rem 1.2rem}
 .rtrack::-webkit-scrollbar{display:none}
-.review{scroll-snap-align:start;background:#fff;border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;margin:0}
+/* Toutes les cartes d'avis se détachent toujours du fond (blanc, rose, crème) : bordure + liseré corail + ombre légère */
+.review{scroll-snap-align:start;background:#fff;border:1px solid rgba(21,35,91,.16);border-top:3px solid var(--coral);border-radius:var(--radius);box-shadow:0 8px 22px -12px rgba(21,35,91,.35);padding:1.5rem;display:flex;flex-direction:column;margin:0}
 .stars{color:#f5b301;letter-spacing:.15em;font-size:1rem}
 .review blockquote{margin:.6rem 0 1rem;font-size:.9rem;color:var(--muted);flex:1}
 .review figcaption{font-weight:700;font-size:.85rem;color:var(--navy)}
@@ -715,8 +716,10 @@ h1,h2,h3{overflow-wrap:break-word}
 .feats{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.6rem 0 0}
 .feats h3{margin:0;font-family:var(--body);text-transform:none;font-size:.95rem;background:var(--green);color:#fff;padding:.65rem 1.1rem}
 ol.points{list-style:none;padding:0!important;counter-reset:pt}
-ol.points .point{counter-increment:pt;margin:0}
-ol.points .point::before{content:counter(pt,decimal-leading-zero) ".";font-size:2.4rem;color:var(--coral-d);line-height:1;font-weight:700;flex:none}
+/* Numéros 01.–04. dans une colonne de largeur fixe, alignés sur la première ligne du texte : tous les textes démarrent au même endroit */
+ol.points .point{counter-increment:pt;margin:0;display:grid;grid-template-columns:4.4rem minmax(0,1fr);column-gap:.6rem;align-items:baseline}
+ol.points .point::before{content:counter(pt,decimal-leading-zero) ".";font-size:2.4rem;color:var(--coral-d);line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+@media (max-width:640px){ol.points .point{grid-template-columns:3.4rem minmax(0,1fr)}ol.points .point::before{font-size:1.9rem}}
 ol.points .point span{font-size:.95rem}
 ul.plain{list-style:none;padding:0!important}
 ul.plain li{margin-bottom:.5rem}
@@ -745,7 +748,9 @@ ul.plain li{margin-bottom:.5rem}
 .prose--o{max-width:none;margin-inline:0}
 .prose--o>p,.prose--o>ul,.prose--o>h3,.prose--o>h4{max-width:72rem}
 .prose--o .faq{margin:0;max-width:none}
-.prose--o .net{grid-template-columns:1fr auto}
+/* Section réseau Gentlemen : titre + logo, texte et liste 01–04 dans la même colonne de 72rem (le logo s'arrête au bord droit du texte) */
+.prose--o .net{grid-template-columns:1fr auto;max-width:72rem;gap:1.5rem 3rem}
+.prose--o>ol.points{max-width:72rem}
 .prose--o .net .gent{text-align:right;justify-self:end}
 .prose--o .net .gent img{margin-left:auto}
 @media (max-width:860px){.prose--o .net{grid-template-columns:1fr}.prose--o .net .gent{justify-self:start;text-align:left}.prose--o .net .gent img{margin-left:0}}
@@ -838,3 +843,7 @@ ul.plain li{margin-bottom:.5rem}
 .chero .social a{background:#fff;color:var(--green)}
 .chero .social a:hover{background:var(--coral);color:#fff}
 .chero .chero__txt>.chero__call{display:block}
+/* Grille de services de 6 (ou 9) cartes : 3 colonnes sur ordinateur, 2 sur tablette, 1 sur mobile */
+.cards--o.cards--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1000px){.cards--o.cards--3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.cards--o.cards--3{grid-template-columns:1fr}}

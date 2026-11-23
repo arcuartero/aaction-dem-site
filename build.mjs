@@ -1025,7 +1025,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
 <div class="agcard__b"><p class="agcard__t">${seg[0]}</p><p class="agcard__l agcard__addr">${pinIc}<span>${seg.slice(1, -1).join('<br>')}</span></p><p class="agcard__l">${clockIc}<span>${seg[seg.length - 1]}</span></p>
 <a class="btn btn--outline-red" href="/contact/">Nous rendre visite ${ic.arrow}</a></div></div>`;
   const statsBand = (v, head = '') => `<section class="stats"><div class="wrap">${head ? `<div class="sec__head">${head}</div>` : ''}<ul>${v.map(([n, l], i) => `<li>${[ic.medal, ic.box, ic.truck, ic.iso][i]}<div><strong>${n}</strong><span>${l}</span></div></li>`).join('')}</ul></div></section>`;
-  const serviceCard = ([t, d]) => { const [href, im] = CARD_LINKS[tx(t)]; return `<article class="card">${img(im, { sizes: '(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 280px' })}<div class="card__b"><p class="card__t">${t}</p><p>${d}</p><a class="btn btn--outline-red" href="${href}">Voir plus ${ic.arrow}</a></div></article>`; };
+  const serviceCard = ([t, d], cols = 4) => { const [href, im] = CARD_LINKS[tx(t)]; return `<article class="card">${img(im, { sizes: `(max-width: 560px) 100vw, (max-width: 1000px) 50vw, ${cols === 3 ? 440 : 280}px` })}<div class="card__b"><p class="card__t">${t}</p><p>${d}</p><a class="btn btn--outline-red" href="${href}">Voir plus ${ic.arrow}</a></div></article>`; };
   const ulOf = (lis) => `<ul class="${lis.some((l) => /^\p{Extended_Pictographic}/u.test(tx(l))) ? 'plain' : 'checks'}">${lis.map((l) => `<li>${l}</li>`).join('')}</ul>`;
 
   // Rendu d'une suite d'éléments « texte » (paragraphes, listes, sous-titres, petites cartes, questions)
@@ -1040,7 +1040,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
       }
       if (it.k === 'p') {
         const pr = pairsAt(its, i);
-        if (pr.length >= 2) { html += pr.every((x) => CARD_LINKS[tx(x[0])]) ? `<div class="cards cards--o">${pr.map(serviceCard).join('')}</div>` : `<div class="mcards${pr.length % 3 === 0 && pr.length % 4 ? ' mcards--3' : ''}">${pr.map(([t, d]) => { const im = MCARD_IMG[tx(t)]; return im ? `<div class="mcard mcard--img">${img(im, { sizes: '(max-width: 860px) 100vw, 340px' })}<div class="mcard__b"><p class="mcard__t">${t}</p><p>${d}</p></div></div>` : `<div class="mcard"><p class="mcard__t">${t}</p><p>${d}</p></div>`; }).join('')}</div>`; i += pr.length * 2 - 1; continue; }
+        if (pr.length >= 2) { html += pr.every((x) => CARD_LINKS[tx(x[0])]) ? (pr.length % 3 === 0 && pr.length % 4 ? `<div class="cards cards--o cards--3">${pr.map((x) => serviceCard(x, 3)).join('')}</div>` : `<div class="cards cards--o">${pr.map((x) => serviceCard(x)).join('')}</div>`) : `<div class="mcards${pr.length % 3 === 0 && pr.length % 4 ? ' mcards--3' : ''}">${pr.map(([t, d]) => { const im = MCARD_IMG[tx(t)]; return im ? `<div class="mcard mcard--img">${img(im, { sizes: '(max-width: 860px) 100vw, 340px' })}<div class="mcard__b"><p class="mcard__t">${t}</p><p>${d}</p></div></div>` : `<div class="mcard"><p class="mcard__t">${t}</p><p>${d}</p></div>`; }).join('')}</div>`; i += pr.length * 2 - 1; continue; }
         const t = tx(it.v);
         const titleLike = (isTitle(it.v) && its[i + 1] && its[i + 1].k !== 'li' ? true : false) || (t.length <= 90 && /[?:]$/.test(t) && (its[i + 1]?.k === 'li' || its[i + 1]?.k === 'p')) || /^\d+\.\s/.test(t) && t.length <= 80;
         html += tag(it, titleLike ? 'ptitle' : ''); continue;
@@ -1151,7 +1151,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
         push('sec--pink', `<div class="sec__head">${H2}</div><div class="reviews"><button type="button" class="rnav rnav--prev" aria-label="Avis précédents">‹</button><div class="rtrack" tabindex="0" aria-label="Avis clients">${WIX_REVIEWS.map((r) => `<figure class="review"><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><blockquote>${r.html}</blockquote><figcaption><strong>${r.name}</strong></figcaption></figure>`).join('')}</div><button type="button" class="rnav rnav--next" aria-label="Avis suivants">›</button></div><p class="center"><a class="btn btn--outline-red" href="/avis/">Voir tous les avis</a></p>`);
         continue;
       }
-      if (/^L’ensemble de nos prestations/.test(ht)) { push('sec--pink', `<div class="sec__head">${H2}</div><div class="cards cards--o">${pairsAt(its, 0).map(serviceCard).join('')}</div>`); continue; }
+      if (/^L’ensemble de nos prestations/.test(ht)) { push('sec--pink', `<div class="sec__head">${H2}</div><div class="cards cards--o">${pairsAt(its, 0).map((x) => serviceCard(x)).join('')}</div>`); continue; }
       if (/^Demandez/.test(ht)) {
         const head = pendingHead; pendingHead = '';
         blocksOut.push(`<section class="quote${head ? ' sec--stack' : ''}" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-demenageurs', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
@@ -1195,9 +1195,11 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
     // Deux sections voisines n'ont jamais la même couleur de fond : on change celle d'une section de texte/cartes si besoin
     const bgOf = (b) => { const c = (b.match(/^<section class="([^"]*)"/) || [])[1] || ''; return /\bquote\b|sec--green/.test(c) ? 'green' : /sec--pink/.test(c) ? 'pink' : /sec--cream|\bstats\b/.test(c) ? 'cream' : /\bagencies\b/.test(c) ? 'agencies' : /\bsec\b/.test(c) ? 'white' : 'other'; };
     const BG = { white: '', cream: ' sec--cream', pink: ' sec--pink' };
+    // Les sections d'avis restent toujours sur fond rose : ce sont leurs voisines qui changent de couleur
+    const isReviews = (b) => /<figure class="review"/.test(b);
     for (let i = 0; i < blocksOut.length; i++) {
       const prev = i ? bgOf(blocksOut[i - 1]) : 'hero', cur = bgOf(blocksOut[i]), next = blocksOut[i + 1] ? bgOf(blocksOut[i + 1]) : 'footer';
-      if ((cur !== prev && cur !== next) || !/^<section class="sec[ "]/.test(blocksOut[i])) continue;
+      if (isReviews(blocksOut[i]) || (cur !== prev && cur !== next) || !/^<section class="sec[ "]/.test(blocksOut[i])) continue;
       const pick = ['white', 'cream', 'pink'].find((k) => k !== prev && k !== next);
       blocksOut[i] = blocksOut[i].replace(/^<section class="sec[^"]*"/, (m) => m.replace(/ ?sec--(cream|pink|green)/g, '').replace('class="sec', `class="sec${BG[pick]}`));
     }
