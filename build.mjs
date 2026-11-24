@@ -949,7 +949,9 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   // Boutons de l'en-tête repris de l'ancien site (sinon « Devis gratuit »)
   const HERO_CTAS = { '/entreprise/': [['Demande de devis', '#devis', 'btn--white'], ['Ou laissez-nous vous rappeler', '/contact/', 'btn--ghost']] };
   // Côté de la première photo à côté d'un texte (1 = photo à gauche, comme sur l'ancien site)
-  const FIRST_SIDE = { '/entreprise/': 1 };
+  const FIRST_SIDE = { '/entreprise/': 1, '/qui-sommes-nous/': 1 };
+  // Texte d'introduction (sans titre) en 2 colonnes, sans photo
+  const INTRO_2COLS = ['/qui-sommes-nous/'];
   // Formulaire sans photo (la même photo est déjà dans l'en-tête) : titre à gauche, formulaire à droite
   const QUOTE_NOIMG = ['/qui-sommes-nous/'];
   // Sections affichées dans la même bande que la précédente (même fond, demande du client)
@@ -963,7 +965,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     '/monte-meubles-demenagement/': ['monte-meuble-rue', 'camion-centre-ville', 'equipe-gentlemen'], '/demenagement-metz/': ['camion-centre-ville', 'dechargement-camion', 'equipe-gentlemen'],
     '/demenagement-thionville/': ['faq-hero', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-luxembourg/': ['dechargement-camion', 'equipe-gentlemen'],
     '/demenagement-longwy/': ['longwy-ville-haute', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-piano/': ['protection-mobilier', 'equipe-gentlemen'],
-    '/vente-materiel-demenagement/': ['emballage-protection', 'cartons-gentlemen'], '/qui-sommes-nous/': ['equipe-gentlemen', 'camion-centre-ville'],
+    '/vente-materiel-demenagement/': ['emballage-protection', 'cartons-gentlemen'], '/qui-sommes-nous/': ['camion-centre-ville'],
     '/services-demenagement/': ['visite-technique']
   };
 
@@ -1190,6 +1192,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
       const im = plain && textLen(its) >= 350 && pool.length ? pool.shift() : '';
       const plogos = /partenariats/.test(ht) ? `<ul class="plogos">${partners.map((x) => `<li>${logoMeta[x.logo] ? logoImg(x.logo, x.name, 72) : x.name}</li>`).join('')}</ul>` : '';
       const cls = alt++ % 2 ? 'sec--cream' : '';
+      if (!s.h && INTRO_2COLS.includes(p)) { if (im) pool.unshift(im); push(cls, `<div class="cols2">${flow(its)}</div>`); continue; }
       if (im) push(cls, `<div class="osplit${side++ % 2 ? ' osplit--rev' : ''}"><div class="prose">${headHtml}${flow(its)}</div><div>${img(im, { sizes: '(max-width: 860px) 100vw, 560px' })}</div></div>`);
       else if (plogos) push(cls, `<div class="partners"><div class="prose">${headHtml}${flow(its)}</div>${plogos}</div>`);
       else if (MERGE_PREV[p]?.includes(ht) && /^<section class="sec[ "]/.test(blocksOut[blocksOut.length - 1] || '')) { const last = blocksOut.pop(); blocksOut.push(last.replace(/<\/div><\/section>$/, `<div class="prose prose--o prose--next">${headHtml}${flow(its)}</div></div></section>`)); alt--; }

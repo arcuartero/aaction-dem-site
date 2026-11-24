@@ -873,3 +873,7 @@ ul.plain li{margin-bottom:.5rem}
 @media (max-width:960px){.quote__split{grid-template-columns:1fr;gap:1.5rem;padding:3.5rem 0}.quote__split .quote__intro{position:static}}
 @media (max-width:600px){.quote__split .fgrid3{grid-template-columns:1fr}}
 .prose--o.prose--next{margin-top:6rem}@media (max-width:600px){.prose--o.prose--next{margin-top:4rem}}
+/* Introduction en 2 colonnes (Qui sommes-nous) */
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 4rem;font-size:1.05rem;line-height:1.75}
+.cols2 p{margin:0}
+@media (max-width:860px){.cols2{grid-template-columns:1fr}}
