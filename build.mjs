@@ -954,7 +954,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   const MERGE_PREV = { '/qui-sommes-nous/': ['Notre engagement'] };
   const FORMULE_IDS = { 'La formule mobilier seul': 'mobilier-seul', 'La formule Dynamic +': 'dynamic-plus', 'La formule Confort': 'confort', 'La formule Confort +': 'confort-plus' };
   // Images d'illustration par page (photo d'en-tête puis photos placées à côté des sections de texte)
-  const HERO_IMG = { '/': 'hero-demenageur', '/services-demenagement/': 'equipe-demenageurs', '/qui-sommes-nous/': 'equipe-demenageurs', '/avis/': 'avis-clients', '/particulier/': 'famille-demenagement' };
+  const HERO_IMG = { '/': 'hero-demenageur', '/services-demenagement/': 'equipe-demenageurs', '/qui-sommes-nous/': 'equipe-formulaire', '/avis/': 'avis-clients', '/particulier/': 'famille-demenagement' };
   const POOL = {
     '/': ['equipe-gentlemen', 'cartons-gentlemen'], '/particulier/': ['emballage-protection', 'equipe-gentlemen', 'protection-mobilier'],
     '/entreprise/': ['camion-centre-ville', 'visite-technique'], '/garde-meuble/': ['dechargement-camion', 'protection-mobilier', 'cartons-gentlemen'],
