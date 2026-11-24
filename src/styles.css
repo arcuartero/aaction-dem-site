@@ -864,3 +864,4 @@ ul.plain li{margin-bottom:.5rem}
 /* Accroche Seasalt plus grande : colonne texte élargie sur ordinateur */
 @media (min-width:861px){.hero__in{grid-template-columns:1fr 1.1fr}}
 .hero .hero__txt>.hero__slogan{font-size:min(12.6cqi,5.8rem)}
+@media (max-width:900px){.rnav{display:none}}
