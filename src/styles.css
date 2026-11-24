@@ -847,3 +847,7 @@ ul.plain li{margin-bottom:.5rem}
 .cards--o.cards--3{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (max-width:1000px){.cards--o.cards--3{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.cards--o.cards--3{grid-template-columns:1fr}}
+/* Avis : pas de liseré rouge en haut des cartes ; flèches du carrousel au-dessus des cartes */
+.review{border-top:1px solid rgba(21,35,91,.16)}
+.rnav{z-index:3;display:grid;place-items:center;border:1px solid var(--line);color:var(--ink);box-shadow:0 6px 18px -6px rgba(0,0,0,.3);transition:background .15s,color .15s}
+.rnav:hover{background:var(--cta);color:#fff;border-color:var(--cta)}
