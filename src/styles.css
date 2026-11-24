@@ -856,3 +856,8 @@ ul.plain li{margin-bottom:.5rem}
 .agcard__img .mapbox__note{font-size:.75rem}
 @media (max-width:600px){.agcard__img .mapbox{min-height:220px}}
 .prose--next{margin-top:3.5rem}
+/* Bas de pied de page sur fond crème (comme le pied), séparé par un filet */
+.footer__bottom{background:var(--cream);color:var(--ink);border-top:1px solid var(--line)}
+.footer__bottom a,.footer__bottom .linkbtn{color:var(--ink);font-weight:700}
+.footer__bottom a:hover,.footer__bottom .linkbtn:hover{color:var(--cta);text-decoration:underline}
+.footer__bottom span{color:var(--muted)}
