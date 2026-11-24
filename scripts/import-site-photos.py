@@ -33,7 +33,7 @@ PHOTOS = {
     'protection-mobilier':       ('cd448d_7d59b80511524dec85d8de70d7ea7d5f~mv2.jpg', 3/2, .5, 1000),
     'equipe-gentlemen':          ('equipe-gentlemen-2026.webp', 3/2, .5, 1536),  # version t-shirts rouges (2026-11)
     # Hero Particulier : photo fournie (famille heureuse avec cartons Les Gentlemen)
-    'famille-demenagement':      ('particulier-hero.webp', None, .5, 1536),
+    'famille-demenagement':      ('particulier-hero-2026.webp', None, .5, 1536),  # famille avec cartons Aaction Dem (2026-11)
     'demenagement-metz':         ('cd448d_d325539bdac245539ea39928a3faf0fe~mv2.jpg', 3/2, .5, 1536),
     # Hero Thionville : photo fournie (déménageur portant des cartons Aaction Dem dans une rue commerçante)
     'demenagement-thionville':   ('thionville-hero-2026.webp', None, .5, 1536),  # version t-shirt rouge (2026-11)
