@@ -959,7 +959,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     '/': ['equipe-gentlemen', 'cartons-gentlemen'], '/particulier/': ['emballage-protection', 'equipe-gentlemen', 'protection-mobilier'],
     '/entreprise/': ['camion-centre-ville', 'visite-technique'], '/garde-meuble/': ['dechargement-camion', 'protection-mobilier', 'cartons-gentlemen'],
     '/monte-meubles-demenagement/': ['monte-meuble-rue', 'camion-centre-ville', 'equipe-gentlemen'], '/demenagement-metz/': ['camion-centre-ville', 'dechargement-camion', 'equipe-gentlemen'],
-    '/demenagement-thionville/': ['cartons-gentlemen', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-luxembourg/': ['dechargement-camion', 'equipe-gentlemen'],
+    '/demenagement-thionville/': ['faq-hero', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-luxembourg/': ['dechargement-camion', 'equipe-gentlemen'],
     '/demenagement-longwy/': ['longwy-ville-haute', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-piano/': ['protection-mobilier', 'equipe-gentlemen'],
     '/vente-materiel-demenagement/': ['emballage-protection', 'cartons-gentlemen'], '/qui-sommes-nous/': ['equipe-gentlemen', 'camion-centre-ville'],
     '/services-demenagement/': ['visite-technique']
