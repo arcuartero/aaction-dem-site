@@ -36,7 +36,7 @@ PHOTOS = {
     'famille-demenagement':      ('particulier-hero.webp', None, .5, 1536),
     'demenagement-metz':         ('cd448d_d325539bdac245539ea39928a3faf0fe~mv2.jpg', 3/2, .5, 1536),
     # Hero Thionville : photo fournie (déménageur portant des cartons Aaction Dem dans une rue commerçante)
-    'demenagement-thionville':   ('thionville-hero.webp', None, .5, 1536),
+    'demenagement-thionville':   ('thionville-hero-2026.webp', None, .5, 1536),  # version t-shirt rouge (2026-11)
     'monte-meuble-rue':          ('cd448d_7bf223cebaa545fd83e873f224538df5~mv2.jpeg', 3/2, .35, 1152),
     'longwy-ville-haute':        ('cd448d_3e27363c32344e9abceaad69b3c88fe2~mv2.jpg', 3/2, .5, 1536),
     'dechargement-camion':       ('cd448d_55061cee67704685bfcea6ea1a24a84b~mv2.jpg', 3/2, .5, 1248),
