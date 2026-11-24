@@ -865,3 +865,10 @@ ul.plain li{margin-bottom:.5rem}
 @media (min-width:861px){.hero__in{grid-template-columns:1fr 1.1fr}}
 .hero .hero__txt>.hero__slogan{font-size:min(12.6cqi,5.8rem)}
 @media (max-width:900px){.rnav{display:none}}
+/* Formulaire sans photo : titre et texte à gauche, formulaire à droite */
+.quote__split{display:grid;grid-template-columns:.85fr 1.15fr;gap:3.5rem;align-items:start;padding:4.5rem 0}
+.quote__split .quote__intro{position:sticky;top:110px}
+.quote__split .form{margin:0}
+.quote__split .fgrid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:960px){.quote__split{grid-template-columns:1fr;gap:1.5rem;padding:3.5rem 0}.quote__split .quote__intro{position:static}}
+@media (max-width:600px){.quote__split .fgrid3{grid-template-columns:1fr}}

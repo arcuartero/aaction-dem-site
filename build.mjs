@@ -950,6 +950,8 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   const HERO_CTAS = { '/entreprise/': [['Demande de devis', '#devis', 'btn--white'], ['Ou laissez-nous vous rappeler', '/contact/', 'btn--ghost']] };
   // Côté de la première photo à côté d'un texte (1 = photo à gauche, comme sur l'ancien site)
   const FIRST_SIDE = { '/entreprise/': 1 };
+  // Formulaire sans photo (la même photo est déjà dans l'en-tête) : titre à gauche, formulaire à droite
+  const QUOTE_NOIMG = ['/qui-sommes-nous/'];
   // Sections affichées dans la même bande que la précédente (même fond, demande du client)
   const MERGE_PREV = { '/qui-sommes-nous/': ['Notre engagement'] };
   const FORMULE_IDS = { 'La formule mobilier seul': 'mobilier-seul', 'La formule Dynamic +': 'dynamic-plus', 'La formule Confort': 'confort', 'La formule Confort +': 'confort-plus' };
@@ -1161,7 +1163,8 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
       if (/^L’ensemble de nos prestations/.test(ht)) { push('sec--pink', `<div class="sec__head">${H2}</div><div class="cards cards--o">${pairsAt(its, 0).map((x) => serviceCard(x)).join('')}</div>`); continue; }
       if (/^Demandez/.test(ht)) {
         const head = pendingHead; pendingHead = '';
-        blocksOut.push(`<section class="quote${head ? ' sec--stack' : ''}" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-formulaire', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
+        if (QUOTE_NOIMG.includes(p)) blocksOut.push(`<section class="quote${head ? ' sec--stack' : ''}" id="devis-sec"><div class="wrap">${head}<div class="quote__split"><div class="quote__intro">${H2}${flow(its)}</div>${quoteForm()}</div></div></section>`);
+        else blocksOut.push(`<section class="quote${head ? ' sec--stack' : ''}" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-formulaire', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
         continue;
       }
       if (/^Posts récents/.test(ht)) {
