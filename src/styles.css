@@ -861,3 +861,6 @@ ul.plain li{margin-bottom:.5rem}
 .footer__bottom a,.footer__bottom .linkbtn{color:var(--ink);font-weight:700}
 .footer__bottom a:hover,.footer__bottom .linkbtn:hover{color:var(--cta);text-decoration:underline}
 .footer__bottom span{color:var(--muted)}
+/* Accroche Seasalt plus grande : colonne texte élargie sur ordinateur */
+@media (min-width:861px){.hero__in{grid-template-columns:1fr 1.1fr}}
+.hero .hero__txt>.hero__slogan{font-size:min(12.6cqi,5.8rem)}
