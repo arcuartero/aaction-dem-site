@@ -246,7 +246,7 @@ const quoteSection = `
 <section class="quote" aria-labelledby="devis-titre"><div class="wrap">
   <div class="quote__top">
     <div><h2 id="devis-titre">Demandez votre<br>devis gratuit</h2><p>Contactez-nous via ce formulaire. Nous vous recontacterons au plus vite, généralement sous 24 h ouvrées.</p></div>
-    ${img('equipe-demenageurs', { sizes: '(max-width: 860px) 100vw, 640px' })}
+    ${img('equipe-formulaire', { sizes: '(max-width: 860px) 100vw, 640px' })}
   </div>
   ${quoteForm()}
 </div></section>`;
@@ -583,7 +583,7 @@ ${quoteSection}`
 <section class="sec sec--cream" aria-labelledby="faq-en"><div class="wrap"><div class="sec__head"><h2 id="faq-en">Frequently asked questions</h2></div>${faqHtml(faqEn)}</div></section>
 <section class="quote" aria-labelledby="devis-titre"><div class="wrap">
   <div class="quote__top"><div><h2 id="devis-titre">Request your<br>free quote</h2><p>Tell us about your move and we will get back to you as soon as possible.</p></div>
-  ${img('equipe-demenageurs', { sizes: '(max-width: 860px) 100vw, 640px', alt: 'The Aaction Dem moving team in front of their trucks' })}</div>
+  ${img('equipe-formulaire', { sizes: '(max-width: 860px) 100vw, 640px', alt: 'The Aaction Dem moving team in front of their trucks' })}</div>
   ${formEn}
 </div></section>`
   }), { priority: '0.7' });
@@ -1161,7 +1161,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
       if (/^L’ensemble de nos prestations/.test(ht)) { push('sec--pink', `<div class="sec__head">${H2}</div><div class="cards cards--o">${pairsAt(its, 0).map((x) => serviceCard(x)).join('')}</div>`); continue; }
       if (/^Demandez/.test(ht)) {
         const head = pendingHead; pendingHead = '';
-        blocksOut.push(`<section class="quote${head ? ' sec--stack' : ''}" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-demenageurs', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
+        blocksOut.push(`<section class="quote${head ? ' sec--stack' : ''}" id="devis-sec"><div class="wrap">${head}<div class="quote__top"><div>${H2}${flow(its)}</div>${img('equipe-formulaire', { sizes: '(max-width: 860px) 100vw, 640px' })}</div>${quoteForm()}</div></section>`);
         continue;
       }
       if (/^Posts récents/.test(ht)) {

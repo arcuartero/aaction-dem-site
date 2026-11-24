@@ -222,6 +222,14 @@
       "source": "site",
       "alt": "Metz : la cathédrale Saint-Étienne",
       "prompt": ""
+    },
+    {
+      "name": "equipe-formulaire",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "L’équipe Aaction Dem en t-shirts rouges devant ses camions",
+      "prompt": ""
     }
   ]
 }
