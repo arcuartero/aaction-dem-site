@@ -1021,9 +1021,14 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   // Carte d'agence : photo de la ville + adresse et horaires (texte de l'ancien site), Metz avec la photo à droite
   const pinIc = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
   const clockIc = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
-  const agencyCard = (seg, i) => `<div class="agcard${i ? ' agcard--rev' : ''}"><div class="agcard__img">${img(i ? 'agence-metz' : 'agence-knutange', { sizes: '(max-width: 600px) 100vw, 320px' })}</div>
+  const agencyCard = (seg, i) => {
+    // Carte Google Maps de l'agence (chargée après accord cookies) ; le bouton ouvre la fiche Google de l'agence (lien de l'ancien site)
+    const a = site.agencies[i] || site.agencies[0];
+    const fiche = (seg[0].match(/href="([^"]+)"/) || [])[1] || a.maps;
+    return `<div class="agcard${i ? ' agcard--rev' : ''}"><div class="agcard__img"><div class="mapbox" data-consent="maps"><iframe data-src="${a.maps}&amp;output=embed" title="Carte de l’agence Aaction Dem de ${a.city}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe><p class="mapbox__note">Google Maps dépose ses propres cookies : la carte s’affiche si vous l’acceptez.</p><button type="button" class="mapbox__btn" data-cc-grant="maps">Afficher la carte</button></div></div>
 <div class="agcard__b"><p class="agcard__t">${seg[0]}</p><p class="agcard__l agcard__addr">${pinIc}<span>${seg.slice(1, -1).join('<br>')}</span></p><p class="agcard__l">${clockIc}<span>${seg[seg.length - 1]}</span></p>
-<a class="btn btn--outline-red" href="/contact/">Nous rendre visite ${ic.arrow}</a></div></div>`;
+<a class="btn btn--outline-red" href="${fiche}" target="_blank" rel="noopener">Nous rendre visite ${ic.arrow}<span class="sr-only"> (fiche Google de l’agence de ${a.city}, nouvel onglet)</span></a></div></div>`;
+  };
   const statsBand = (v, head = '') => `<section class="stats"><div class="wrap">${head ? `<div class="sec__head">${head}</div>` : ''}<ul>${v.map(([n, l], i) => `<li>${[ic.medal, ic.box, ic.truck, ic.iso][i]}<div><strong>${n}</strong><span>${l}</span></div></li>`).join('')}</ul></div></section>`;
   const serviceCard = ([t, d], cols = 4) => { const [href, im] = CARD_LINKS[tx(t)]; return `<article class="card">${img(im, { sizes: `(max-width: 560px) 100vw, (max-width: 1000px) 50vw, ${cols === 3 ? 440 : 280}px` })}<div class="card__b"><p class="card__t">${t}</p><p>${d}</p><a class="btn btn--outline-red" href="${href}">Voir plus ${ic.arrow}</a></div></article>`; };
   const ulOf = (lis) => `<ul class="${lis.some((l) => /^\p{Extended_Pictographic}/u.test(tx(l))) ? 'plain' : 'checks'}">${lis.map((l) => `<li>${l}</li>`).join('')}</ul>`;
