@@ -50,6 +50,8 @@ PHOTOS = {
     # Section agences : photos des villes recadrées depuis la maquette fournie par le client (2026-11)
     # Formulaires de devis : équipe en t-shirts rouges devant les camions (photo fournie 2026-11)
     'equipe-formulaire':         ('equipe-formulaire-2026.webp', 3/2, .5, 1536),
+    # En-tête de la page FAQ : carton Aaction Dem (photo fournie 2026-11)
+    'faq-hero':                  ('faq-hero-2026.webp', 3/2, .5, 1536),
     'agence-knutange':           ('agence-knutange.png', None, .5, 800),
     'agence-metz':               ('agence-metz-cathedrale.webp', None, .5, 1124),  # photo de la cathédrale fournie par le client
 }

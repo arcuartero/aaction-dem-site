@@ -230,6 +230,14 @@
       "source": "site",
       "alt": "L’équipe Aaction Dem en t-shirts rouges devant ses camions",
       "prompt": ""
+    },
+    {
+      "name": "faq-hero",
+      "format": "webp",
+      "size": "1536x1024",
+      "source": "site",
+      "alt": "Déménageur Aaction Dem portant un carton « Déménageurs de vies »",
+      "prompt": ""
     }
   ]
 }

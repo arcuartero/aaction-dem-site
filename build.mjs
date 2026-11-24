@@ -1260,7 +1260,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
   <div><p class="hero__kicker">Conseils et questions fréquentes</p>${tag(h1)}
     <p>Prix d’un déménagement, déménagement à Metz ou au Luxembourg, transport de piano : retrouvez nos réponses et nos conseils pour préparer votre déménagement en Moselle et au Luxembourg.</p>
     <div class="phero__ctas"><a class="btn btn--white" href="/contact/">Demander un devis gratuit ${ic.arrow}</a><a class="btn btn--ghost" href="tel:${site.phone.replace(/\s/g, '')}" data-hours-check>${ic.phone} ${site.phoneDisplay}</a></div></div>
-  <div class="phero__img">${img('cartons-gentlemen', { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
+  <div class="phero__img">${img('faq-hero', { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
 </div></section>
 <section class="sec sec--pink"><div class="wrap"><div class="fgrid2">${h2.map((h) => { const po = bySlug(h); return po ? `<article class="acard"><a class="acard__img" href="/post/${po.slug}/" tabindex="-1" aria-hidden="true">${img(po.img, { sizes: '(max-width: 860px) 100vw, 680px' })}</a>
   <div class="acard__b">${tag(h)}<p>${excerptOf(po.slug)}</p><a class="btn btn--outline-red" href="/post/${po.slug}/">Lire l’article ${ic.arrow}<span class="sr-only"> : ${tx(h.v)}</span></a></div></article>` : tag(h); }).join('')}</div></div></section>`;
