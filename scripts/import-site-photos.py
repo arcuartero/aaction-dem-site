@@ -18,7 +18,7 @@ BACKUP = os.path.join(OUT, 'chatgpt')
 PHOTOS = {
     # Hero régénéré avec ChatGPT Images à partir de la photo du site (camionnette entière), recadré (x0, y0, x1, y1)
     # Hero de l'accueil (visuel fourni 2026 : déménageur + camionnette « Déménageurs de vies », fond corail)
-    'hero-demenageur':           ('hero-home-2026.webp', None, .5, 1655),
+    'hero-demenageur':           ('hero-home-2026-v2.webp', None, .5, 1655),  # visuel fourni 2026-11 (déménageur t-shirt rouge + camionnette)
     'particulier': ('nsplsh_5d35408df0604a6e854fcc35209b4488~mv2.jpg', 3/2, .5, 1536),
     'entreprise':  ('nsplsh_f7bd0931e7a74f48a73cd07e891ee0ca~mv2.jpg', 3/2, .5, 1536),
     'garde-meuble':             ('cd448d_1f46ea2f73d4454e812721b249f00b49~mv2.jpg', 3/2, .5, 1536),
