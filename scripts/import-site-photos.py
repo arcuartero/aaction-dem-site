@@ -49,7 +49,7 @@ PHOTOS = {
     'bureaux-entreprise':        ('cd448d_2ace563da06e4334b3d2e603152a0c29~mv2.jpg', 3/2, .45, 1536),
     # Section agences : photos des villes recadrées depuis la maquette fournie par le client (2026-11)
     'agence-knutange':           ('agence-knutange.png', None, .5, 800),
-    'agence-metz':               ('agence-metz.png', None, .5, 800),
+    'agence-metz':               ('agence-metz-cathedrale.webp', None, .5, 1124),  # photo de la cathédrale fournie par le client
 }
 # OG image (1200x630 JPEG) from the real team photo
 OG = ('equipe-camions-2026.webp', .55)

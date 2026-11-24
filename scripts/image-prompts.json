@@ -218,9 +218,9 @@
     {
       "name": "agence-metz",
       "format": "webp",
-      "size": "382x272",
+      "size": "1124x750",
       "source": "site",
-      "alt": "Metz : la cathédrale Saint-Étienne vue depuis la Moselle",
+      "alt": "Metz : la cathédrale Saint-Étienne",
       "prompt": ""
     }
   ]
