@@ -26,7 +26,7 @@ PHOTOS = {
     # Équipe devant les camions : photo fournie 2026 (t-shirts verts Aaction Dem)
     'equipe-demenageurs':        ('equipe-camions-2026.webp', 3/2, .55, 1536),
     'visite-technique':          ('cd448d_879b48ecb40949a7b1bce39b5bee32f2~mv2.png', 3/2, .5, 1536),
-    'demenagement-longwy':       ('cd448d_20144f75000a47d8b74a1f4858123e85~mv2.jpg', 3/2, .5, 1536),
+    'demenagement-longwy':       ('equipe-gentlemen-2026.webp', 3/2, .5, 1536),  # équipe t-shirts rouges (2026-11)
     # Hero Piano : photo fournie (équipe Aaction Dem déplaçant un piano droit)
     'demenagement-piano':        ('piano-hero.webp', None, .5, 1536),
     'vente-materiel':            ('cd448d_dc45dc540b0743d7be7110a2b48a987b~mv2.jpg', 3/2, .6, 1000),
