@@ -28,7 +28,7 @@ PHOTOS = {
     'visite-technique':          ('cd448d_879b48ecb40949a7b1bce39b5bee32f2~mv2.png', 3/2, .5, 1536),
     'demenagement-longwy':       ('equipe-gentlemen-2026.webp', 3/2, .5, 1536),  # équipe t-shirts rouges (2026-11)
     # Hero Piano : photo fournie (équipe Aaction Dem déplaçant un piano droit)
-    'demenagement-piano':        ('piano-hero.webp', None, .5, 1536),
+    'demenagement-piano':        ('piano-hero-rouge.webp', None, .5, 1536),  # t-shirts passés en rouge, logos des pantalons retirés (scripts/recolor-piano.py)
     'vente-materiel':            ('cd448d_dc45dc540b0743d7be7110a2b48a987b~mv2.jpg', 3/2, .6, 1000),
     'protection-mobilier':       ('cd448d_7d59b80511524dec85d8de70d7ea7d5f~mv2.jpg', 3/2, .5, 1000),
     'equipe-gentlemen':          ('equipe-gentlemen-2026.webp', 3/2, .5, 1536),  # version t-shirts rouges (2026-11)
