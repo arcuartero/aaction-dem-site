@@ -950,6 +950,8 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   const HERO_CTAS = { '/entreprise/': [['Demande de devis', '#devis', 'btn--white'], ['Ou laissez-nous vous rappeler', '/contact/', 'btn--ghost']] };
   // Côté de la première photo à côté d'un texte (1 = photo à gauche, comme sur l'ancien site)
   const FIRST_SIDE = { '/entreprise/': 1 };
+  // Sections affichées dans la même bande que la précédente (même fond, demande du client)
+  const MERGE_PREV = { '/qui-sommes-nous/': ['Notre engagement'] };
   const FORMULE_IDS = { 'La formule mobilier seul': 'mobilier-seul', 'La formule Dynamic +': 'dynamic-plus', 'La formule Confort': 'confort', 'La formule Confort +': 'confort-plus' };
   // Images d'illustration par page (photo d'en-tête puis photos placées à côté des sections de texte)
   const HERO_IMG = { '/': 'hero-demenageur', '/services-demenagement/': 'equipe-demenageurs', '/qui-sommes-nous/': 'equipe-demenageurs', '/avis/': 'avis-clients', '/particulier/': 'famille-demenagement' };
@@ -1187,6 +1189,7 @@ ${chips.length ? `<div class="gm__chips">${chips.map((x) => tag(x)).join('')}</d
       const cls = alt++ % 2 ? 'sec--cream' : '';
       if (im) push(cls, `<div class="osplit${side++ % 2 ? ' osplit--rev' : ''}"><div class="prose">${headHtml}${flow(its)}</div><div>${img(im, { sizes: '(max-width: 860px) 100vw, 560px' })}</div></div>`);
       else if (plogos) push(cls, `<div class="partners"><div class="prose">${headHtml}${flow(its)}</div>${plogos}</div>`);
+      else if (MERGE_PREV[p]?.includes(ht) && /^<section class="sec[ "]/.test(blocksOut[blocksOut.length - 1] || '')) { const last = blocksOut.pop(); blocksOut.push(last.replace(/<\/div><\/section>$/, `<div class="prose prose--o prose--next">${headHtml}${flow(its)}</div></div></section>`)); alt--; }
       else push(cls, `<div class="prose prose--o">${headHtml}${flow(its, { points: gent })}</div>`);
       if (stats) blocksOut.push(statsBand(stats.v));
     }
