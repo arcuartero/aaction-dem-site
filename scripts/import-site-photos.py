@@ -45,7 +45,7 @@ PHOTOS = {
     # Généré avec ChatGPT Images (cliente écrivant un avis après son déménagement)
     'avis-clients':              ('avis-clients-chatgpt.jpg', 3/2, .5, 1536),
     # Hero de la page Knutange (photo fournie, camion Aaction Dem « Déménageurs de vies »)
-    'demenagement-knutange':     ('knutange-hero.webp', None, .5, 1536),
+    'demenagement-knutange':     ('knutange-hero-2026.webp', None, .5, 1536),  # chargement d'un camion Aaction Dem (photo fournie 2026-11)
     'bureaux-entreprise':        ('cd448d_2ace563da06e4334b3d2e603152a0c29~mv2.jpg', 3/2, .45, 1536),
     # Section agences : photos des villes recadrées depuis la maquette fournie par le client (2026-11)
     # Formulaires de devis : équipe en t-shirts rouges devant les camions (photo fournie 2026-11)
