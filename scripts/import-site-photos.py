@@ -52,6 +52,8 @@ PHOTOS = {
     'equipe-formulaire':         ('equipe-formulaire-2026.webp', 3/2, .5, 1536),
     # En-tête de la page FAQ : carton Aaction Dem (photo fournie 2026-11)
     'faq-hero':                  ('faq-hero-2026.webp', 3/2, .5, 1536),
+    # En-tête Luxembourg : monte-meuble et camion Aaction Dem à Luxembourg-Ville (photo fournie 2026-11)
+    'demenagement-luxembourg':   ('luxembourg-hero-2026.webp', 3/2, .5, 1536),
     'agence-knutange':           ('agence-knutange.png', None, .5, 800),
     'agence-metz':               ('agence-metz-cathedrale.webp', None, .5, 1124),  # photo de la cathédrale fournie par le client
 }

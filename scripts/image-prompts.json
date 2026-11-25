@@ -77,8 +77,9 @@
       "name": "demenagement-luxembourg",
       "format": "webp",
       "size": "1536x1024",
-      "alt": "Déménageurs à Luxembourg-Ville devant un immeuble résidentiel",
-      "prompt": "Elegant residential street in Luxembourg City with modern apartments and the Grund valley visible behind, a white moving truck and movers carrying boxes into the building, bright day."
+      "alt": "Déménageurs Aaction Dem et monte-meuble devant un immeuble à Luxembourg-Ville",
+      "prompt": "Elegant residential street in Luxembourg City with modern apartments and the Grund valley visible behind, a white moving truck and movers carrying boxes into the building, bright day.",
+      "source": "site"
     },
     {
       "name": "og-image",
