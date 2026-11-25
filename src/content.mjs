@@ -443,7 +443,7 @@ ${h.figure('camion-centre-ville', 'Camion et monte-meuble installés en centre-v
 <h2>Nos déménagements à Knutange et dans la vallée</h2>
 <p>Maisons mitoyennes des anciennes cités ouvrières, pavillons sur les hauteurs, appartements en résidence : chaque logement de la vallée a ses contraintes. Escaliers étroits, rues à forte pente, places de stationnement rares devant les maisons en bande… Lors de la <strong>visite technique gratuite</strong>, nous repérons ces points pour prévoir le bon camion, le bon nombre de déménageurs et, si besoin, un <a href="/monte-meubles-demenagement/">monte-meuble</a>.</p>
 <p>Nous intervenons chaque semaine à <strong>Knutange, Nilvange, Hayange, Algrange, Fontoy, Neufchef, Ranguevaux, Serémange-Erzange, Florange, Fameck et Uckange</strong>, ainsi qu’à <a href="/demenagement-thionville/">Thionville</a> et jusqu’au <a href="/demenagement-luxembourg/">Luxembourg</a>.</p>
-${h.figure('cartons-gentlemen', 'Cartons et matériel du réseau Les Gentlemen du Déménagement, disponibles dans notre agence.')}
+${h.figure('faq-hero', 'Cartons Aaction Dem, disponibles dans notre agence de Knutange.')}
 <h2>Votre agence au 277 rue Victor Rimmel</h2>
 <ul class="checks">
   <li><strong>Ouverte du lundi au vendredi</strong>, de 08:45 à 12:00 et de 14:00 à 17:30.</li>
