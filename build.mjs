@@ -384,6 +384,10 @@ const gBadge = `<a class="gbadge" href="/avis/" aria-label="Note Google : ${gNot
 </a>`;
 const reviewsHtml = `<div class="reviews"><button class="rnav rnav--prev" aria-label="Avis précédents">‹</button><div class="rtrack" tabindex="0" aria-label="Avis clients">${reviewData.reviews.slice(0, 9).map(reviewCard).join('')}</div><button class="rnav rnav--next" aria-label="Avis suivants">›</button></div>`;
 
+// Section « agences » (2 cartes avec carte Google Maps) pour les pages qui ne viennent pas de Wix (ex. Knutange)
+const agSectionHtml = () => `<section class="agsec" aria-label="Nos agences"><div class="wrap"><div class="sec__head"><h2>Conseil personnalisé dans nos agences</h2></div><div class="aggrid">${site.agencies.map((a, i) => `<div class="agcard${i ? ' agcard--rev' : ''}"><div class="agcard__img"><div class="mapbox" data-consent="maps"><iframe data-src="${a.maps}&amp;output=embed" title="Carte de l’agence Aaction Dem de ${a.city}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe><p class="mapbox__note">Google Maps dépose ses propres cookies : la carte s’affiche si vous l’acceptez.</p><button type="button" class="mapbox__btn" data-cc-grant="maps">Afficher la carte</button></div></div>
+<div class="agcard__b"><p class="agcard__t">Agence de ${a.city}</p><p class="agcard__l agcard__addr"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>${a.street}<br>${a.zip} ${a.city}</span></p><p class="agcard__l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>${a.hoursText}</span></p>
+<a class="btn btn--outline-red" href="${a.maps}" target="_blank" rel="noopener">Nous rendre visite ${ic.arrow}<span class="sr-only"> (fiche Google de l’agence de ${a.city}, nouvel onglet)</span></a></div></div>`).join('')}</div></div></section>`;
 const agenciesHtml = `<section class="agencies" aria-label="Nos agences">${site.agencies.map((a, i) => `
 <div class="agency ${i ? 'agency--green' : 'agency--orange'}"><p class="eyebrow">Notre agence de</p><h2>${a.city}</h2>
 <address>${a.street}<br>${a.zip} ${a.city}<span>${a.hoursText}</span></address>
@@ -506,7 +510,7 @@ ${stats}
 <div class="rgrid rgrid--3">${pageReviews(pg, pi).map(reviewCard).join('')}</div>
 <p class="center"><a class="btn btn--outline-red" href="/avis/">Voir tous les avis</a></p></div></section>
 ${pg.faq?.length ? `<section class="sec sec--cream" aria-labelledby="faq-p"><div class="wrap"><div class="sec__head"><h2 id="faq-p">Questions fréquentes</h2></div>${faqHtml(pg.faq)}</div></section>` : ''}
-<section class="sec" aria-labelledby="voir-aussi"><div class="wrap"><div class="sec__head"><h2 id="voir-aussi">À découvrir aussi</h2></div>${relatedHtml(pg.related)}</div></section>
+${pg.slug === 'demenagement-knutange' ? agSectionHtml() : `<section class="sec" aria-labelledby="voir-aussi"><div class="wrap"><div class="sec__head"><h2 id="voir-aussi">À découvrir aussi</h2></div>${relatedHtml(pg.related)}</div></section>`}
 ${quoteSection}`
   }), { priority: pg.local ? '0.9' : '0.8' });
 }
