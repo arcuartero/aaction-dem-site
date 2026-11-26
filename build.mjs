@@ -944,10 +944,10 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   };
   // Photos des petites cartes, comme sur l'ancien site (mêmes photos Wix, importées dans images/)
   const MCARD_IMG = {
-    'Déménagement de maison et d’appartement': 'visite-technique', 'Déménagement de bureaux et de locaux': 'bureaux-entreprise',
+    'Déménagement de maison et d’appartement': 'visite-technique', 'Déménagement de bureaux et de locaux': 'entreprise',
     'Préparation du mobilier et transport sécurisé': 'faq-hero', 'Des services utiles en plus du déménagement': 'monte-meuble',
     // Entreprise : « Construisons ensemble votre transfert » (photos de la nouvelle web, celles de Wix venant de sa banque d'images)
-    'Transfert administratif': 'bureaux-entreprise', 'Transfert industriel': 'demenagement-piano', 'Transfert informatique': 'emballage-protection',
+    'Transfert administratif': 'entreprise', 'Transfert industriel': 'demenagement-piano', 'Transfert informatique': 'emballage-protection',
     "Transfert d'archives": 'faq-hero', 'Relocation': 'famille-demenagement', 'Transfert de matériel spécifique': 'monte-meuble-rue'
   };
   // Boutons de l'en-tête repris de l'ancien site (sinon « Devis gratuit »)

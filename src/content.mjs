@@ -256,7 +256,7 @@ ${h.figure('faq-hero', 'Cartons et matériel professionnels du réseau Les Gentl
 <p>Nous accompagnons vos salariés mutés : transport de leurs effets personnels, aide aux formalités et soutien à l’installation dans leur nouvelle région ou leur nouveau pays.</p>
 <h3>Matériel spécifique</h3>
 <p>Machines de précision, instruments médicaux, matériel scientifique ou œuvres d’art : emballage sur mesure et installation dans le respect des exigences propres à chaque équipement.</p>
-${h.figure('bureaux-entreprise', 'Un chef de projet prépare avec vous l’implantation de vos nouveaux bureaux.')}
+${h.figure('entreprise', 'Un chef de projet prépare avec vous l’implantation de vos nouveaux bureaux.')}
 <h2>Une méthode qui protège votre activité</h2>
 <ul class="checks">
   <li><strong>Audit sur site</strong> et plan d’implantation dans les nouveaux locaux.</li>
