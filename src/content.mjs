@@ -219,7 +219,7 @@ ${h.figure('visite-technique', 'La visite technique gratuite permet d’estimer 
   <li>la <strong>mise au rebut</strong> du mobilier dont vous souhaitez vous séparer ;</li>
   <li>le transport de vos objets lourds ou délicats, comme un <a href="/demenagement-piano/">piano</a>.</li>
 </ul>
-${h.figure('cartons-gentlemen', 'Cartons et matériel professionnels du réseau Les Gentlemen du Déménagement.')}
+${h.figure('faq-hero', 'Cartons et matériel professionnels du réseau Les Gentlemen du Déménagement.')}
 <h2>Déménageur local, réseau national</h2>
 <p>Membre du réseau <strong>Les Gentlemen du Déménagement</strong>, Aaction Dem associe la proximité d’une entreprise familiale de Moselle à la force d’un groupement de plus de 70 déménageurs en France. Résultat : nous pouvons organiser votre déménagement de Metz vers Lyon, Bordeaux, Paris ou Chamonix avec le même niveau d’exigence.</p>`,
     faq: [
