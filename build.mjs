@@ -711,7 +711,7 @@ ${quoteSection}`
       ${best ? '<p class="fplan__badge">Le plus complet</p>' : ''}
       <header class="fplan__head">${ic[f.icon]}<h3>${f.title}</h3><p>${f.text}</p></header>
       <ul class="fplan__list">${[...feats].sort((a, b) => ({ y: 0, o: 1, n: 2 })[a[2][i]] - ({ y: 0, o: 1, n: 2 })[b[2][i]]).map(([icon, label, v]) => `<li class="is-${v[i]}">${svgI(fi[icon])}<span>${label}</span>${mark[v[i]]}</li>`).join('')}</ul>
-      <a class="btn ${best ? 'btn--red' : 'btn--outline-red'}" href="/contact/">Devis gratuit ${ic.arrow}</a>
+      <a class="btn ${best ? 'btn--red' : 'btn--outline-red'}" href="#devis">Devis gratuit ${ic.arrow}</a>
     </article>`;
   }).join('')}</div>`;
   await emit(p, layout({
