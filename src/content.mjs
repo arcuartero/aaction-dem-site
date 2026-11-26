@@ -485,7 +485,7 @@ ${h.figure('faq-hero', 'Cartons Aaction Dem, disponibles dans notre agence de Kn
 <p>Allemagne, Belgique, Pays-Bas ou destination plus lointaine : grâce au réseau Les Gentlemen du Déménagement, nous organisons votre déménagement international de bout en bout.</p>
 <h3>Particuliers, entreprises et administrations</h3>
 <p>Familles, étudiants, institutions européennes ou sociétés qui s’implantent au Grand-Duché : nous adaptons notre organisation à chaque projet. Voir aussi notre offre de <a href="/entreprise/">transfert d’entreprise</a>.</p>
-${h.figure('dechargement-camion', 'Chargement et déchargement soignés, quelle que soit la destination.')}
+${h.figure('protection-mobilier', 'Chargement et déchargement soignés, quelle que soit la destination.')}
 <h2>Pourquoi un déménageur mosellan pour le Luxembourg ?</h2>
 <ul class="checks">
   <li>Des <strong>tarifs français</strong> transparents, assurance incluse, pour une qualité de service identique.</li>

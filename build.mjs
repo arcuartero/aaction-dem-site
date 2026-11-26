@@ -574,7 +574,7 @@ ${quoteSection}`
   <li><strong>Furniture lift</strong> when items do not fit in the staircase or lift.</li>
   <li><strong>Secure storage</strong> in Moselle while you wait for the keys.</li>
 </ul>
-<figure class="figure">${img('dechargement-camion', { sizes: '(max-width: 960px) 100vw, 720px', alt: 'Mover unloading protected furniture from a Les Gentlemen du Déménagement truck' })}<figcaption>Careful loading and unloading, whatever the destination.</figcaption></figure>
+<figure class="figure">${img('demenagement-piano', { sizes: '(max-width: 960px) 100vw, 720px', alt: 'Aaction Dem movers carefully handling an upright piano' })}<figcaption>Careful loading and unloading, whatever the destination.</figcaption></figure>
 <h2>Moving within Luxembourg City and the Grand Duchy</h2>
 <p>Kirchberg, Gare, Limpertsberg, Belair, Gasperich, Bonnevoie, Merl: we are used to Luxembourg residences, where the lift usually has to be booked, underground car parks have restricted access and common areas must be protected. We also move households in Esch-sur-Alzette, Belval, Differdange, Dudelange, Bettembourg and the rest of the country.</p>
 <h2>Cross-border and international moves</h2>
@@ -947,7 +947,7 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
     'Déménagement de maison et d’appartement': 'visite-technique', 'Déménagement de bureaux et de locaux': 'bureaux-entreprise',
     'Préparation du mobilier et transport sécurisé': 'faq-hero', 'Des services utiles en plus du déménagement': 'monte-meuble',
     // Entreprise : « Construisons ensemble votre transfert » (photos de la nouvelle web, celles de Wix venant de sa banque d'images)
-    'Transfert administratif': 'bureaux-entreprise', 'Transfert industriel': 'dechargement-camion', 'Transfert informatique': 'emballage-protection',
+    'Transfert administratif': 'bureaux-entreprise', 'Transfert industriel': 'demenagement-piano', 'Transfert informatique': 'emballage-protection',
     "Transfert d'archives": 'faq-hero', 'Relocation': 'famille-demenagement', 'Transfert de matériel spécifique': 'monte-meuble-rue'
   };
   // Boutons de l'en-tête repris de l'ancien site (sinon « Devis gratuit »)
@@ -965,9 +965,9 @@ await simple('/politique-de-cookies/', 'Politique de cookies | Aaction Dem', 'Po
   const HERO_IMG = { '/': 'hero-demenageur', '/services-demenagement/': 'equipe-demenageurs', '/qui-sommes-nous/': 'equipe-formulaire', '/avis/': 'avis-clients', '/particulier/': 'famille-demenagement' };
   const POOL = {
     '/': ['equipe-gentlemen', 'faq-hero'], '/particulier/': ['emballage-protection', 'equipe-gentlemen', 'protection-mobilier'],
-    '/entreprise/': ['camion-centre-ville', 'visite-technique'], '/garde-meuble/': ['dechargement-camion', 'protection-mobilier', 'faq-hero'],
-    '/monte-meubles-demenagement/': ['monte-meuble-rue', 'camion-centre-ville', 'equipe-gentlemen'], '/demenagement-metz/': ['camion-centre-ville', 'dechargement-camion', 'equipe-gentlemen'],
-    '/demenagement-thionville/': ['faq-hero', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-luxembourg/': ['dechargement-camion', 'equipe-gentlemen'],
+    '/entreprise/': ['camion-centre-ville', 'visite-technique'], '/garde-meuble/': ['demenagement-piano', 'protection-mobilier', 'faq-hero'],
+    '/monte-meubles-demenagement/': ['monte-meuble-rue', 'camion-centre-ville', 'equipe-gentlemen'], '/demenagement-metz/': ['camion-centre-ville', 'protection-mobilier', 'equipe-gentlemen'],
+    '/demenagement-thionville/': ['faq-hero', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-luxembourg/': ['protection-mobilier', 'equipe-gentlemen'],
     '/demenagement-longwy/': ['longwy-ville-haute', 'protection-mobilier', 'equipe-gentlemen'], '/demenagement-piano/': ['protection-mobilier', 'equipe-gentlemen'],
     '/vente-materiel-demenagement/': ['emballage-protection', 'faq-hero'], '/qui-sommes-nous/': ['camion-centre-ville'],
     '/services-demenagement/': ['visite-technique']
